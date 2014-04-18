@@ -12,7 +12,7 @@
     <title>Blog-Vorlage für Bootstrap</title>
 
     <!-- Bootstrap-CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="site/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Besondere Stile für diese Vorlage -->
     <link href="blog.css" rel="stylesheet">
@@ -26,6 +26,18 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+
+    <!-- Include required JS files -->
+    <script type="text/javascript" src="site/syntax/shCore.js"></script>
+    <script type="text/javascript" src="site/syntax/shBrushJava.js"></script>
+    <script type="text/javascript" src="site/syntax/shBrushJavaFX.js"></script>
+    <script type="text/javascript" src="site/syntax/shBrushSql.js"></script>
+    <script type="text/javascript" src="site/syntax/shBrushJScript.js"></script>
+
+    <!-- Include *at least* the core style and default theme -->
+    <link href="site/syntax/shCore.css" rel="stylesheet" type="text/css" />
+    <link href="site/syntax/shThemeDefault.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -68,7 +80,24 @@
                 <p>Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
                 <h3>Sub-heading</h3>
                 <p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
-                <pre><code>Example code block</code></pre>
+
+
+                <pre>
+                    <script type="syntaxhighlighter" class="brush: java"><![CDATA[
+                        final Barometer barometer = new Barometer("jY4", callbackPeriod, PORT, HOST);
+                        barometer.bricklet().addAirPressureListener(sensorvalue -> {
+                        final String text = LocalDateTime.now() + " - Air   : " + sensorvalue / 1000.0 + " mbar";
+                        lcd20x4.printLine1(text);
+                        System.out.println("text = " + text);
+                        System.out.println();
+                        final String str = null;
+                        tweetIt(text);
+                        });
+                        new Thread(barometer).start();
+                    ]]></script>
+                </pre>
+
+
                 <p>Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa.</p>
                 <h3>Sub-heading</h3>
                 <p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
@@ -86,31 +115,33 @@
                 <p>Cras mattis consectetur purus sit amet fermentum. Sed posuere consectetur est at lobortis.</p>
             </div><!-- /.blog-post -->
 
-            <div class="blog-post">
-                <h2 class="blog-post-title">Ein anderer Blogpost</h2>
-                <p class="blog-post-meta">23. Dezember 2013 von <a href="#">Jacob</a></p>
 
-                <p>Cum sociis natoque penatibus et magnis <a href="#">dis parturient montes</a>, nascetur ridiculus mus. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Sed posuere consectetur est at lobortis. Cras mattis consectetur purus sit amet fermentum.</p>
-                <blockquote>
-                    <p>Curabitur blandit tempus porttitor. <strong>Nullam quis risus eget urna mollis</strong> ornare vel eu leo. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-                </blockquote>
-                <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
-                <p>Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-            </div><!-- /.blog-post -->
 
-            <div class="blog-post">
-                <h2 class="blog-post-title">Neue Funktion</h2>
-                <p class="blog-post-meta">14. Dezember 2013 von <a href="#">Chris</a></p>
+            <!--<div class="blog-post">-->
+                <!--<h2 class="blog-post-title">Ein anderer Blogpost</h2>-->
+                <!--<p class="blog-post-meta">23. Dezember 2013 von <a href="#">Jacob</a></p>-->
 
-                <p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-                <ul>
-                    <li>Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</li>
-                    <li>Donec id elit non mi porta gravida at eget metus.</li>
-                    <li>Nulla vitae elit libero, a pharetra augue.</li>
-                </ul>
-                <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
-                <p>Donec ullamcorper nulla non metus auctor fringilla. Nulla vitae elit libero, a pharetra augue.</p>
-            </div><!-- /.blog-post -->
+                <!--<p>Cum sociis natoque penatibus et magnis <a href="#">dis parturient montes</a>, nascetur ridiculus mus. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Sed posuere consectetur est at lobortis. Cras mattis consectetur purus sit amet fermentum.</p>-->
+                <!--<blockquote>-->
+                    <!--<p>Curabitur blandit tempus porttitor. <strong>Nullam quis risus eget urna mollis</strong> ornare vel eu leo. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>-->
+                <!--</blockquote>-->
+                <!--<p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>-->
+                <!--<p>Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>-->
+            <!--</div>&lt;!&ndash; /.blog-post &ndash;&gt;-->
+
+            <!--<div class="blog-post">-->
+                <!--<h2 class="blog-post-title">Neue Funktion</h2>-->
+                <!--<p class="blog-post-meta">14. Dezember 2013 von <a href="#">Chris</a></p>-->
+
+                <!--<p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>-->
+                <!--<ul>-->
+                    <!--<li>Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</li>-->
+                    <!--<li>Donec id elit non mi porta gravida at eget metus.</li>-->
+                    <!--<li>Nulla vitae elit libero, a pharetra augue.</li>-->
+                <!--</ul>-->
+                <!--<p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>-->
+                <!--<p>Donec ullamcorper nulla non metus auctor fringilla. Nulla vitae elit libero, a pharetra augue.</p>-->
+            <!--</div> -->
 
             <ul class="pager">
                 <li><a href="#">Vorherige</a></li>
@@ -167,7 +198,11 @@
 ================================================== -->
 <!-- Am Ende des Dokuments platziert, damit Seiten schneller laden -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/docs.min.js"></script>
+<script src="site/js/bootstrap.min.js"></script>
+<script src="site/js/docs.min.js"></script>
+<!-- Finally, to actually run the highlighter, you need to include this JS on your page -->
+<script type="text/javascript">
+    SyntaxHighlighter.all()
+</script>
 </body>
 </html>
