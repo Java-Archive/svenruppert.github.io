@@ -121,7 +121,7 @@ public class Generator {
                       }
                       fw.write(index2);
                       for (final String archiveElement : archiveElements) {
-                        fw.write("<li><a href=\"/entires/" + archiveElement.replace("-", "/") + "\">" + archiveElement + "</a></li>");
+                        fw.write("<li><a href=\"/entries/" + archiveElement.replace("-", "/") + "\">" + archiveElement + "</a></li>");
                       }
                       fw.write(index3);
 
@@ -140,7 +140,7 @@ public class Generator {
                 }
                 fw.write(index2);
                 for (final String archiveElement : archiveElements) {
-                  fw.write("<li><a href=\"/entires/" + archiveElement.replace("-", "/") + "\">" + archiveElement + "</a></li>");
+                  fw.write("<li><a href=\"/entries/" + archiveElement.replace("-", "/") + "\">" + archiveElement + "</a></li>");
                 }
                 fw.write(index3);
 
@@ -164,7 +164,7 @@ public class Generator {
     }
     fw.write(index2);
     for (final String archiveElement : archiveElements) {
-      fw.write("<li><a href=\"/entires/" + archiveElement.replace("-", "/") + "\">" + archiveElement + "</a></li>");
+      fw.write("<li><a href=\"/entries/" + archiveElement.replace("-", "/") + "\">" + archiveElement + "</a></li>");
     }
     fw.write(index3);
 
