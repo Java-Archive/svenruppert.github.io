@@ -1,0 +1,180 @@
+The last part was describing how you could reach the goal to make the order of some dependent method calls independent.
+Now we will see, how we could use this for the combination of CDI and JavaFX.
+<br/>
+If you want to have CDI managed Controllers inside your JavaFX application you have to deal with the two life cycles.
+The init from CDI and the init from JavaFX. If you are combining both technologies, you will have the problem that
+the order of the livecycle steps are not always in the same order. Depending from the technology that will start,
+the order of the init methods will change. For CDI it is the method with the annotation Postconstruct and for JavaFX the method initialize.
+<br/>
+Well, lets see what you could do..
+<br/>
+For this example I will start with the FXMLoader. Check the Method setControllerFactory.
+You will see, that after the creation of the Controller instance the method initInstance() will be called.
+<br />
+<pre class="brush: java">
+@Singleton
+public class FXMLLoaderSingleton {
+
+    private @Inject @CDILogger Logger logger;
+    private @Inject Instance&lt;CDIJavaFxBaseController&gt; instance;
+
+    private final ClassLoader cachingClassLoader = new FXClassLoader(FXMLLoader.getDefaultClassLoader());
+    private final Map&lt;Class, FXMLLoader&gt; class2LoaderMap = new HashMap&lt;Class, FXMLLoader&gt;();
+
+    public FXMLLoader getFXMLLoader(Class clazz) {
+        final Map&lt;Class, FXMLLoader&gt; loaderMap = class2LoaderMap;
+        final String name = clazz.getName();
+        if (loaderMap.containsKey(clazz)) {
+            if (logger.isDebugEnabled()) {
+                logger.debug(&quot;fx loader fuer diese klasse schon in der map &quot; + name);
+            }
+        } else {
+            final String fxmlFileName = clazz.getSimpleName() + &quot;.fxml&quot;;
+            if (logger.isDebugEnabled()) {
+                logger.debug(&quot;fxmlFileName -&gt; &quot; + fxmlFileName);
+            }
+            final URL resource = clazz.getResource(fxmlFileName);
+//            FXMLLoader loader = new CDIFXMLLoader(resource);
+            FXMLLoader loader = new FXMLLoader(resource);
+            loader.setClassLoader(cachingClassLoader);
+            loader.setControllerFactory(new Callback&lt;Class&lt;?&gt;, Object&gt;() {
+                @Override
+                public Object call(Class&lt;?&gt; param) {
+                    final Class&lt;JavaFXBaseController&gt; p = (Class&lt;JavaFXBaseController&gt;) param;
+                    final JavaFXBaseController controller = instance.select(p).get();
+                    <b>controller.initInstance(); //trigger async call</b>
+                    return controller;
+                }
+            });
+            try {
+                final Class&lt;?&gt; aClass = Class.forName(clazz.getName() + &quot;Controller&quot;);
+                final CDIJavaFxBaseController call = (CDIJavaFxBaseController) loader.getControllerFactory().call(aClass);
+                loader.setController(call);
+            } catch (ClassNotFoundException e) {
+                logger.error(e);
+            }
+            loaderMap.put(clazz, loader);
+        }
+        return loaderMap.get(clazz);
+    }
+
+    private FXMLLoaderSingleton() {
+    }
+}
+</pre>
+<br/>
+The method <b>initInstance()</b> will trigger the init-process. Inside the method the task will be called async.
+The task itself will wait until the CDi and JavaFX init will be ready. After this the method  initBusinessLogic will be called.
+This means, thet the developer only will have to implement the method <b>initBusinessLogic</b> and he will be sure that all init stuff is done.
+<br/>
+Happy coding ;-)
+
+<br />
+<pre class="brush: java">
+public abstract class JavaFXBaseController implements CDIJavaFxBaseController {
+
+    public static final String DONE = "done";
+
+    private boolean mockModusActive = false;
+    public boolean isMockModusActive() {
+        return mockModusActive;
+    }
+    public void setMockModusActive(boolean mockModusActive) {
+        this.mockModusActive = mockModusActive;
+    }
+
+    public abstract void cleanUp();
+
+    public abstract void setI18n();
+
+    private @Inject @CDILogger Logger logger;
+
+    private Boolean initCompleteCDI = false;
+    private Boolean initCompleteFX = false;
+
+    public CompletableFuture&lt;String&gt; supplyAsync;
+
+    @Override
+    public final void initInstance(){
+       final CachedThreadPoolSingleton instance = CachedThreadPoolSingleton.getInstance();
+       supplyAsync = CompletableFuture.supplyAsync(task, instance.cachedThreadPool);
+       if (logger.isDebugEnabled()) supplyAsync.thenAccept(logger::debug);  //logger
+    }
+
+    public final Supplier&lt;String&gt; task = ()-> {
+        //        Warten bis alle true
+        while(! (initCompleteCDI && initCompleteFX) ){
+        try {
+        //evtl loggen
+        if (logger.isDebugEnabled()) {
+        logger.debug("initCompleteCDI = " + initCompleteCDI);
+        logger.debug("initCompleteFX = " + initCompleteFX);
+        logger.debug("getClass().getName() = " + getClass().getName());
+        }
+        TimeUnit.MILLISECONDS.sleep(1);
+        } catch (InterruptedException e) {
+        e.printStackTrace();
+        return e.toString();
+        }
+        }
+
+        if (logger.isInfoEnabled()) {
+        logger.info("initBusinessLogic() => called now");
+        }
+        final boolean fxApplicationThread = Platform.isFxApplicationThread();
+        if ( ! fxApplicationThread){
+        Platform.runLater(this::initBusinessLogic);
+        } else {
+        initBusinessLogic();
+        }
+
+
+        if (logger.isInfoEnabled()) {
+        logger.info("initBusinessLogic() => done now");
+        }
+        return DONE;
+        };
+
+        @PostConstruct
+        public final void postconstruct(){
+        if (logger.isDebugEnabled()) {
+        logger.debug("PostConstruct mockModusActive == " + mockModusActive);
+        }
+        cdiPostConstruct();
+        initCompleteCDI = true;
+        if (logger.isDebugEnabled()) {
+        logger.debug("postconstruct ready " + getClass().getName());
+        }
+        }
+
+        public abstract void cdiPostConstruct();
+
+        @Override
+        public final void initialize(URL url, ResourceBundle resourceBundle) {
+        if (logger.isDebugEnabled()) {
+        logger.debug("initialize mockModusActive== " + mockModusActive);
+        }
+        initializeFX(url, resourceBundle);
+        initCompleteFX = true;
+        if (logger.isDebugEnabled()) {
+        logger.debug("initialize ready " + getClass().getName());
+        }
+        }
+
+
+        protected abstract void initializeFX(URL url, ResourceBundle resourceBundle);
+        /**
+        * wird nach der init von CDI und JavaFX aufgerufen,
+        * egal in welcher Reihenfolge die init durchlaufen wird.
+        *
+        * ein blockierender method call
+        *
+        */
+        public abstract void initBusinessLogic();
+        }
+</pre>
+
+
+
+
+
