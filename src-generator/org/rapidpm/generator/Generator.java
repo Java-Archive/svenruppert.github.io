@@ -16,7 +16,6 @@ import java.util.*;
  */
 public class Generator {
 
-
   public static final String BLOGARTICLE = "blogarticle";
   public static final String PROPERTIES = "properties";
   private static final int NUMBER_OF_BLOGS_ON_FIRST_PAGE = 3;
@@ -46,6 +45,11 @@ public class Generator {
 
     Collections.sort(archiveElements, (o1, o2) -> o2.compareTo(o1));
     archiveElements.forEach(System.out::println);
+
+    String archiveStr = "";
+    for (final String archiveElement : archiveElements) {
+      archiveStr = archiveStr + "<li><a href=\"/" + archiveElement.replace("-", "/") + "\">" + archiveElement + "</a></li>"+"\n";
+    }
 
     String index_main = readFile("data/index_main.part", StandardCharsets.UTF_8);
     String index1 = readFile("data/index1.part", StandardCharsets.UTF_8);
@@ -93,20 +97,27 @@ public class Generator {
                               System.out.println(tags);
                               System.out.println(titel);
 
-                              String blogarticleStr = readFile(blogarticle.getPath(), StandardCharsets.UTF_8);
+                              String htmlFileName = titel.toLowerCase().replace(" ", "-") + ".html";
+                              String blogLink = "/" + year.getName() + "/" + month.getName() + "/" + day.getName() + "/" + blogFileDir.getName() + "/" + htmlFileName;
+                              String blogDate = year.getName() + "-" + month.getName() + "-" + day.getName();
+                              String authorLink = "/team/" + author.toLowerCase().replace(" ", "-");
+
+                              String header = "<div class=\"blog-post\">" + "\n"
+                                  + "<h2 class=\"blog-post-title\"><a href=" + blogLink + ">" + titel + "</a></h2>" + "\n"
+                                  + "<p class=\"blog-post-meta\">" + blogDate + " from <a href=\"" + authorLink + "/\">" + author + "</a></p>" + "\n";
+
+                              String blogarticleStr = header + readFile(blogarticle.getPath(), StandardCharsets.UTF_8) + "\n" + "</div>" ;
 
                               blogarticlesPerDay.add(blogarticleStr); //ab ins daily
                               blogarticlesPerMonth.add(blogarticleStr); // ab ins archiv
                               lastNBlogArticles.add(blogarticleStr); //ab in Queue f FrontSeite
 
-                              FileWriter fw = new FileWriter(new File(blogFileDir, elementName.replace(PROPERTIES, "html")));
+                              FileWriter fw = new FileWriter(new File(blogFileDir, htmlFileName));
 
                               fw.write(index1);
                               fw.write(blogarticleStr);
                               fw.write(index2);
-                              for (final String archiveElement : archiveElements) {
-                                fw.write("<li><a href=\"/entries/" + archiveElement.replace("-", "/") + "\">" + archiveElement + "</a></li>");
-                              }
+                              fw.write(archiveStr);
                               fw.write(index3);
 
                               fw.flush();
@@ -123,9 +134,7 @@ public class Generator {
                         fw.write(blogarticleStr + "\n");
                       }
                       fw.write(index2);
-                      for (final String archiveElement : archiveElements) {
-                        fw.write("<li><a href=\"/entries/" + archiveElement.replace("-", "/") + "\">" + archiveElement + "</a></li>");
-                      }
+                      fw.write(archiveStr);
                       fw.write(index3);
 
                       fw.flush();
@@ -142,9 +151,7 @@ public class Generator {
                   fw.write(blogarticleStr + "\n");
                 }
                 fw.write(index2);
-                for (final String archiveElement : archiveElements) {
-                  fw.write("<li><a href=\"/entries/" + archiveElement.replace("-", "/") + "\">" + archiveElement + "</a></li>");
-                }
+                fw.write(archiveStr);
                 fw.write(index3);
 
                 fw.flush();
@@ -167,7 +174,7 @@ public class Generator {
     }
     fw.write(index2);
     for (final String archiveElement : archiveElements) {
-      fw.write("<li><a href=\"/entries/" + archiveElement.replace("-", "/") + "\">" + archiveElement + "</a></li>");
+      fw.write("<li><a href=\"/" + archiveElement.replace("-", "/") + "\">" + archiveElement + "</a></li>");
     }
     fw.write(index3);
 
