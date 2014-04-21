@@ -24,14 +24,14 @@ public class Generator {
   public static void main(String[] args) throws IOException {
     LimitedQueue<String> lastNBlogArticles = new LimitedQueue<>(NUMBER_OF_BLOGS_ON_FIRST_PAGE);
 
-    File entriesDir = new File("entries");
+    File entriesDir = new File(".");
     File[] years = entriesDir.listFiles();
 
 //    Archive Liste erzeugen
     List<String> archiveElements = new ArrayList<>();
     if (years != null) {
       for (final File year : years) {
-        if (year.isDirectory()) {
+        if (year.isDirectory() && year.getName().startsWith("20")) {
           File[] months = year.listFiles();
           if (months != null) {
             for (final File month : months) {
@@ -47,6 +47,7 @@ public class Generator {
     Collections.sort(archiveElements, (o1, o2) -> o2.compareTo(o1));
     archiveElements.forEach(System.out::println);
 
+    String index_main = readFile("data/index_main.part", StandardCharsets.UTF_8);
     String index1 = readFile("data/index1.part", StandardCharsets.UTF_8);
     String index2 = readFile("data/index2.part", StandardCharsets.UTF_8);
     String index3 = readFile("data/index3.part", StandardCharsets.UTF_8);
@@ -54,7 +55,7 @@ public class Generator {
     //lese alle BlogArtikel
     if (years != null) {
       for (final File year : years) {
-        if (year.isDirectory()) {
+        if (year.isDirectory() && year.getName().startsWith("20")) {
           File[] months = year.listFiles();
           if (months != null) {
             for (final File month : months) {
@@ -160,7 +161,7 @@ public class Generator {
 
     Collections.reverse(lastNBlogArticles);
 
-    fw.write(index1);
+    fw.write(index_main);
     for (final String blogarticleStr : lastNBlogArticles) {
       fw.write(blogarticleStr + "\n");
     }
