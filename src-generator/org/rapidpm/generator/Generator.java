@@ -106,7 +106,7 @@ public class Generator {
 
 
 
-                              String blogLink = "/" + year.getName() + "/" + month.getName() + "/" + day.getName() + "/" + blogFileDir.getName() + "/" + htmlFileName;
+                              String blogLink = "/" + year.getName() + "/" + month.getName() + "/" + day.getName() + "/" + htmlFileName;
                               String blogDate = year.getName() + "-" + month.getName() + "-" + day.getName();
                               String authorLink = "/team/" + author.toLowerCase().replace(" ", "-");
 
@@ -120,7 +120,7 @@ public class Generator {
                               blogarticlesPerMonth.add(blogarticleStr); // ab ins archiv
                               lastNBlogArticles.add(blogarticleStr); //ab in Queue f FrontSeite
 
-                              FileWriter fw = new FileWriter(new File(blogFileDir, htmlFileName));
+                              FileWriter fw = new FileWriter(new File(day, htmlFileName));
 
                               fw.write(index1);
                               fw.write(blogarticleStr);
