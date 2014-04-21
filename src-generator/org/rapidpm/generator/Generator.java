@@ -97,7 +97,15 @@ public class Generator {
                               System.out.println(tags);
                               System.out.println(titel);
 
-                              String htmlFileName = titel.toLowerCase().replace(" ", "-") + ".html";
+                              String htmlFileName = titel.toLowerCase().replace(" ", "-");
+                              if(htmlFileName.length() > 38){
+                                htmlFileName = htmlFileName.substring(0,38);
+                              } else{
+                              }
+                              htmlFileName = htmlFileName + ".html";
+
+
+
                               String blogLink = "/" + year.getName() + "/" + month.getName() + "/" + day.getName() + "/" + blogFileDir.getName() + "/" + htmlFileName;
                               String blogDate = year.getName() + "-" + month.getName() + "-" + day.getName();
                               String authorLink = "/team/" + author.toLowerCase().replace(" ", "-");
