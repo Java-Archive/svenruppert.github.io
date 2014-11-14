@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title>RapidPM</title>
+    <category label="java"/>
+    <category label="cdi"/>
+    <category label="javafx"/>
+    <updated>2014-11-14T22:45:26.075+01:00</updated>
+    <id>http://rapidpm.github.io</id>
+    <author>
+        <name>Sven Ruppert</name>
+    </author>
+    <entry>
+        <title>Und so beginnt alles</title>
+        <category label="java"/>
+        <category label="javafx"/>
+        <category label="cdi"/>
+        <published>2014-11-14T00:00:00+01:00</published>
+        <author>
+            <name>Sven Ruppert</name>
+        </author>
+        <content type="html">&lt;div class=&quot;blog-post&quot;&gt;
+&lt;h2 class=&quot;blog-post-title&quot;&gt;&lt;a href=/2014/11/14/und-so-beginnt-alles.html&gt;Und so beginnt alles&lt;/a&gt;&lt;/h2&gt;
+&lt;p class=&quot;blog-post-meta&quot;&gt;2014-11-14 from &lt;a href=&quot;/team/sven-ruppert/&quot;&gt;Sven Ruppert&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Und nun ist es soweit... Ich starte hier einen deutschen Blog in dem ich&#xD;
+    alles mögliche aus dem Entwickleralltag poste.&lt;/p&gt;&#xD;
+&lt;blockquote&gt;&#xD;
+    &lt;p&gt;Auf englisch sind die längeren Artikel zu finden unter &lt;strong&gt;www.rapidpm.org&lt;/strong&gt;&lt;/p&gt;&#xD;
+&lt;/blockquote&gt;&#xD;
+&lt;p&gt;dann mal los....&lt;/p&gt;&#xD;
+
+&lt;/div&gt;</content>
+        <summary>Das ist der Inhalt der in Kurzform angezeigt werden soll</summary>
+    </entry>
+</feed>
