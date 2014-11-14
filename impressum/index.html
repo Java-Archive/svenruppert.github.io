@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
+
+    <title>RapidPM - Blog</title>
+
+    <!-- Bootstrap-CSS -->
+    <link href="http://rapidpm.github.io/site/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Besondere Stile für diese Vorlage -->
+    <link href="http://rapidpm.github.io/site/css/blog.css" rel="stylesheet">
+
+    <!-- Nur für Testzwecke. Kopiere diese Zeile nicht in echte Projekte! -->
+    <!--[if lt IE 9]>
+    <script src="http://rapidpm.github.io/site/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+    <!-- Unterstützung für Media Queries und HTML5-Elemente im Internet Explorer über HTML5 shim und Respond.js -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+
+    <!-- Include required JS files -->
+    <script type="text/javascript" src="http://rapidpm.github.io/site/syntax/shCore.js"></script>
+    <script type="text/javascript" src="http://rapidpm.github.io/site/syntax/shBrushJava.js"></script>
+    <script type="text/javascript" src="http://rapidpm.github.io/site/syntax/shBrushJavaFX.js"></script>
+    <script type="text/javascript" src="http://rapidpm.github.io/site/syntax/shBrushSql.js"></script>
+    <script type="text/javascript" src="http://rapidpm.github.io/site/syntax/shBrushJScript.js"></script>
+    <script type="text/javascript" src="http://rapidpm.github.io/site/syntax/shBrushXml.js"></script>
+
+    <!-- Include *at least* the core style and default theme -->
+    <link href="http://rapidpm.github.io/site/syntax/shCore.css" rel="stylesheet" type="text/css" />
+    <link href="http://rapidpm.github.io/site/syntax/shThemeDefault.css" rel="stylesheet" type="text/css" />
+
+    <!-- Custom styles for this template -->
+    <link href="http://rapidpm.github.io/site/css/carousel.css" rel="stylesheet">
+
+    <!-- Google Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-35462441-1', 'auto');
+    ga('send', 'pageview');
+
+    </script>
+    <!-- End Google Analytics -->
+</head>
+
+<body>
+
+<!-- NAVBAR
+================================================== -->
+<div class="navbar-wrapper">
+    <div class="container">
+
+        <div class="navbar navbar-inverse navbar-static-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="http://www.rapidpm.org">RapidPM</a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="/conferences/index.html">Conferences/Talks</a></li>
+                        <li><a href="/publications/index.html">Publications</a></li>
+                        <li><a href="/license/index.html">License</a></li>
+                        <li><a href="/releases/index.html">Releases</a></li>
+                        <li><a href="/contact/index.html">Contact</a></li>
+                        <li><a href="/impressum/index.html">Impressum</a></li>
+                        <!--
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Team<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Sven Ruppert</a></li>
+                                <li><a href="#">Marco Ebbinghaus</a></li>
+                                <li><a href="#">Alexander Bischof</a></li>
+                                <li class="divider"></li>
+                                <li class="dropdown-header">Nav header</li>
+                                <li><a href="#">Separated link</a></li>
+                                <li><a href="#">One more separated link</a></li>
+                            </ul>
+                        </li>
+                        -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- Carousel
+================================================== -->
+<div id="myCarousel" class="carousel slide" data-ride="carousel">
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+        <li data-target="#myCarousel" data-slide-to="2"></li>
+        <li data-target="#myCarousel" data-slide-to="3"></li>
+        <!--<li data-target="#myCarousel" data-slide-to="4"></li>
+        <li data-target="#myCarousel" data-slide-to="5"></li>
+        -->
+    </ol>
+    <div class="carousel-inner">
+        <div class="item active">
+            <!--<img data-src="holder.js/900x500/auto/#777:#7a7a7a/">-->
+            <img data-src="holder.js/900x500/auto/#666:#6a6a6a/" >
+            <div class="container">
+                <div class="carousel-caption">
+                    <h1>New Version 2.0.1</h1>
+                    <p>the new version is available at maven central </br>
+                    we added a new module for iot with tinkerforge.</p>
+                    <p><a class="btn btn-lg btn-primary" href="http://search.maven.org/#search%7Cga%7C1%7Crapidpm"
+                    role="button">jump to maven central</a></p>
+                    <p><br/><br/><br/><br/></p>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <img data-src="holder.js/900x500/auto/#666:#6a6a6a/" >
+            <div class="container">
+                <div class="carousel-caption">
+                    <img src="/team/sven-ruppert/images/slider750x374.jpg ">
+                    <p>@SvenRuppert (Core Java / CDI / JavaFX / Reflection)</p>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+                    <img data-src="holder.js/900x500/auto/#666:#6a6a6a/" >
+                    <div class="container">
+                        <div class="carousel-caption">
+                            <img src="/team/alex-bischof/images/bildalexquer.JPG">
+                            <p>@A_Bischof (Core Java / CDI / JavaEE )</p>
+                        </div>
+                    </div>
+                </div>
+        <div class="item">
+            <img data-src="holder.js/auto/#666:#6a6a6a/text:" >
+            <div class="container">
+                <div class="carousel-caption">
+                    <h1>our git repository</h1>
+                    <p>RapidPM could be found under <br/>
+                    <code><a xlink:href="https://bitbucket.org/rapidpm/modules" target="_blank">bitbucket.org/rapidpm/modules</a></code>
+                    </p>
+                    <p><br/><br/><br/><br/></p>
+                </div>
+            </div>
+        </div>
+                <!--
+
+        <div class="item">
+            <img data-src="holder.js/900x500/auto/#666:#6a6a6a/text:Second slide" >
+            <div class="container">
+                <div class="carousel-caption">
+                    <h1>Another example headline.</h1>
+                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+                    <p><a class="btn btn-lg btn-primary" href="#" role="button">Learn more</a></p>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <img data-src="holder.js/900x500/auto/#555:#5a5a5a/text:Third slide" >
+            <div class="container">
+                <div class="carousel-caption">
+                    <h1>One more for good measure.</h1>
+                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+                    <p><a class="btn btn-lg btn-primary" href="#" role="button">Browse gallery</a></p>
+                </div>
+            </div>
+        </div>
+        -->
+    </div>
+    <!--<a class="left carousel-control" href="#myCarousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>-->
+    <!--<a class="right carousel-control" href="#myCarousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>-->
+</div><!-- /.carousel -->
+
+
+
+
+
+<div class="container">
+
+    <div class="blog-header">
+        <h1 class="blog-title">The RapidPM Blog</h1>
+        <p class="lead blog-description">We are speaking Java, because it is a great pleasure for us.</p>
+    </div>
+
+    <div class="row">
+
+        <div class="col-sm-8 blog-main">
+<h1>Impressum</h1>
+<h2>Angaben gemäß § 5 TMG:</h2>
+<p>Sven Ruppert<br/>
+    Hans-Kreis-Str<br/>
+    82049 Pullach
+</p>
+<h2>Kontakt:</h2>
+<table>
+    <tr>
+        <td>Telefon:</td>
+        <td>491723493700</td>
+    </tr>
+    <tr>
+        <td>E-Mail:</td>
+        <td>sven.ruppert@gmail.com</td>
+    </tr>
+</table>
+<p> </p>
+<p>Quelle: <em><a rel="nofollow"
+                  href="http://www.e-recht24.de/impressum-generator.html">http://www.e-recht24.de</a></em></p>
+
+
+<h1>Haftungsausschluss (Disclaimer)</h1>
+<p><strong>Haftung für Inhalte</strong></p> <p>Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf
+    diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch
+    nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu
+    forschen, die auf eine rechtswidrige Tätigkeit hinweisen. Verpflichtungen zur Entfernung oder Sperrung der Nutzung
+    von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt. Eine diesbezügliche Haftung ist jedoch
+    erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich. Bei Bekanntwerden von entsprechenden
+    Rechtsverletzungen werden wir diese Inhalte umgehend entfernen.</p> <p><strong>Haftung für Links</strong></p> <p>
+    Unser Angebot enthält Links zu externen Webseiten Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb
+    können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets
+    der jeweilige Anbieter oder Betreiber der Seiten verantwortlich. Die verlinkten Seiten wurden zum Zeitpunkt der
+    Verlinkung auf mögliche Rechtsverstöße überprüft. Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung nicht
+    erkennbar. Eine permanente inhaltliche Kontrolle der verlinkten Seiten ist jedoch ohne konkrete Anhaltspunkte einer
+    Rechtsverletzung nicht zumutbar. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Links umgehend
+    entfernen.</p> <p><strong>Urheberrecht</strong></p> <p>Die durch die Seitenbetreiber erstellten Inhalte und Werke
+    auf diesen Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede
+    Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen
+    Autors bzw. Erstellers. Downloads und Kopien dieser Seite sind nur für den privaten, nicht kommerziellen Gebrauch
+    gestattet. Soweit die Inhalte auf dieser Seite nicht vom Betreiber erstellt wurden, werden die Urheberrechte Dritter
+    beachtet. Insbesondere werden Inhalte Dritter als solche gekennzeichnet. Sollten Sie trotzdem auf eine
+    Urheberrechtsverletzung aufmerksam werden, bitten wir um einen entsprechenden Hinweis. Bei Bekanntwerden von
+    Rechtsverletzungen werden wir derartige Inhalte umgehend entfernen.</p><p> </p>
+<p><em>Quellen: <a rel="nofollow" href="http://www.e-recht24.de/muster-disclaimer.html"
+                   target="_blank">eRecht24</a></em></p>
+
+
+
+<br/>
+
+<h1>Datenschutzerklärung:</h1>
+<p><strong>Datenschutz</strong></p> <p>Die Nutzung unserer Webseite ist in der Regel ohne Angabe personenbezogener Daten
+    möglich. Soweit auf unseren Seiten personenbezogene Daten (beispielsweise Name, Anschrift oder eMail-Adressen)
+    erhoben werden, erfolgt dies, soweit möglich, stets auf freiwilliger Basis. Diese Daten werden ohne Ihre
+    ausdrückliche Zustimmung nicht an Dritte weitergegeben. </p> <p>Wir weisen darauf hin, dass die Datenübertragung im
+    Internet (z.B. bei der Kommunikation per E-Mail) Sicherheitslücken aufweisen kann. Ein lückenloser Schutz der Daten
+    vor dem Zugriff durch Dritte ist nicht möglich. </p> <p>Der Nutzung von im Rahmen der Impressumspflicht
+    veröffentlichten Kontaktdaten durch Dritte zur Übersendung von nicht ausdrücklich angeforderter Werbung und
+    Informationsmaterialien wird hiermit ausdrücklich widersprochen. Die Betreiber der Seiten behalten sich ausdrücklich
+    rechtliche Schritte im Falle der unverlangten Zusendung von Werbeinformationen, etwa durch Spam-Mails, vor.</p><p>
+     </p>
+<p><strong>Datenschutzerklärung für die Nutzung von Facebook-Plugins (Like-Button)</strong></p> <p>Auf unseren Seiten
+    sind Plugins des sozialen Netzwerks Facebook (Facebook Inc., 1601 Willow Road, Menlo Park, California, 94025, USA)
+    integriert. Die Facebook-Plugins erkennen Sie an dem Facebook-Logo oder dem "Like-Button" ("Gefällt mir") auf
+    unserer Seite. Eine Übersicht über die Facebook-Plugins finden Sie hier: <a
+            href="http://developers.facebook.com/docs/plugins/" target="_blank">http://developers.facebook.com/docs/plugins/</a>.<br/>
+    Wenn Sie unsere Seiten besuchen, wird über das Plugin eine direkte Verbindung zwischen Ihrem Browser und dem
+    Facebook-Server hergestellt. Facebook erhält dadurch die Information, dass Sie mit Ihrer IP-Adresse unsere Seite
+    besucht haben. Wenn Sie den Facebook "Like-Button" anklicken während Sie in Ihrem Facebook-Account eingeloggt sind,
+    können Sie die Inhalte unserer Seiten auf Ihrem Facebook-Profil verlinken. Dadurch kann Facebook den Besuch unserer
+    Seiten Ihrem Benutzerkonto zuordnen. Wir weisen darauf hin, dass wir als Anbieter der Seiten keine Kenntnis vom
+    Inhalt der übermittelten Daten sowie deren Nutzung durch Facebook erhalten. Weitere Informationen hierzu finden Sie
+    in der Datenschutzerklärung von facebook unter <a href="http://de-de.facebook.com/policy.php" target="_blank">
+        http://de-de.facebook.com/policy.php</a></p> <p>Wenn Sie nicht wünschen, dass Facebook den Besuch unserer Seiten
+    Ihrem Facebook-Nutzerkonto zuordnen kann, loggen Sie sich bitte aus Ihrem Facebook-Benutzerkonto aus.</p><p> </p>
+<p><strong>Datenschutzerklärung für die Nutzung von Google Analytics</strong></p> <p>Diese Website benutzt Google
+    Analytics, einen Webanalysedienst der Google Inc. ("Google"). Google Analytics verwendet sog. "Cookies",
+    Textdateien, die auf Ihrem Computer gespeichert werden und die eine Analyse der Benutzung der Website durch Sie
+    ermöglichen. Die durch den Cookie erzeugten Informationen über Ihre Benutzung dieser Website werden in der Regel an
+    einen Server von Google in den USA übertragen und dort gespeichert. Im Falle der Aktivierung der IP-Anonymisierung
+    auf dieser Webseite wird Ihre IP-Adresse von Google jedoch innerhalb von Mitgliedstaaten der Europäischen Union oder
+    in anderen Vertragsstaaten des Abkommens über den Europäischen Wirtschaftsraum zuvor gekürzt.</p> <p>Nur in
+    Ausnahmefällen wird die volle IP-Adresse an einen Server von Google in den USA übertragen und dort gekürzt. Im
+    Auftrag des Betreibers dieser Website wird Google diese Informationen benutzen, um Ihre Nutzung der Website
+    auszuwerten, um Reports über die Websiteaktivitäten zusammenzustellen und um weitere mit der Websitenutzung und der
+    Internetnutzung verbundene Dienstleistungen gegenüber dem Websitebetreiber zu erbringen. Die im Rahmen von Google
+    Analytics von Ihrem Browser übermittelte IP-Adresse wird nicht mit anderen Daten von Google zusammengeführt.</p> <p>
+    Sie können die Speicherung der Cookies durch eine entsprechende Einstellung Ihrer Browser-Software verhindern; wir
+    weisen Sie jedoch darauf hin, dass Sie in diesem Fall gegebenenfalls nicht sämtliche Funktionen dieser Website
+    vollumfänglich werden nutzen können. Sie können darüber hinaus die Erfassung der durch das Cookie erzeugten und auf
+    Ihre Nutzung der Website bezogenen Daten (inkl. Ihrer IP-Adresse) an Google sowie die Verarbeitung dieser Daten
+    durch Google verhindern, indem sie das unter dem folgenden Link verfügbare Browser-Plugin herunterladen und
+    installieren: <a
+        href="http://tools.google.com/dlpage/gaoptout?hl=de">http://tools.google.com/dlpage/gaoptout?hl=de</a>.<p> </p>
+<p><strong>Datenschutzerklärung für die Nutzung von Google Adsense</strong></p> <p>Diese Website benutzt Google AdSense,
+    einen Dienst zum Einbinden von Werbeanzeigen der Google Inc. ("Google"). Google AdSense verwendet sog. "Cookies",
+    Textdateien, die auf Ihrem Computer gespeichert werden und die eine Analyse der Benutzung der Website ermöglicht.
+    Google AdSense verwendet auch so genannte Web Beacons (unsichtbare Grafiken). Durch diese Web Beacons können
+    Informationen wie der Besucherverkehr auf diesen Seiten ausgewertet werden.</p> <p>Die durch Cookies und Web Beacons
+    erzeugten Informationen über die Benutzung dieser Website (einschließlich Ihrer IP-Adresse) und Auslieferung von
+    Werbeformaten werden an einen Server von Google in den USA übertragen und dort gespeichert. Diese Informationen
+    können von Google an Vertragspartner von Google weiter gegeben werden. Google wird Ihre IP-Adresse jedoch nicht mit
+    anderen von Ihnen gespeicherten Daten zusammenführen.</p> <p>Sie können die Installation der Cookies durch eine
+    entsprechende Einstellung Ihrer Browser Software verhindern; wir weisen Sie jedoch darauf hin, dass Sie in diesem
+    Fall gegebenenfalls nicht sämtliche Funktionen dieser Website voll umfänglich nutzen können. Durch die Nutzung
+    dieser Website erklären Sie sich mit der Bearbeitung der über Sie erhobenen Daten durch Google in der zuvor
+    beschriebenen Art und Weise und zu dem zuvor benannten Zweck einverstanden.</p><p> </p>
+<p><strong>Datenschutzerklärung für die Nutzung von Google +1</strong></p> <p><i>Erfassung und Weitergabe von
+    Informationen:</i><br/> Mithilfe der Google +1-Schaltfläche können Sie Informationen weltweit veröffentlichen. Über
+    die Google +1-Schaltfläche erhalten Sie und andere Nutzer personalisierte Inhalte von Google und unseren Partnern.
+    Google speichert sowohl die Information, dass Sie für einen Inhalt +1 gegeben haben, als auch Informationen über die
+    Seite, die Sie beim Klicken auf +1 angesehen haben. Ihre +1 können als Hinweise zusammen mit Ihrem Profilnamen und
+    Ihrem Foto in Google-Diensten, wie etwa in Suchergebnissen oder in Ihrem Google-Profil, oder an anderen Stellen auf
+    Websites und Anzeigen im Internet eingeblendet werden.<br/> Google zeichnet Informationen über Ihre +1-Aktivitäten
+    auf, um die Google-Dienste für Sie und andere zu verbessern. Um die Google +1-Schaltfläche verwenden zu können,
+    benötigen Sie ein weltweit sichtbares, öffentliches Google-Profil, das zumindest den für das Profil gewählten Namen
+    enthalten muss. Dieser Name wird in allen Google-Diensten verwendet. In manchen Fällen kann dieser Name auch einen
+    anderen Namen ersetzen, den Sie beim Teilen von Inhalten über Ihr Google-Konto verwendet haben. Die Identität Ihres
+    Google-Profils kann Nutzern angezeigt werden, die Ihre E-Mail-Adresse kennen oder über andere identifizierende
+    Informationen von Ihnen verfügen.<br/> <br/> <i>Verwendung der erfassten Informationen:</i><br/> Neben den oben
+    erläuterten Verwendungszwecken werden die von Ihnen bereitgestellten Informationen gemäß den geltenden
+    Google-Datenschutzbestimmungen genutzt. Google veröffentlicht möglicherweise zusammengefasste Statistiken über die
+    +1-Aktivitäten der Nutzer bzw. gibt diese an Nutzer und Partner weiter, wie etwa Publisher, Inserenten oder
+    verbundene Websites. </p><p> </p>
+<p><strong>Datenschutzerklärung für die Nutzung von Twitter</strong></p> <p>Auf unseren Seiten sind Funktionen des
+    Dienstes Twitter eingebunden. Diese Funktionen werden angeboten durch die Twitter Inc., Twitter, Inc. 1355 Market
+    St, Suite 900, San Francisco, CA 94103, USA. Durch das Benutzen von Twitter und der Funktion "Re-Tweet" werden die
+    von Ihnen besuchten Webseiten mit Ihrem Twitter-Account verknüpft und anderen Nutzern bekannt gegeben. Dabei werden
+    auch Daten an Twitter übertragen.</p> <p>Wir weisen darauf hin, dass wir als Anbieter der Seiten keine Kenntnis vom
+    Inhalt der übermittelten Daten sowie deren Nutzung durch Twitter erhalten. Weitere Informationen hierzu finden Sie
+    in der Datenschutzerklärung von Twitter unter <a href="http://twitter.com/privacy" target="_blank">http://twitter.com/privacy</a>.
+</p> <p>Ihre Datenschutzeinstellungen bei Twitter können Sie in den Konto-Einstellungen unter <a
+        href="http://twitter.com/account/settings" target="_blank">http://twitter.com/account/settings</a> ändern.</p>
+<p> </p>
+<p><em>Quellenangaben: <a rel="nofollow" href="http://www.e-recht24.de/muster-datenschutzerklaerung.html"
+                          target="_blank">eRecht24</a>, <a rel="nofollow"
+                                                           href="http://www.e-recht24.de/artikel/datenschutz/6590-facebook-like-button-datenschutz-disclaimer.html"
+                                                           target="_blank">Facebook Datenschutzerklärung</a>, <a
+        rel="nofollow" href="http://www.google.com/intl/de/analytics/learn/privacy.html" target="_blank">Datenschutzerklärung
+    für Google Analytics</a>, <a rel="nofollow"
+                                 href="http://www.e-recht24.de/artikel/datenschutz/6635-datenschutz-rechtliche-risiken-bei-der-nutzung-von-google-analytics-und-googleadsense.html"
+                                 target="_blank">Google Adsense Haftungsausschluss</a>, <a rel="nofollow"
+                                                                                           href="http://www.google.com/intl/de/+/policy/+1button.html"
+                                                                                           target="_blank">Google +1
+    Datenschutzerklärung</a>, <a rel="nofollow" href="http://twitter.com/privacy" target="_blank">Datenschutzerklärung
+    für Twitter</a></em></p>            <!--
+            <ul class="pager">
+                <li><a href="#">Vorherige</a></li>
+                <li><a href="#">Nächste</a></li>
+            </ul>
+            -->
+        </div><!-- /.blog-main -->
+
+        <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+
+            <div class="sidebar-module sidebar-module-inset">
+                <h4>About Us</h4>
+                <p>We are a group of developers, speaking Java and proud to be nerds ;-)
+                </p>
+            </div>
+            <div class="sidebar-module">
+                <h4>Sponsoring</h4>
+                    <ol class="list-unstyled">
+                        <li><a href="http://www.codecentric.de">codecentric AG</a></li>
+                        <li><a href="http://www.intellij.com">JetBrains</a></li>
+                        <li><a href="http://zeroturnaround.com/">zeroturnaround</a></li>
+                        <li><a href="https://www.atlassian.com/">Atlassian</a></li>
+                    </ol>
+            </div>
+            <div class="sidebar-module">
+                <h4>We are at </h4>
+                    <ol class="list-unstyled">
+                        <li><a href="https://github.com/RapidPM">GitHub</a></li>
+                        <li><a href="https://twitter.com/SvenRuppert">Twitter - Sven Ruppert</a></li>
+                        <li><a href="https://plus.google.com/u/0/+SvenRuppert/">GooglePlus - Sven Ruppert</a></li>
+                        <li><a href="https://twitter.com/A_Bischof">Twitter - Alexander Bischof</a></li>
+                        <li><a href="https://plus.google.com/u/0/100135686516251171415/">GooglePlus - Alexander Bischof</a></li>
+                    </ol>
+            </div>
+            <div class="sidebar-module">
+                <h4>Archives</h4>
+                <ol class="list-unstyled">
+<li><a href="/2014/11">2014-11</a></li><li><a href="/2014/10">2014-10</a></li><li><a href="/2014/06">2014-06</a></li><li><a href="/2014/05">2014-05</a></li><li><a href="/2014/04">2014-04</a></li><li><a href="/2014/03">2014-03</a></li><li><a href="/2014/02">2014-02</a></li><li><a href="/2014/01">2014-01</a></li><li><a href="/2013/12">2013-12</a></li><li><a href="/2013/11">2013-11</a></li><li><a href="/2013/10">2013-10</a></li><li><a href="/2013/09">2013-09</a></li><li><a href="/2013/08">2013-08</a></li><li><a href="/2013/07">2013-07</a></li><li><a href="/2013/06">2013-06</a></li><li><a href="/2013/05">2013-05</a></li>                </ol>
+            </div>
+
+        </div><!-- /.blog-sidebar -->
+
+    </div><!-- /.row -->
+
+</div><!-- /.container -->
+
+<div class="blog-footer">
+    <p>
+        <a href="#">back to the top</a>
+    </p>
+</div>
+
+
+<!-- Bootstrap-JavaScript
+================================================== -->
+<!-- Am Ende des Dokuments platziert, damit Seiten schneller laden -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="http://rapidpm.github.io/site/js/bootstrap.min.js"></script>
+<script src="http://rapidpm.github.io/site/js/docs.min.js"></script>
+<!-- Finally, to actually run the highlighter, you need to include this JS on your page -->
+<script type="text/javascript">
+    SyntaxHighlighter.all()
+</script>
+</body>
+</html>
