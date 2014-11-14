@@ -9,8 +9,13 @@
         <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
 
             <div class="sidebar-module sidebar-module-inset">
-                <h4>About Us</h4>
-                <p>We are a group of developers, speaking Java and proud to be nerds ;-)
+                <h4>About Me</h4>
+                <p>Sven Ruppert has been speaking Java since 1996.
+                He is a Principal IT Consultant for codecentric in Munich.
+                In his free time he regularly contributes to German IT periodicals,
+                including Java Magazin, Eclipse Magazin, and Entwickler Magazin,
+                as well as tech portals such as JAXenter.de (http://jaxenter.de/Sven-Ruppert-168244).
+
                 </p>
             </div>
             <div class="sidebar-module">
@@ -25,11 +30,9 @@
             <div class="sidebar-module">
                 <h4>We are at </h4>
                     <ol class="list-unstyled">
-                        <li><a href="https://github.com/RapidPM">GitHub</a></li>
+                        <li><a href="https://github.com/svenruppert">GitHub - Sven Ruppert</a></li>
                         <li><a href="https://twitter.com/SvenRuppert">Twitter - Sven Ruppert</a></li>
                         <li><a href="https://plus.google.com/u/0/+SvenRuppert/">GooglePlus - Sven Ruppert</a></li>
-                        <li><a href="https://twitter.com/A_Bischof">Twitter - Alexander Bischof</a></li>
-                        <li><a href="https://plus.google.com/u/0/100135686516251171415/">GooglePlus - Alexander Bischof</a></li>
                     </ol>
             </div>
             <div class="sidebar-module">
