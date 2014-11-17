@@ -2,9 +2,14 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title>RapidPM</title>
     <category label="java"/>
+    <category label="JSR-330"/>
+    <category label="DI"/>
     <category label="cdi"/>
     <category label="javafx"/>
-    <updated>2014-11-14T23:02:21.924+01:00</updated>
+    <category label="tinkerforge"/>
+    <category label="iot"/>
+    <category label="Android"/>
+    <updated>2014-11-17T08:57:13.625+01:00</updated>
     <id>http://rapidpm.github.io</id>
     <author>
         <name>Sven Ruppert</name>
@@ -27,6 +32,66 @@
     &lt;p&gt;Auf englisch sind die längeren Artikel zu finden unter &lt;strong&gt;www.rapidpm.org&lt;/strong&gt;&lt;/p&gt;&#xD;
 &lt;/blockquote&gt;&#xD;
 &lt;p&gt;dann mal los....&lt;/p&gt;&#xD;
+
+&lt;/div&gt;</content>
+        <summary>Das ist der Inhalt der in Kurzform angezeigt werden soll</summary>
+    </entry>
+    <entry>
+        <title>Und wieder auf zu JUG´s</title>
+        <category label="java"/>
+        <category label="javafx"/>
+        <category label="iot"/>
+        <category label="tinkerforge"/>
+        <published>2014-11-16T00:00:00+01:00</published>
+        <author>
+            <name>Sven Ruppert</name>
+        </author>
+        <content type="html">&lt;div class=&quot;blog-post&quot;&gt;
+&lt;h2 class=&quot;blog-post-title&quot;&gt;&lt;a href=/2014/11/16/und-wieder-auf-zu-jugs.html&gt;Und wieder auf zu JUG´s&lt;/a&gt;&lt;/h2&gt;
+&lt;p class=&quot;blog-post-meta&quot;&gt;2014-11-16 from &lt;a href=&quot;/team/sven-ruppert/&quot;&gt;Sven Ruppert&lt;/a&gt;&lt;/p&gt;
+&#xD;
+&lt;p&gt;Und wieder bin auf dem Weg zu verschiedenen JUG´s.&#xD;
+    In diesem Fall einmal zur JUG Berlin Brandenburg und dann am Di zu der JUG Hamburg.&lt;/p&gt;&#xD;
+&#xD;
+&lt;p&gt;Bei beiden Events wird es um IoT TinkerForge und Java8 gehen.&lt;/p&gt;&#xD;
+&#xD;
+&lt;blockquote&gt;&#xD;
+    &lt;p&gt;JUG Berlin-Brandenburg - &lt;a href=&quot;http://www.jug-berlin-brandenburg.de/blog/2014/10/22/tinkerforge-workshop/&quot;&gt;&#xD;
+        TinkerForge - Industrial Prototyping in Action&#xD;
+    &lt;/a&gt;&lt;strong&gt;17.11.2014&lt;/strong&gt;&#xD;
+    &lt;/p&gt;&#xD;
+    &lt;p&gt;JUG Hamburg - &lt;a href=&quot;http://www.meetup.com/jug-hamburg/events/214076512/&quot;&gt;&#xD;
+        TinkerForge and IoT (Wiederholung)&#xD;
+    &lt;/a&gt;&lt;strong&gt;18.11.2014&lt;/strong&gt;&#xD;
+    &lt;/p&gt;&#xD;
+&lt;/blockquote&gt;&#xD;
+
+&lt;/div&gt;</content>
+        <summary>Das ist der Inhalt der in Kurzform angezeigt werden soll</summary>
+    </entry>
+    <entry>
+        <title>Dagger2 - eine weitere DI Alternative</title>
+        <category label="java"/>
+        <category label="DI"/>
+        <category label="Android"/>
+        <category label="JSR-330"/>
+        <published>2014-11-17T00:00:00+01:00</published>
+        <author>
+            <name>Sven Ruppert</name>
+        </author>
+        <content type="html">&lt;div class=&quot;blog-post&quot;&gt;
+&lt;h2 class=&quot;blog-post-title&quot;&gt;&lt;a href=/2014/11/17/dagger2-eine-weitere-di-alternative.html&gt;Dagger2 - eine weitere DI Alternative&lt;/a&gt;&lt;/h2&gt;
+&lt;p class=&quot;blog-post-meta&quot;&gt;2014-11-17 from &lt;a href=&quot;/team/sven-ruppert/&quot;&gt;Sven Ruppert&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Dagger 2 liest sich gut.. schnell und alles in der statischen Semantik...&lt;/p&gt;&#xD;
+&lt;p&gt;.. aber leider nur DI und kein CDI.&lt;/p&gt;&#xD;
+&#xD;
+&#xD;
+&lt;blockquote&gt;&#xD;
+    &lt;p&gt;Dagger git Repository - &lt;a href=&quot;https://github.com/square/dagger&quot;&gt;&#xD;
+        Githup.com&#xD;
+    &lt;/a&gt;&#xD;
+    &lt;/p&gt;&#xD;
+&lt;/blockquote&gt;&#xD;
 
 &lt;/div&gt;</content>
         <summary>Das ist der Inhalt der in Kurzform angezeigt werden soll</summary>
