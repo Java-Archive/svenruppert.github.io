@@ -2,14 +2,18 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title>RapidPM</title>
     <category label="java"/>
+    <category label="TinkerForge"/>
     <category label="JSR-330"/>
     <category label="DI"/>
+    <category label="JUGHH"/>
+    <category label="LiveHacking"/>
     <category label="cdi"/>
     <category label="javafx"/>
     <category label="tinkerforge"/>
     <category label="iot"/>
     <category label="Android"/>
-    <updated>2014-11-17T08:57:13.625+01:00</updated>
+    <category label="IoT"/>
+    <updated>2014-11-18T13:59:49.105+01:00</updated>
     <id>http://rapidpm.github.io</id>
     <author>
         <name>Sven Ruppert</name>
@@ -89,6 +93,36 @@
 &lt;blockquote&gt;&#xD;
     &lt;p&gt;Dagger git Repository - &lt;a href=&quot;https://github.com/square/dagger&quot;&gt;&#xD;
         Githup.com&#xD;
+    &lt;/a&gt;&#xD;
+    &lt;/p&gt;&#xD;
+&lt;/blockquote&gt;&#xD;
+
+&lt;/div&gt;</content>
+        <summary>Das ist der Inhalt der in Kurzform angezeigt werden soll</summary>
+    </entry>
+    <entry>
+        <title>LiveHacking bei der JUGHH</title>
+        <category label="java"/>
+        <category label="IoT"/>
+        <category label="JUGHH"/>
+        <category label="TinkerForge"/>
+        <category label="LiveHacking"/>
+        <published>2014-11-18T00:00:00+01:00</published>
+        <author>
+            <name>Sven Ruppert</name>
+        </author>
+        <content type="html">&lt;div class=&quot;blog-post&quot;&gt;
+&lt;h2 class=&quot;blog-post-title&quot;&gt;&lt;a href=/2014/11/18/livehacking-bei-der-jughh.html&gt;LiveHacking bei der JUGHH&lt;/a&gt;&lt;/h2&gt;
+&lt;p class=&quot;blog-post-meta&quot;&gt;2014-11-18 from &lt;a href=&quot;/team/sven-ruppert/&quot;&gt;Sven Ruppert&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;So nun auf dem Weg zum nächsten LiveHacking. Heute geht es nach Hamburg.&#xD;
+Dort werden wir bei Holisticon ab 1900 beginnen mit TinkerForge und Java8 die Welt des IoT kennenzulernen.&#xD;
+&#xD;
+&lt;/p&gt;&#xD;
+&#xD;
+&#xD;
+&lt;blockquote&gt;&#xD;
+    &lt;p&gt;IoT bei der JUG Hamburg  - &lt;a href=&quot;http://www.meetup.com/jug-hamburg/events/214076512/&quot;&gt;&#xD;
+        Meetup&#xD;
     &lt;/a&gt;&#xD;
     &lt;/p&gt;&#xD;
 &lt;/blockquote&gt;&#xD;

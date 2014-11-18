@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title>java</title>
     <category label="java"/>
-    <updated>2014-11-17T08:57:13.705+01:00</updated>
+    <updated>2014-11-18T13:59:49.220+01:00</updated>
     <id>http://rapidpm.github.io</id>
     <author>
         <name>Sven Ruppert</name>
@@ -82,6 +82,36 @@
 &lt;blockquote&gt;
     &lt;p&gt;Dagger git Repository - &lt;a href="https://github.com/square/dagger"&gt;
         Githup.com
+    &lt;/a&gt;
+    &lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;/div&gt;</content>
+        <summary>Das ist der Inhalt der in Kurzform angezeigt werden soll</summary>
+    </entry>
+    <entry>
+        <title>LiveHacking bei der JUGHH</title>
+        <category label="java"/>
+        <category label="IoT"/>
+        <category label="JUGHH"/>
+        <category label="TinkerForge"/>
+        <category label="LiveHacking"/>
+        <published>2014-11-18T00:00:00+01:00</published>
+        <author>
+            <name>Sven Ruppert</name>
+        </author>
+        <content type="html">&lt;div class="blog-post"&gt;
+&lt;h2 class="blog-post-title"&gt;&lt;a href=/2014/11/18/livehacking-bei-der-jughh.html&gt;LiveHacking bei der JUGHH&lt;/a&gt;&lt;/h2&gt;
+&lt;p class="blog-post-meta"&gt;2014-11-18 from &lt;a href="/team/sven-ruppert/"&gt;Sven Ruppert&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;So nun auf dem Weg zum nächsten LiveHacking. Heute geht es nach Hamburg.
+Dort werden wir bei Holisticon ab 1900 beginnen mit TinkerForge und Java8 die Welt des IoT kennenzulernen.
+
+&lt;/p&gt;
+
+
+&lt;blockquote&gt;
+    &lt;p&gt;IoT bei der JUG Hamburg  - &lt;a href="http://www.meetup.com/jug-hamburg/events/214076512/"&gt;
+        Meetup
     &lt;/a&gt;
     &lt;/p&gt;
 &lt;/blockquote&gt;
