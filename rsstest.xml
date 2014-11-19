@@ -13,7 +13,7 @@
     <category label="iot"/>
     <category label="Android"/>
     <category label="IoT"/>
-    <updated>2014-11-18T13:59:49.105+01:00</updated>
+    <updated>2014-11-19T05:33:00.743+01:00</updated>
     <id>http://rapidpm.github.io</id>
     <author>
         <name>Sven Ruppert</name>
@@ -122,6 +122,38 @@ Dort werden wir bei Holisticon ab 1900 beginnen mit TinkerForge und Java8 die We
 &#xD;
 &lt;blockquote&gt;&#xD;
     &lt;p&gt;IoT bei der JUG Hamburg  - &lt;a href=&quot;http://www.meetup.com/jug-hamburg/events/214076512/&quot;&gt;&#xD;
+        Meetup&#xD;
+    &lt;/a&gt;&#xD;
+    &lt;/p&gt;&#xD;
+&lt;/blockquote&gt;&#xD;
+
+&lt;/div&gt;</content>
+        <summary>Das ist der Inhalt der in Kurzform angezeigt werden soll</summary>
+    </entry>
+    <entry>
+        <title>gestern beim LiveHacking bei der JUGHH</title>
+        <category label="java"/>
+        <category label="IoT"/>
+        <category label="JUGHH"/>
+        <category label="TinkerForge"/>
+        <category label="LiveHacking"/>
+        <published>2014-11-19T00:00:00+01:00</published>
+        <author>
+            <name>Sven Ruppert</name>
+        </author>
+        <content type="html">&lt;div class=&quot;blog-post&quot;&gt;
+&lt;h2 class=&quot;blog-post-title&quot;&gt;&lt;a href=/2014/11/19/gestern-beim-livehacking-bei-der-jughh.html&gt;gestern beim LiveHacking bei der JUGHH&lt;/a&gt;&lt;/h2&gt;
+&lt;p class=&quot;blog-post-meta&quot;&gt;2014-11-19 from &lt;a href=&quot;/team/sven-ruppert/&quot;&gt;Sven Ruppert&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Das LiveHacking gestern am 18.11.2014 war ein voller Erfolg.&#xD;
+    Es wurde viel und ausgiebig mit dem TinkerForge - Elementen ausprobiert.&#xD;
+&lt;/p&gt;&#xD;
+&lt;p&gt;&#xD;
+    Was natürlich nicht fehlen durfte, war das 2048fx Spiel gegeneinander. Hier wurden zwei 2048fx - Instanzen&#xD;
+    mit jeweils einem Joy-Stick verbunden.&#xD;
+&lt;/p&gt;&#xD;
+&#xD;
+&lt;blockquote&gt;&#xD;
+    &lt;p&gt;IoT bei der JUG Hamburg - &lt;a href=&quot;http://www.meetup.com/jug-hamburg/events/214076512/&quot;&gt;&#xD;
         Meetup&#xD;
     &lt;/a&gt;&#xD;
     &lt;/p&gt;&#xD;
