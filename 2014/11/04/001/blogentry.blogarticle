@@ -1,0 +1,80 @@
+<p>
+This short review quiz is related to the previous article <a href="http://www.rapidpm.org/2014/10/31/is-your-junit-knowhow-up-to-date-part-.html">here</a>.
+</p>
+
+<b>1.</b> What JUnit version introduced annotations for handling the simple lifecycle?<br/>
+    <ul>
+    <li>since 1.0</li>
+    <li>since 3.6</li>
+    <li>since 4.0</li>
+    <li>since 4.7</li></ul>
+
+<b>3.</b> Why should you prefer <i>@Before</i> annotated methods in comparison to the constructor? Because<br/>
+   <ul> <li>it does not break the symmetry of the lifecycle</li>
+    <li><i>@Before</i> should not be preferred</li>
+    <li><i>@Before</i> methods handle exceptions while constructors not</li>
+    <li>other frameworks rely on that</li>
+    </ul>
+<b>4.</b> Can you use more than one <i>@Before</i> annotated method in a test class?<br/>
+   <ul> <li>yes</li>
+    <li>no</li></ul>
+
+<b>5.</b> Which method qualifiers must be used for a <i>@AfterClass</i> method?<br/>
+   <ul> <li>protected</li>
+    <li>static</li>
+    <li>public</li>
+    <li>final</li></ul>
+
+<b>6.</b> What happens if a public method is annotated with <i>@Before</i>, <i>@Test</i> and <i>@After</i>?<br/>
+    <ul><li>Runtime-/ValidationError</li>
+    <li>CompilerError</li>
+    <li>Runs fine</li></ul>
+
+<b>7.</b> What is the simplest way (considering clean code) to handle exceptions?<br/>
+    <ul><li>use try/catch</li>
+    <li>use @Test(expected=....class)</li>
+    <li>it is integrated in JUnit</li></ul>
+<b>8.</b> What is the result of the following code?
+
+<pre brush="java">
+public class LifecycleTest {
+
+    @Before
+    public void before() {
+        System.out.print("3");
+    }
+
+    public LifecycleTest() {
+        System.out.print("2");
+    }
+
+    @BeforeClass
+    public static void beforeClass() {
+        System.out.print("1");
+    }
+
+    @Test
+    public void test() {
+        System.out.print("4");
+    }
+
+    @Test
+    public void test2(){
+        System.out.print("5");
+    }
+
+    @After
+    public void after() {
+        System.out.print("6");
+    }
+}
+</pre>
+
+<ul>
+<li>RuntimeException</li>
+<li>123456</li>
+<li>123462356</li>
+<li>Not predictable, depends on JVM</li>
+</ul>
+
+The solutions can be found here in white color: <font color="white">1c; 2acd; 3a; 4bc; 5c; 6b; 7d; </font>

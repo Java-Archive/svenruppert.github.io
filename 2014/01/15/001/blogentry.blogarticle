@@ -1,0 +1,188 @@
+In the first article of the Mindstorms component series I showed the most basic way to control motors which are connected to the EV3-brick. We had a robot with 1 motor connected which made the robot move forwards and backwards and one smaller motor which let three razorblades rotate (for fun).<br />
+In this second part I will explain how to use the superior level of abstraction to control a robot with two motors (each motor moves one wheel). The lejos-crew calls these robots&nbsp; "wheeled vehicles".<br />
+<br />
+So, first I built such a vehicle as shown in these pictures:<br />
+<br />
+<a href="http://2.bp.blogspot.com/-CLVVItozSsA/UtAEx0-SEeI/AAAAAAAAAJ0/UyaH9_YisiE/s1600/DSCN0607.JPG" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="240" src="http://2.bp.blogspot.com/-CLVVItozSsA/UtAEx0-SEeI/AAAAAAAAAJ0/UyaH9_YisiE/s1600/DSCN0607.JPG" width="320" /></a>
+<a href="http://2.bp.blogspot.com/-ZJrqRdjMP58/UtAE12wAQGI/AAAAAAAAAKE/RTdYKtIUBXI/s1600/DSCN0608.JPG" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="240" src="http://2.bp.blogspot.com/-ZJrqRdjMP58/UtAE12wAQGI/AAAAAAAAAKE/RTdYKtIUBXI/s1600/DSCN0608.JPG" width="320" /></a>
+<a href="http://4.bp.blogspot.com/-ov-9G8prnC8/UtAEznnul6I/AAAAAAAAAJ8/zkag-CyIaZs/s1600/DSCN0609.JPG" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="240" src="http://4.bp.blogspot.com/-ov-9G8prnC8/UtAEznnul6I/AAAAAAAAAJ8/zkag-CyIaZs/s1600/DSCN0609.JPG" width="320" /></a> <a href="http://3.bp.blogspot.com/-6ubRga2G6lI/UtAE4SelCWI/AAAAAAAAAKM/yWMoaJ8Dfmc/s1600/DSCN0610.JPG" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="240" src="http://3.bp.blogspot.com/-6ubRga2G6lI/UtAE4SelCWI/AAAAAAAAAKM/yWMoaJ8Dfmc/s1600/DSCN0610.JPG" width="320" /></a><br />
+(For the wheels I used the construction manual of the GRIPP3R-robot)<br />
+<br />
+<h3>
+    DifferentialPilot-class </h3>
+As said before, the DifferentialPilot class from the lejos api represents the superior level of abstraction when communicating with the motors. You can use it when you have a robot with two motors connected to the brick where each motor controls an own wheel.<br />
+<br />
+It offers different methods like travel(), steer() or arc() which will be used in the program for the robot.<br />
+<br />
+<h3>
+    The parcours</h3>
+First, I thought of a little demonstration parcours for the new robot. It should contain simple movements for- and backwards, rotations and turns / circles. As a result the parcours consists of 3 parts:<br />
+<br />
+<div class="separator" style="clear: both; text-align: center;">
+    <a href="http://4.bp.blogspot.com/-5bk-C7htHhI/UtFh5xIWyDI/AAAAAAAAAKc/zIWe21XVy2g/s1600/parcours1.JPG" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="173" src="http://4.bp.blogspot.com/-5bk-C7htHhI/UtFh5xIWyDI/AAAAAAAAAKc/zIWe21XVy2g/s1600/parcours1.JPG" width="320" /></a></div>
+<br />
+So, the first part of the parcours is pretty simple, the robot will move in a rectangular shape until it is back in its initial position.<br />
+<br />
+<div class="separator" style="clear: both; text-align: center;">
+    <a href="http://1.bp.blogspot.com/-QTsrtvTwbEg/UtFh9A3Z-xI/AAAAAAAAAKk/3UmL59wUwLw/s1600/parcours2.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="186" src="http://1.bp.blogspot.com/-QTsrtvTwbEg/UtFh9A3Z-xI/AAAAAAAAAKk/3UmL59wUwLw/s1600/parcours2.png" width="320" /></a></div>
+<br />
+In the second part, the robot then will move 90° in a turn. After the turn it will then drive a 90° turn backwards after which the robot will be in the position indicated transparent in the picture.<br />
+<br />
+<div class="separator" style="clear: both; text-align: center;">
+    <a href="http://4.bp.blogspot.com/-iaGSsTV-7XM/UtFh-Gkp3xI/AAAAAAAAAKo/8YEX_hwL4yw/s1600/parcours3.JPG" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="197" src="http://4.bp.blogspot.com/-iaGSsTV-7XM/UtFh-Gkp3xI/AAAAAAAAAKo/8YEX_hwL4yw/s1600/parcours3.JPG" width="320" /></a></div>
+<br />
+At the end of the second part the robot will first move forwards a bit. Then it will move in a circle. After the circle has finished, the robot will rotate by 180° (and then look like transparent indication in the picture). Then the robot will move backwards until it is back in the initial position from the beginning of the parcours. <br />
+<br />
+<h3>
+    The code </h3>
+Let's have a look at the plain code of the finished program first.<br />
+<br />
+<pre class="brush: java">import lejos.hardware.motor.Motor;
+import lejos.robotics.navigation.DifferentialPilot;
+
+public class Main {
+    public static void main(String[] args) {
+
+        final DifferentialPilot pilot = new DifferentialPilot(30.0, 185.0, Motor.C, Motor.B);
+        pilot.setAcceleration(200);
+        pilot.setRotateSpeed(50.0);
+        pilot.setTravelSpeed(50.0);
+
+        pilot.travel(350.0);
+        pilot.rotate(90.0);
+        pilot.travel(190.0);
+        pilot.rotate(90.0);
+        pilot.travel(350.0);
+        pilot.rotate(90.0);
+        pilot.travel(190.0);
+        pilot.rotate(90.0);
+
+        pilot.steer(65.0, 90.0);
+        pilot.steer(-65.0, 90.0);
+
+        pilot.travel(175.0);
+        pilot.arc(-100.0,-360.0);
+        pilot.steer(200.0,180.0);
+        pilot.travel(-175.0);
+
+    }
+}
+
+</pre>
+<br />
+At the beginning we instantiate a new instance of a DifferentialPilot and configure the wanted movement speeds. The used constructor takes four parameters:<br />
+<ul>
+    <li>wheel-diameter: The diameter of the wheel connected to the motor. The used wheel has a 30mm diameter.</li>
+    <li>track width: The distance between the centres of both wheels. In my case ~185mm.</li>
+    <li>left motor: The plug connection where the left motor is plugged in.</li>
+    <li>right motor: The plug connection where the right motor is plugged in.</li>
+</ul>
+The diameter of the wheels and the track width are needed by the api to know how long the motors must rotate to perform correct rotations etc.<br />
+<br />
+In the next block we perform the first part of the parcours which is pretty trivial. The travel-method makes the robot move forwards for the given distance (350mm). Recognize, that the distance unit must be the same as used for wheel diameter and track width in the constructor. That method is a blocking operation, so the program will wait here until the movement has finished. After that, the robot will rotate (in place) by 90° to the left (-90° would be&nbsp; 90° right). This happens four times until the rectangular movement has finished and the robot is back in its initial position.<br />
+<br />
+In the next block there are to steer-method calls.<br />
+The steer()-method takes two parameters:<br />
+<ul>
+    <li>turnRate: The ratio of the two wheels' speeds (Integer between -200 and +200)</li>
+    <li>angle: When the robot turned by this degrees, the steering will stop.</li>
+</ul>
+This needs some more explainations:<br />
+turnRate: If the value is positive you are configuring the left wheel, if it's negative you are configuring the right wheel. Let's look at some positive values:<br />
+0 - means, that both wheels will rotate at the same speed, which causes the robot to move forwards (no steering!)<br />
+100 - means, that the left wheel won't move.<br />
+200 - means, that the left wheel will do the exact opposite of the right wheel. <br />
+<br />
+angle: you can enter a value between 0 und 360°, positive and negative. Positive values will rotate the brick to the left, negative values cause right rotations.<br />
+<br />
+So, back to our two method-calls. The first call says: Make the left wheel move 0.65 * the speed of the right wheel. This will cause the robot to turn leftwards while moving. The robot will then move until it has turned by 90° to the left.<br />
+The second method call: The first parameter is negative, so we tell the RIGHT wheel to move at 0.65 * the speed of the LEFT wheel. The robot will move until the robot turned 90° to the left. Recognize, that the robot can only turn to the left by moving "backwards" because the right wheel rotates slower than the left wheel.<br />
+<br />
+In the last block the motor travels some centimeters fowards. Then there is a new method called arc. This methods tells the robot to move in a circle. The two parameters are:<br />
+<ul>
+    <li>radius of the circle</li>
+    <li>angle: When the robot turned by this degrees, the steering will stop.</li>
+</ul>
+Both parameters may be positive or negative.<br />
+A positive radius means, that the circle centre should be on the left of the brick. A negative respectively means that the circle centre is on the right side of the brick.<br />
+A positive angle means that the robot will rotate to the left, a negative angle respectively right.<br />
+<br />
+So, the arc-method-call says: Drive a circle. The circle center is on the right side of the brick and has a radius of 10cm. Drive that circle by rotating rightwards. The only possibility to do that, is by driving the circle forwards. A positive angle of 360° would have caused the robot to drive the circle by rotating to the left, which could only have been realized by moving backwards.<br />
+The next steer-method-call is easy: It says: The left wheel should do the opposite of the right wheel. The robot should move until it has turned by 180°. Maybe you recognized it: It's a simple 180° in-place rotation. So we could have used pilot.rotate(180) here, too. <br />
+The last travel()-call makes the robot move backwards the last centimeters until it is back in it's initial position.<br />
+<br />
+That's it, at last I just refactored and added some Console-ouput to the program for comfort:<br />
+<br />
+<pre class="brush: java">import lejos.hardware.motor.Motor;
+import lejos.robotics.navigation.DifferentialPilot;
+
+public class Main {
+
+    final static double NINETY_DEGREES = 90.0;
+
+    public static void main(String[] args) {
+
+        final DifferentialPilot pilot = new DifferentialPilot(30.0, 185.0, Motor.C, Motor.B);
+        pilot.setAcceleration(200);
+        pilot.setRotateSpeed(50.0);
+        pilot.setTravelSpeed(50.0);
+
+        System.out.println("Configured speeds and starting the first part of the parcours.");
+        travelRectangle(pilot, 350.0, 190.0);
+
+        System.out.println("Starting the second part of the parcours.");
+        driveTurns(pilot);
+
+        System.out.println("Starting the third part of the parcours.");
+        driveCircleAndBackToInitialPosition(pilot);
+
+    }
+
+    private static void driveCircleAndBackToInitialPosition(final DifferentialPilot pilot) {
+        System.out.print("    Driving half the way...");
+        pilot.travel(175.0);
+        System.out.println("done!");
+        System.out.print("    Driving the circle...");
+        pilot.arc(-100.0,-360.0);
+        System.out.println("done!");
+        System.out.print("    Turning 180 degrees...");
+        pilot.steer(200.0,180.0);
+        System.out.println("done!");
+        System.out.print("    Driving backwards to initial position...");
+        pilot.travel(-175.0);
+        System.out.println("done!");
+    }
+
+    private static void driveTurns(final DifferentialPilot pilot) {
+        System.out.print("    Driving turn forwards...");
+        pilot.steer(65.0, NINETY_DEGREES);
+        System.out.println("done!");
+        System.out.print("    Driving turn backwards...");
+        pilot.steer(-65.0, NINETY_DEGREES);
+        System.out.println("done!");
+    }
+
+    private static void travelRectangle(final DifferentialPilot pilot, final double rectLength, final double rectWidth) {
+        travelRectangleEdgeAndRotate(pilot, rectLength);
+        travelRectangleEdgeAndRotate(pilot, rectWidth);
+        travelRectangleEdgeAndRotate(pilot, rectLength);
+        travelRectangleEdgeAndRotate(pilot, rectWidth);
+    }
+
+    private static void travelRectangleEdgeAndRotate(final DifferentialPilot pilot, final double distance) {
+        System.out.print("    Driving " + distance + " mm...");
+        pilot.travel(distance);
+        System.out.println("done!");
+        System.out.print("    Rotating 90 degrees...");
+        pilot.rotate(NINETY_DEGREES);
+        System.out.println("done!");
+    }
+}
+</pre>
+and here is the result:<br />
+<br />
+<div class="separator" style="clear: both; text-align: center;">
+    <object class="BLOGGER-youtube-video" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0" data-thumbnail-src="http://i1.ytimg.com/vi/E-lcFrSva78/0.jpg" height="266" width="320"><param name="movie" value="http://www.youtube.com/v/E-lcFrSva78?version=3&f=user_uploads&c=google-webdrive-0&app=youtube_gdata" /><param name="bgcolor" value="#FFFFFF" /><param name="allowFullScreen" value="true" /><embed width="320" height="266"  src="http://www.youtube.com/v/E-lcFrSva78?version=3&f=user_uploads&c=google-webdrive-0&app=youtube_gdata" type="application/x-shockwave-flash" allowfullscreen="true"></embed></object></div>
+<br />
+<br />
+It isn't 100% exact, but still quite satisfying. I think this is because the wheel diameter and the track width I gave the constructor aren't perfectly correct.

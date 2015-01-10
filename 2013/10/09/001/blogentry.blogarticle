@@ -1,0 +1,111 @@
+I tried the combination of JavaFX with CDI and injection of <a href="http://kotlin.jetbrains.org/">Kotlin</a> and it works very well.
+<br/>
+First the CDI - managed Callable
+<script class="brush: java" type="syntaxhighlighter"><![CDATA[ 
+public abstract class CDICallable<T> implements Callable<T> {
+    protected CDICallable() {
+        CDIContainerSingleton.getInstance().activateCDI(this);
+    }
+}
+]]></script>
+<br/>
+Second the TextFieldBindingCallable for the JavaFX-binding
+<script class="brush: java" type="syntaxhighlighter"><![CDATA[
+public class LeftTextFieldBindingCallable extends CDICallable<String> {
+
+    @Inject Instance<DemoLogic> demoLogic;
+
+    @Override public String call() throws Exception {
+        return "leftTextField - " + demoLogic.get().doIt();
+    }
+}
+]]></script>
+<br/>
+Third the implementation of the DemoLogic
+
+Java - Version
+<script class="brush: java" type="syntaxhighlighter"><![CDATA[
+public class DemoLogic {
+
+    public String doIt() {
+        return System.nanoTime() + "";
+    }
+}
+]]></script>
+<br/>
+changed to <b>Kotlin</b>
+<script class="brush: java" type="syntaxhighlighter"><![CDATA[
+public open class DemoLogic() {
+    public open fun doIt(): String? {
+        return System.nanoTime().toString()  ;
+    }
+}
+]]></script>
+<br/>
+
+The code with the @Inject of DemoLogic isn´t changed inside the class <b>LeftTextFieldBindingCallable</b>
+and it is running well..
+</br>
+<script class="brush: java" type="syntaxhighlighter"><![CDATA[
+public class PairedTextField extends Pane {
+
+    private final TextField leftTextField = new TextField();
+    private final TextField rightTextField = new TextField();
+
+    private final HBox hb = new HBox();
+    private int spacing = 10;
+
+    @Inject Instance<LeftTextFieldBindingCallable> leftTextFieldBindingCallableInstance;
+    @Inject Instance<RightTextFieldBindingCallable> rightTextFieldBindingCallableInstance;
+
+
+    public PairedTextField() {
+        setAnchors(hb, 0.0);
+        hb.getChildren().addAll(leftTextField, rightTextField);
+        hb.setSpacing(spacing);
+        getChildren().add(hb);
+        setPadding(new Insets(0, 10, 0, 10));
+
+        CDIContainerSingleton.getInstance().activateCDI(this);
+
+    }
+
+    @PostConstruct
+    public void init() {
+        final StringBinding leftTextFieldBinding = Bindings.createStringBinding(leftTextFieldBindingCallableInstance.get(), leftTextField.textProperty());
+
+        final StringBinding rigthTextFieldBinding = Bindings.createStringBinding(rightTextFieldBindingCallableInstance.get(), rightTextField.textProperty());
+
+
+        leftTextField.setOnKeyTyped(new EventHandler<KeyEvent>() {
+            @Override public void handle(KeyEvent keyEvent) {
+                rightTextField.textProperty().bind(leftTextFieldBinding);
+            }
+        });
+        leftTextField.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override public void handle(KeyEvent keyEvent) {
+                rightTextField.textProperty().unbind();
+            }
+        });
+
+        rightTextField.setOnKeyTyped(new EventHandler<KeyEvent>() {
+            @Override public void handle(KeyEvent keyEvent) {
+                leftTextField.textProperty().bind(rigthTextFieldBinding);
+            }
+        });
+        rightTextField.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override public void handle(KeyEvent keyEvent) {
+                leftTextField.textProperty().unbind();
+            }
+        });
+    }
+
+
+    private void setAnchors(Node node, Double anchor) {
+        AnchorPane.setBottomAnchor(node, anchor);
+        AnchorPane.setLeftAnchor(node, anchor);
+        AnchorPane.setRightAnchor(node, anchor);
+        AnchorPane.setTopAnchor(node, anchor);
+    }
+}
+]]></script>

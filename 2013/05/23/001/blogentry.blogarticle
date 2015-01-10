@@ -1,0 +1,8 @@
+Ich muss gestehen, dass ich gerne fotographiere. An sich ist das nichts schlimmes, nur die Ordnung zu behalten ist da doch ein wenig zeitaudfwendiger. <br />
+Aber für routine – Arbeiten gibt es ja zum Glück einen PC. Ich für meinen Teil habe das Problem zu lösen, das die Ordnerstruktur derzeitig sehr flach ist. Es gibt ein Verzeichnis in dem Pro Tag ein Verzeichnis existiert. Die Namenskonvention lautet hier yyyy-mm-dd_Thema_des_Tages.<br />
+Als Beispiel z.B. 2010.10.10_Geburtstag_XYZ<br />
+Das hat sich eigentlich bewährt, wenn man keine weiteren Ansprüche stellt. Nur was soll man machen wenn Bekannte auf einen zukommen die eine große Festplatte unter dem Armt tragen und um Hilfe bitten hier mal mit Werkzeugen die Bilder aufzuräumen.<br />
+Lange Rede kurzer Sinn, es schreit nach einen kleinen Werkzeug in der Programmiersprache meiner Wahl. Java<br />
+In einer kleinen Serie werde ich die Entwicklung der einzelnen Komponenten beschreiben.<br />
+Die Sourcen sind übrigens unter <a href="https://bitbucket.org/svenruppert/spmt-smallphotomanagementtool" target="_blank">https://bitbucket.org/svenruppert/spmt-smallphotomanagementtool</a> zu finden.<br />
+Hier nochmals der Hinweis: Es handelt sich um experimentelle Software die keinen Anspruch auf Fehlerfreiheit hat. Es kann gerne ausprobiert werden, aber bitte nur auf Kopien arbeiten. Die Software ist nicht “fertig” sondern befindet sich aus aktuellem Anlass mitten in der Entwicklung. (Stand 20130523)

@@ -1,0 +1,9 @@
+<div style="background-color: white; color: #333333; font-family: Arial, sans-serif; font-size: 14.666666984558105px; line-height: 26.66666603088379px; margin-top: 10px;">
+Die Definition eines Loggers gehört zu fast jeder Klasse. Immer wieder ist der Logger zu definieren und in diesem Zuge dann auch die Entscheidung zu treffen, welcher Logger zu verwenden ist.</div>
+<div style="background-color: white; color: #333333; font-family: Arial, sans-serif; font-size: 14.666666984558105px; line-height: 26.66666603088379px; margin-top: 10px;">
+Nachträglich dieses zu ändern bedeutet immer, alle Klassen zu modifizieren. Es geht auch anders..</div>
+<div style="background-color: white; color: #333333; font-family: Arial, sans-serif; font-size: 14.666666984558105px; line-height: 26.66666603088379px; margin-top: 10px;">
+... siehe&nbsp;</div>
+<a href="http://wiki.rapidpm.org/display/PHB/cdi.commons.logger">cdi.commons.logger - ProgrammingHandbook - RapidPM</a>: <br />
+<br />
+<a href="https://chrome.google.com/webstore/detail/pengoopmcjnbflcjbmoeodbmoflcgjlk" style="font-size: 13px;">'via Blog this'</a>

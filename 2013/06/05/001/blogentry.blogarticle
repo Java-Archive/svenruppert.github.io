@@ -1,0 +1,36 @@
+Auf der Serverseite erfreut man sich der Möglichkeit per CDI die Komponenten zu entkoppeln.<br />
+Das ist ja bekanntlich auch auf der SE Seite möglich. Typische Konstrukte sehen dann meist wie folgt aus.<br />
+<a href="http://lh6.ggpht.com/-UqsRXFExNrA/Ua9UBS_9lRI/AAAAAAABRQw/iyEgUMP_E6k/s1600-h/image%25255B3%25255D.png"><img alt="image" border="0" src="http://lh6.ggpht.com/-LlzDJNotMos/Ua9UC22bBJI/AAAAAAABRQ4/WFgL1372y8Y/image_thumb%25255B1%25255D.png?imgmax=800" height="318" style="background-image: none; border-bottom: 0px; border-left: 0px; border-right: 0px; border-top: 0px; display: inline; padding-left: 0px; padding-right: 0px; padding-top: 0px;" title="image" width="644" /></a><br />
+1) Initialisiere den Weldcontainer<br />
+2) Hole eine erste managed instance<br />
+3) Arbeite auf den Referenzen.<br />
+<br />
+Was hier nicht schön ist, ist die Referenz auf den initialen Weldcontainer. Die muss an den verschiedenen Stellen in der Applikation zur Verfügung gestellt werden. <br />
+Anbei eine Demo wie dieses für eine Registry von Services aussehen kann.<br />
+<a href="http://lh4.ggpht.com/-xajclkO7v2M/Ua9UD7TptnI/AAAAAAABRRA/M02W-fJc25w/s1600-h/image%25255B8%25255D.png"><img alt="image" border="0" src="http://lh4.ggpht.com/-QKW5C-zIIDA/Ua9UEvL6SGI/AAAAAAABRRI/HN8gBwO0tpI/image_thumb%25255B4%25255D.png?imgmax=800" height="680" style="background-image: none; border-bottom: 0px; border-left: 0px; border-right: 0px; border-top: 0px; display: inline; padding-left: 0px; padding-right: 0px; padding-top: 0px;" title="image" width="1028" /></a><br />
+<br />
+Es gibt eine ServieRegistry von der aus man die vom Weldcontainer verwalteten Servicees bekommen kann. Der Einfachheit halber als Liste von Services.<br />
+Die Services selber sind abgeleitet von dem Interface Service. Soweit alles wie bekannt. Jeder Service erhält die Annotation RegisteredService.<br />
+<a href="http://lh4.ggpht.com/-6YBaHFh9S5o/Ua9UFj7OpII/AAAAAAABRRQ/csbDPonZH7Y/s1600-h/image%25255B13%25255D.png"><img alt="image" border="0" src="http://lh5.ggpht.com/-0ts4zSSrgMs/Ua9UGxCe7bI/AAAAAAABRRY/lcBKb-asDlA/image_thumb%25255B7%25255D.png?imgmax=800" height="90" style="background-image: none; border-bottom: 0px; border-left: 0px; border-right: 0px; border-top: 0px; display: inline; padding-left: 0px; padding-right: 0px; padding-top: 0px;" title="image" width="644" /></a><br />
+Über diese Annotation kann die ServiceRegistry die Services selbständig identifizieren. Dass ist hier durch ein Classloading realisiert.<br />
+Dieser Prozess wird initial durch die Annotation <strong>@PostContruct</strong> getriggert.<br />
+<a href="http://lh4.ggpht.com/--fJHJNvo2r4/Ua9UHlWWW-I/AAAAAAABRRg/5ufbCc1Gt-Q/s1600-h/image%25255B17%25255D.png"><img alt="image" border="0" src="http://lh4.ggpht.com/-Gt4Z4Btvq_A/Ua9UIbC7cWI/AAAAAAABRRo/-y2IwUYM7mQ/image_thumb%25255B9%25255D.png?imgmax=800" height="250" style="background-image: none; border-bottom: 0px; border-left: 0px; border-right: 0px; border-top: 0px; display: inline; padding-left: 0px; padding-right: 0px; padding-top: 0px;" title="image" width="644" /></a><br />
+Das Laden der Klassen ist per Reflection gelöst, kann natürlich auch beliebig anders erfolgen.<br />
+<a href="http://lh6.ggpht.com/-ZYvlsi18R8A/Ua9UJqSwpdI/AAAAAAABRRw/5QKd5F-qaP0/s1600-h/image%25255B21%25255D.png"><img alt="image" border="0" src="http://lh3.ggpht.com/-3KewEAMoE1Y/Ua9UKfkCM8I/AAAAAAABRR4/GduWywSO3U4/image_thumb%25255B11%25255D.png?imgmax=800" height="353" style="background-image: none; border-bottom: 0px; border-left: 0px; border-right: 0px; border-top: 0px; display: inline; padding-left: 0px; padding-right: 0px; padding-top: 0px;" title="image" width="644" /></a><br />
+<br />
+Die Klassen werden in einer internen ArrayList gespeichert und erst instanziiert , wenn die Services benötigt werden.<br />
+<a href="http://lh6.ggpht.com/--phoyYXS6ao/Ua9ULtQ4ngI/AAAAAAABRSA/Zs4jo_1qrXk/s1600-h/image%25255B26%25255D.png"><img alt="image" border="0" src="http://lh5.ggpht.com/-TlKkpEaI6_Y/Ua9UMsWHUtI/AAAAAAABRSI/l2V828SCjkw/image_thumb%25255B14%25255D.png?imgmax=800" height="260" style="background-image: none; border-bottom: 0px; border-left: 0px; border-right: 0px; border-top: 0px; display: inline; padding-left: 0px; padding-right: 0px; padding-top: 0px;" title="image" width="644" /></a><br />
+<br />
+Wie man unschwer erkennen kann, ist die Serviceregistry selbst schon eine vom WeldContainer verwaltete Instanz. (Siehe Annotationen)<br />
+Der WeldContainer selbst wird in der ServiceRegistryFactory initialisiert und gehalten.<br />
+&nbsp;<a href="http://lh3.ggpht.com/-AK50itpGCqs/Ua9UNi-ROnI/AAAAAAABRSQ/WRqHiiSNW4c/s1600-h/image%25255B31%25255D.png"><img alt="image" border="0" src="http://lh6.ggpht.com/-49alkMroUso/Ua9UOoH8EHI/AAAAAAABRSY/uyd0NQm00QE/image_thumb%25255B17%25255D.png?imgmax=800" height="170" style="background-image: none; border-bottom: 0px; border-left: 0px; border-right: 0px; border-top: 0px; display: inline; padding-left: 0px; padding-right: 0px; padding-top: 0px;" title="image" width="644" /></a><br />
+Damit hat man über diesen Umweg, die Möglichkeit eine vom WeldContainer verwaltete Serviceregistry zu erhalten.<br />
+Die Services selbst werden bei Bedarf erzeugt. Das passiert in der Methode getManagedService<br />
+<a href="http://lh6.ggpht.com/-iofiNRmE5X8/Ua9UPI_au8I/AAAAAAABRSg/QEnYpB05Mf0/s1600-h/image%25255B35%25255D.png"><img alt="image" border="0" src="http://lh3.ggpht.com/-xJTM6imn2TI/Ua9UQX4e5ZI/AAAAAAABRSo/O8u4tW6REw8/image_thumb%25255B19%25255D.png?imgmax=800" height="173" style="background-image: none; border-bottom: 0px; border-left: 0px; border-right: 0px; border-top: 0px; display: inline; padding-left: 0px; padding-right: 0px; padding-top: 0px;" title="image" width="644" /></a><br />
+Zu beachten ist, das man die Services über einen Producer erzeugen muss, damit die Services selber wieder vom WeldContainer verwaltet werden.<br />
+<a href="http://lh5.ggpht.com/-sl5LN3RI0Ng/Ua9URqyTuBI/AAAAAAABRSs/1M39gu3TElA/s1600-h/image%25255B39%25255D.png"><img alt="image" border="0" src="http://lh6.ggpht.com/-BFkLWMl9k-w/Ua9US-gj32I/AAAAAAABRS4/qJy6vA4XFro/image_thumb%25255B21%25255D.png?imgmax=800" height="387" style="background-image: none; border-bottom: 0px; border-left: 0px; border-right: 0px; border-top: 0px; display: inline; padding-left: 0px; padding-right: 0px; padding-top: 0px;" title="image" width="644" /></a><br />
+<br />
+Die Verwendung selbst ist dann sehr einfach…&nbsp; <br />
+<a href="http://lh3.ggpht.com/-yFN28PwWUUE/Ua9UT1WkwfI/AAAAAAABRTA/FxH910t3clA/s1600-h/image%25255B43%25255D.png"><img alt="image" border="0" src="http://lh4.ggpht.com/-0ZaVy4gzTJw/Ua9UVCBciVI/AAAAAAABRTI/cim0K9lhJNo/image_thumb%25255B23%25255D.png?imgmax=800" height="270" style="background-image: none; border-bottom: 0px; border-left: 0px; border-right: 0px; border-top: 0px; display: inline; padding-left: 0px; padding-right: 0px; padding-top: 0px;" title="image" width="644" /></a><br />
+<br />
+Die Sourcen zu diesem Beispiel befinden sich im Repository: <a href="https://bitbucket.org/rapidpm/java-cdi-se-demo" target="_blank">https://bitbucket.org/rapidpm/java-cdi-se-demo</a>

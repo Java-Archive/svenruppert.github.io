@@ -1,0 +1,59 @@
+The WADL (Web Application Definition Language) is used to
+describe HTTP-based applications which means that JAXRS
+applications can and are described by that. Typically it is
+generated (static or dynamic) with the jersey maven
+plugin (detailed informations can
+be found <a href="https://wikis.oracle.com/display/Jersey/WADL">here</a>).
+But for some reason i could not use either maven nor the jersey plugin.
+So i had to do it on my own and used it as a little finger exercise.
+The main goal was to achieve dynamic wadl generation for a JAXRS application.
+
+The working steps were relativly easy:<br />
+<ul>
+    <li>Create a JAXB-Model from the current WADL-Specification</li>
+    <li>Create a CDI-Based design for JAXRS resources</li>
+</ul>
+<div>
+    In the end you only have to provide a producer class which creates a @Wadl Class[] and inject an instance of @Wadl &nbsp;@WadlApplication.<br />
+    <br />
+<pre class="brush: java">@Path("/")
+public class MyResource
+{
+ @Inject
+ @Wadl
+ @WadlApplication
+ Instance&lt;Application&gt; applicationInstance;
+
+ @GET
+ @Produces(MediaType.APPLICATION_XML)
+ public Application getRoot(@Context UriInfo uriInfo)
+ {
+  return getWadl(uriInfo);
+ }
+}
+</pre>
+    <br />
+    &nbsp;As a simple example assume that you have a TinkerForge MasterBrick connected to a RaspberryPi. Addionally you want to provide a JAXRS-Resource for every connected sensor. With the sample code below you are now able to extend the WADL dynmically.<br />
+    <br />
+<pre class="brush: java">public class WadlClassProducer
+{
+ @Inject
+ @SensorAnno
+ @Any
+ Instance&lt;SensorResource&gt; sensorInstances;
+
+ @Produces
+ @Wadl
+ public Class[] create()
+ {
+  List&lt;Class&lt;?&gt;&gt; clazzList = new ArrayList&lt;Class&lt;?&gt;&gt;();
+  for (SensorResource sensor : sensorInstances)
+  {
+   clazzList.add(sensor.getResourceClass());
+  }
+  return clazzList.toArray(new Class[0]);
+ }
+}
+</pre>
+    <br />
+    The sources can be found&nbsp;<a href="https://bitbucket.org/abischof/wadlpoc" target="_blank">here</a>.</div>

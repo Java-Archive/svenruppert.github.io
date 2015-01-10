@@ -1,0 +1,26 @@
+<b>You have written jUnit Tests for JavaFX applications?&nbsp;</b><br />
+<b>You want to simulate user interactions?</b><br />
+<br />
+If you are starting from scratch this will be a long task.<br />
+But the Team from TestFX is working on a solution.<br />
+TestFX (<a href="https://github.com/SmartBear/TestFX">https://github.com/SmartBear/TestFX</a>) is an OpenSource framework from Henrik Olsson (SmartBear) with the goal to be an easy-to-use framework for testing JavaFX.<br />
+<br />
+This framework is ready for Java8 and supports JavaFX 2.<br />
+With this you are able to test featured JavaFX based GUIs.<br />
+<br />
+No License needed, no costs, complete OpenSource and extensible.<br />
+<br />
+The fluent and clean API is simple to use for the interaction with the controls. No special wrapper must be implemented, no boilerplate code is needed to test a simple control. Extend the jUnit Test-class and create an instance of your JavaFX control.<br />
+<br />
+That´s all you need. After this you are able to interact directly with the instance you created.<br />
+TestFX will give you a lot of service methods to interact and verify the behavior of the tested control.<br />
+And, if something goes wrong, you will get an screenshot of the failed test.<br />
+<br />
+One of the really big advantages is the easy possibility to extend TestFX by yourself. The framework is clean and well structured.<br />
+The support for Hamcrest Matchers and Lambdas will give you all you need to build complex tests.<br />
+<br />
+There is only one more thing....<br />
+... &nbsp;we are working on the<b> CDI support</b> for TestFX.<br />
+<br />
+stay tuned and happy coding.<br />
+<br />

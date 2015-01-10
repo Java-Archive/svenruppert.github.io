@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title>JNDI</title>
+    <category label="JNDI"/>
+    <updated>2015-01-10T01:39:11.565+01:00</updated>
+    <id>http://rapidpm.github.io</id>
+    <author>
+        <name>Alexander Bischof</name>
+    </author>
+    <entry>
+        <title>CDI EJB-Remote Context for wildfly</title>
+        <category label="CDI"/>
+        <category label="EJB"/>
+        <category label="JBoss"/>
+        <category label="JNDI"/>
+        <category label="RapidPM"/>
+        <category label="Wildfly"/>
+        <published>2014-02-17T00:00:00+01:00</published>
+        <author>
+            <name>Alexander Bischof</name>
+        </author>
+        <content type="html">&lt;article class="article clearfix"&gt;
+							&lt;header class="article-header"&gt;
+								&lt;h2 class="article-title"&gt;&lt;a href="/2014/02/17/cdi-ejb-remote-context-for-wildfly.html" rel="tag"&gt;CDI EJB-Remote Context for wildfly&lt;/a&gt;&lt;/h2&gt;
+								&lt;p&gt;&lt;time datetime="2014-02-17"&gt;2014-02-17&lt;/time&gt; &lt;a href="/team/alexander-bischof" rel="author"&gt;from Alexander Bischof&lt;/a&gt;&lt;/p&gt;
+							&lt;/header&gt;
+							&lt;div class="article-content clearfix"&gt;
+								&lt;div class="post-thumb"&gt;
+									&lt;img src="./site/content/post_thumb.jpg" width="" height="" alt="" /&gt;
+								&lt;/div&gt;
+								&lt;div class="post-excerpt"&gt;&lt;div&gt;
+    This article shows how ejb remote clients can be configured and connected in a more dynamic way.&lt;/div&gt;
+&lt;div&gt;
+    &lt;br /&gt;&lt;/div&gt;
+Within wildfly (current version 8.0.0.Final) there are several possibilities to connect ejb remote clients. Descriptions can be found on:&lt;br /&gt;
+&lt;div&gt;
+    &lt;ul&gt;
+        &lt;li&gt;the standard way with jboss-ejb-client.properties&lt;br /&gt;&lt;a href="https://docs.jboss.org/author/display/WFLY8/Remote+EJB+invocations+via+JNDI+-+EJB+client+API+or+remote-naming+project"&gt;https://docs.jboss.org/author/display/WFLY8/Remote+EJB+invocations+via+JNDI+-+EJB+client+API+or+remote-naming+project&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;a programmatic way&lt;br /&gt;&lt;a href="http://alexbischoftechwriteups.blogspot.de/2013/11/jboss-as-7-programmatic-ejb-remote.html"&gt;http://alexbischoftechwriteups.blogspot.de/2013/11/jboss-as-7-programmatic-ejb-remote.html&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;h4&gt;
+    &lt;/h4&gt;
+    &lt;h3&gt;
+    &lt;/h3&gt;
+    &lt;h3&gt;
+        The Problem&lt;/h3&gt;
+    &lt;div&gt;
+        &lt;br /&gt;
+        You have an application for two (or more) tenants which are identical but are deployed on different machines. Customers should be able to switch between those tenants without restarting the application. Additionally the code itself should not depend on tenant specific code.&lt;br /&gt;
+        As far as i know this would be necessary with the standard approach (jboss-ejb-client.properties) given above.&lt;br /&gt;
+        &lt;br /&gt;&lt;/div&gt;
+    &lt;h4&gt;
+    &lt;/h4&gt;
+    &lt;h3&gt;
+    &lt;/h3&gt;
+    &lt;h3&gt;
+        A Solution&lt;/h3&gt;
+    &lt;div&gt;
+        &lt;br /&gt;
+        After some consideration i have identified the following five components which are needed to implement this feature.&lt;/div&gt;
+    &lt;div&gt;
+        &lt;ul&gt;
+            &lt;li&gt;Component that creates WildFly ejb remote connections&lt;/li&gt;
+            &lt;li&gt;Component that produces the JNDI-Context&lt;/li&gt;
+            &lt;li&gt;Component that holds the selected tenant-key for the client&lt;/li&gt;
+            &lt;li&gt;Component that maps the tenant-keys to connection properties&lt;/li&gt;
+            &lt;li&gt;CDI-Modul Qualifier&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+        &lt;br /&gt;
+        Putting them together leads to the following UML:&lt;/div&gt;
+    &lt;div&gt;
+        &lt;br /&gt;&lt;/div&gt;
+    &lt;div class="separator" style="clear: both; text-align: center;"&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+        &lt;div class="separator" style="clear: both; text-align: center;"&gt;
+        &lt;/div&gt;
+        &lt;div class="separator" style="clear: both; text-align: center;"&gt;
+            &lt;a href="http://1.bp.blogspot.com/-ZZPEg3qbdpU/UwEe92qwxaI/AAAAAAAAACM/dWExN23jkkk/s1600/diagram.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" src="http://1.bp.blogspot.com/-ZZPEg3qbdpU/UwEe92qwxaI/AAAAAAAAACM/dWExN23jkkk/s1600/diagram.png" height="382" width="640" /&gt;&lt;/a&gt;&lt;/div&gt;
+        &lt;br /&gt;&lt;/div&gt;
+    &lt;div&gt;
+        &lt;br /&gt;&lt;/div&gt;
+    &lt;div&gt;
+        To keep the example as simple as possible i have decided to use the ejb-remote-quickstart example and extend it with the jndicontext module. The current implementation uses a simple property file which holds the following data.&lt;/div&gt;
+    &lt;div&gt;
+&lt;pre&gt;tenant1.host=localhost
+tenant1.port=8080
+tenant1.username=test
+tenant1.password=test
+tenant1.noanonymous=false
+
+tenant2.host=192.168.0.104
+tenant2.port=8080
+tenant2.username=test
+tenant2.password=test
+tenant2.noanonymous=false
+&lt;/pre&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+        &lt;br /&gt;&lt;/div&gt;
+    &lt;div&gt;
+        &lt;h3&gt;
+            The Fazit&lt;/h3&gt;
+        &lt;br /&gt;
+        The resulting service locator just has to use the JndiSession (in this example the RemoteEJBClient) which technically holds the tenant key and can be set from the GUI.&lt;br /&gt;
+        &lt;div&gt;
+&lt;pre&gt;public class RemoteEJBClient {
+    @Inject @JndiContextAnno
+    Instance&amp;lt;Context&amp;gt; contextInstance;
+
+    @Inject
+    JndiSession jndiSession;
+    //...snip
+    private RemoteCalculator lookupRemoteStatelessCalculator() throws NamingException {
+        Context context = contextInstance.get();
+        //...snip
+    }
+}
+
+public class CDIBootStrapper {
+    public static void main(String[] args) throws Exception
+    {
+        WeldContainer weld = new Weld().initialize();
+        RemoteEJBClient client = weld.instance().select(RemoteEJBClient.class).get();
+
+        client.getJndiSession().setTenantKey("tenant1");
+        client.invokeStatelessBean();
+
+        client.getJndiSession().setTenantKey("tenant2");
+        client.invokeStatelessBean();
+    }
+)&lt;/pre&gt;
+        &lt;/div&gt;
+        So the code looks very clean and in comparison to jboss-ejb-client.properties way more functional.&lt;br /&gt;
+        The sources can be found on&amp;nbsp;&lt;a href="https://bitbucket.org/abischof/injectablejndicontext"&gt;https://bitbucket.org/abischof/injectablejndicontext&lt;/a&gt;.&lt;br /&gt;
+        Have fun coding... ;)&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+							&lt;/div&gt;
+							&lt;footer class="article-footer clearfix"&gt;
+								&lt;span class="post-author"&gt;&lt;a href="/team/alexander-bischof" rel="author"&gt;Alexander Bischof&lt;/a&gt;&amp;nbsp;&amp;nbsp;|&amp;nbsp;&amp;nbsp;&lt;/span&gt;
+								&lt;span class="post-date"&gt;&lt;a href="#" rel="date"&gt;2014-02-17&lt;/a&gt;&amp;nbsp;&amp;nbsp;|&amp;nbsp;&amp;nbsp;&lt;/span&gt;
+							&lt;/footer&gt;
+						&lt;/article&gt;</content>
+        <summary>Das ist der Inhalt der in Kurzform angezeigt werden soll</summary>
+    </entry>
+</feed>

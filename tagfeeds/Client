@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title>Client</title>
+    <category label="Client"/>
+    <updated>2015-01-10T01:39:11.561+01:00</updated>
+    <id>http://rapidpm.github.io</id>
+    <author>
+        <name>Sven Ruppert</name>
+    </author>
+    <entry>
+        <title>Introducing Vaadin: Validation</title>
+        <category label="Client"/>
+        <category label="Integer"/>
+        <category label="Vaadin"/>
+        <category label="Validation"/>
+        <published>2013-09-03T00:00:00+02:00</published>
+        <author>
+            <name>Sven Ruppert</name>
+        </author>
+        <content type="html">&lt;article class="article clearfix"&gt;
+							&lt;header class="article-header"&gt;
+								&lt;h2 class="article-title"&gt;&lt;a href="/2013/09/03/introducing-vaadin--validation.html" rel="tag"&gt;Introducing Vaadin: Validation&lt;/a&gt;&lt;/h2&gt;
+								&lt;p&gt;&lt;time datetime="2013-09-03"&gt;2013-09-03&lt;/time&gt; &lt;a href="/team/sven-ruppert" rel="author"&gt;from Sven Ruppert&lt;/a&gt;&lt;/p&gt;
+							&lt;/header&gt;
+							&lt;div class="article-content clearfix"&gt;
+								&lt;div class="post-thumb"&gt;
+									&lt;img src="./site/content/post_thumb.jpg" width="" height="" alt="" /&gt;
+								&lt;/div&gt;
+								&lt;div class="post-excerpt"&gt;Let's talk about validation in Vaadin.&lt;br /&gt;
+&lt;br /&gt;
+&lt;h3&gt;
+    Context&lt;/h3&gt;
+We want to have a textfield which is marked as a "required" field and which expects integer values from 0 - 99. The user should get feedback&lt;b&gt; right after&lt;/b&gt; he entered something into the field.&lt;br /&gt;
+&lt;br /&gt;
+&lt;h3&gt;
+    Implementation&lt;/h3&gt;
+Here's the &lt;b&gt;complete&lt;/b&gt; code of the module:&lt;br /&gt;
+&lt;br /&gt;
+&lt;pre class="brush: java"&gt;
+@SuppressWarnings("serial")
+public class MyVaadinUI extends UI
+{
+    @Override
+    protected void init(VaadinRequest request) {
+        final TextField textField = new TextField("Enter an Integer value (0-99)");
+        final FormLayout mainLayout = new FormLayout(textField);
+        textField.setConverter(Integer.class);
+        textField.addValidator(new IntegerRangeValidator("only integer, 0-99", 0, 99));
+        textField.setRequired(true);
+        textField.setImmediate(true);
+        setContent(mainLayout);
+    }
+}&lt;/pre&gt;
+&lt;pre&gt;-----&lt;/pre&gt;
+&lt;b&gt;1&lt;/b&gt; Class&lt;br /&gt;
+&lt;b&gt;7&lt;/b&gt; Lines of active code&lt;br /&gt;
+&lt;b&gt;4&lt;/b&gt; &lt;b&gt;lines of code configuring the TextField (!)&lt;/b&gt;&lt;br /&gt;
+&lt;b&gt;&lt;br /&gt;&lt;/b&gt;
+
+
+&lt;br /&gt;
+&lt;h3&gt;
+    Result&lt;/h3&gt;
+A red asterisk marks the field as required. After the user entered something into the field and the focus on the field is lost there is immediate feedback for the user.&lt;br /&gt;
+&lt;br /&gt;
+&lt;div class="separator" style="clear: both; text-align: center;"&gt;
+    &lt;a href="http://3.bp.blogspot.com/-kaGZ1yDPL1w/UiWPpgSq8cI/AAAAAAAAAA4/JDAld5eiR3s/s1600/integererror.png" imageanchor="1" style="clear: left; float: left; margin-bottom: 1em; margin-right: 1em;"&gt;&lt;img border="0" height="49" src="http://3.bp.blogspot.com/-kaGZ1yDPL1w/UiWPpgSq8cI/AAAAAAAAAA4/JDAld5eiR3s/s320/integererror.png" width="320" /&gt;&lt;/a&gt;&lt;/div&gt;
+&lt;br /&gt;
+&lt;div class="separator" style="clear: both; text-align: center;"&gt;
+    &lt;a href="http://3.bp.blogspot.com/-NRcIVBy4mok/UiWPrWwaSpI/AAAAAAAAABA/293Fvk1KC58/s1600/stringerror.png" imageanchor="1" style="clear: left; float: left; margin-bottom: 1em; margin-right: 1em;"&gt;&lt;img border="0" height="43" src="http://3.bp.blogspot.com/-NRcIVBy4mok/UiWPrWwaSpI/AAAAAAAAABA/293Fvk1KC58/s320/stringerror.png" width="320" /&gt;&lt;/a&gt;&lt;/div&gt;
+&lt;br /&gt;
+&lt;div class="separator" style="clear: both; text-align: center;"&gt;
+    &lt;a href="http://1.bp.blogspot.com/-ErrK4ESPlyY/UiWPswcs6LI/AAAAAAAAABI/GVKcV_524Eo/s1600/noerror.png" imageanchor="1" style="clear: left; float: left; margin-bottom: 1em; margin-right: 1em;"&gt;&lt;img border="0" height="45" src="http://1.bp.blogspot.com/-ErrK4ESPlyY/UiWPswcs6LI/AAAAAAAAABI/GVKcV_524Eo/s320/noerror.png" width="320" /&gt;&lt;/a&gt;&lt;/div&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+Does it look pretty? meh..&lt;br /&gt;
+Does it work at a minimum of spent work and time? 4 lines of code?! Yea!&lt;/div&gt;
+							&lt;/div&gt;
+							&lt;footer class="article-footer clearfix"&gt;
+								&lt;span class="post-author"&gt;&lt;a href="/team/sven-ruppert" rel="author"&gt;Sven Ruppert&lt;/a&gt;&amp;nbsp;&amp;nbsp;|&amp;nbsp;&amp;nbsp;&lt;/span&gt;
+								&lt;span class="post-date"&gt;&lt;a href="#" rel="date"&gt;2013-09-03&lt;/a&gt;&amp;nbsp;&amp;nbsp;|&amp;nbsp;&amp;nbsp;&lt;/span&gt;
+							&lt;/footer&gt;
+						&lt;/article&gt;</content>
+        <summary>Das ist der Inhalt der in Kurzform angezeigt werden soll</summary>
+    </entry>
+</feed>

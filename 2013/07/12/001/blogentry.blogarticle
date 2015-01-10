@@ -1,0 +1,7 @@
+Immer auf der Suche nach neuen Werkzeugen…&nbsp; Hier DCEVM (<a href="http://ssw.jku.at/dcevm/" target="_blank">http://ssw.jku.at/dcevm/</a>)<br />
+Und das beste: Es gibt es schon als intelliJ Plugin..<br />
+<a href="http://blogs.jetbrains.com/idea/2013/07/get-true-hot-swap-in-java-with-dcevm-and-intellij-idea/" target="_blank">http://blogs.jetbrains.com/idea/2013/07/get-true-hot-swap-in-java-with-dcevm-and-intellij-idea/</a><br />
+das normale HotSwaping hat enge Grenzen sobald man an der Struktur der Klassen Veränderungen vornimmt. Hier gab es bisher immer noch das kommerzielle Werkzeug jRebel.<br />
+(Danke übrigens an das jRebel Team f die OSS Lizenz)<br />
+Nun gibt es eine OSS Lösung die genau an dieser Stelle weiterhilft. <br />
+Ich werde von meinen Tests berichten… <img alt="Zwinkerndes Smiley" class="wlEmoticon wlEmoticon-winkingsmile" src="http://lh6.ggpht.com/-G022Pyxe_B0/Ud-RlflpOrI/AAAAAAABSkE/ULRusdSNp3Q/wlEmoticon-winkingsmile%25255B2%25255D.png?imgmax=800" style="border-bottom-style: none; border-left-style: none; border-right-style: none; border-top-style: none;" />

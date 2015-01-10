@@ -1,0 +1,81 @@
+How to use a ContextResolver? What can you do with this?
+<br/>
+Let´s say you have something like the following:
+
+<pre class="brush: java">
+@Inject @DemoLogicContext DemoLogic demologic;
+</pre>
+
+But it depends on the transient context of the application to decide what is the right implementation of the interface DemoLogic.
+<br/>
+<div class="separator" style="clear: both; text-align: center;"><a href="http://2.bp.blogspot.com/-duqsdVLfujI/Ul66G0S0ZdI/AAAAAAABUXc/75QGLk5n0tk/s1600/DemoLogic.jpg" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://2.bp.blogspot.com/-duqsdVLfujI/Ul66G0S0ZdI/AAAAAAABUXc/75QGLk5n0tk/s400/DemoLogic.jpg" /></a></div>
+<br/>
+The implementation DemoLogicB is a normal JavaClass, KotlinDemoLogic is writen in <a href="http://kotlin.jetbrains.org/">Kotlin</a>.
+Both implementations are paired with a qualifier and a producer like the following in the picture.
+<div class="separator" style="clear: both; text-align: center;"><a href="http://2.bp.blogspot.com/-Gcbyha4grzI/Ul688KeBy6I/AAAAAAABUXo/TyTdcQC4VnY/s1600/DemoLogicB.jpg" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://2.bp.blogspot.com/-Gcbyha4grzI/Ul688KeBy6I/AAAAAAABUXo/TyTdcQC4VnY/s400/DemoLogicB.jpg" /></a></div>
+<br/>
+At this point you have n implementations with n qualiefiers and maybe n producer. Or it must be possible to extend the running system with a few more different customer dependent implementations. To write this inside your code with an big if else tree it is not a good style. From the busineslogic point of view the right definition is:
+<pre class="brush: java">
+@Inject @DemoLogicContext DemoLogic demologic;
+</pre>
+<br/>
+For this you can use the producer methods from cdi. The way is quite easy:
+
+<pre class="brush: java">
+@Produces @DemoLogicContext
+public DemoLogic create(){...}
+</pre>
+With this you have the entry-point for the final injection point. You can extend the signature of the create method with more attributes. Mostly used is the BeanManager and/or InjectioPoint, but you can use your own classes. For example the <b>ContextResolver</b>.
+
+<pre class="brush: java">
+@Produces @DemoLogicContext
+public DemoLogic create(ContextResolver contextResolver){...}
+</pre>
+The ContextResolver itself is an interface.. this means you have to use an qualifier to define the producer or implementing class for this interface.
+<pre class="brush: java">
+@Produces @DemoLogicContext
+public DemoLogic create(@DemoLogicContext ContextResolver contextResolver){...}
+</pre>
+
+<br/>
+Now we have to implement the first class, called DemoContextResolver. The DemoContextResolver will be injected into every producer that must be able to decide something.
+<pre class="brush: java">
+public class DemoLogicProducer {
+    private @Inject ManagedInstanceCreator creator;
+
+    @Produces @DemoLogicContext
+    public DemoLogic create(@New DemoContextResolver contextResolver){
+        final Class<DemoLogic> beanType = DemoLogic.class;
+    final AnnotationLiteral annotationLiteral = contextResolver.resolveContext(beanType);
+    final DemoLogic demoLogic = creator.getManagedInstance(beanType, annotationLiteral);
+    return demoLogic;
+    }
+    }
+</pre>
+From this point you are able to decide what will be the implementation to use. For this example I wrote a very simple
+version, but you can extend this to a tree of deciding ContextResolvers.
+<pre class="brush: java">
+public class DemoContextResolver implements ContextResolver {
+
+    @Inject DemoContext demoContext;
+
+    @Override public AnnotationLiteral resolveContext(Class<?> targetClass) {
+        if(demoContext.getContextInfo()){
+            return new AnnotationLiteral<KotlinDemoLogicContext>() {};
+    } else{
+    return new AnnotationLiteral<DemoLogicContextB>() {};
+        }
+        }
+        }
+</pre>
+
+
+The good thing is, that every module will be usable for itself. You can write jUnit-Tests per implementation. At runtime you can add more implementations.
+
+Think about the possibility to change the controller for a GUI in this way ;-)
+I will show this more in detail in my next blog entry (Part II)
+<br/>
+
+<div class="separator" style="clear: both; text-align: center;"><a href="http://2.bp.blogspot.com/-pvUtFOprIyE/Ul-dDY48llI/AAAAAAABUX4/_HjQF9mLpyE/s1600/full-uml.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://2.bp.blogspot.com/-pvUtFOprIyE/Ul-dDY48llI/AAAAAAABUX4/_HjQF9mLpyE/s400/full-uml.png" /></a></div>
+
+

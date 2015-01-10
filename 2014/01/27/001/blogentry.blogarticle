@@ -1,0 +1,182 @@
+Now that we have demonstrated how to work with motors, the next component we will focus on is a sensor - the infrared sensor.<br />
+<br />
+In this first part we will show how to use the ability of the sensor to find objects and recognize the distance between that object and the sensor. There are other functionalities like receiving commands from the infrared remote control, which we will focus on in later posts.<br />
+<br />
+The used lejos version is 0.5.0-alpha like in our last postings as it is still the most current version (01/27/2014).<br />
+<br />
+<h2>
+    The robot</h2>
+First, as always, we needed a new robot which uses the infrared sensor. Therefore I just enhanced the robot from the last episode a bit (so if you want to understand the source code in this posting it will help if you already have checked the two postings about <a href="http://www.rapidpm.org/2014/01/lego-mindstorms-ev3-components-motors.html">using</a> <a href="http://www.rapidpm.org/2014/01/lego-mindstorms-ev3-components-motors_15.html">motors</a>). I strengthened the basement between the two wheels, so that it wouldn't break because of the weight of the brick and other components. The brick is now no longer located directly between the wheels, but a bit more above. Additionally, I mounted the infrared sensor centered above / in front of the brick and plugged it into the sensor plug 2. The result looks like the following. <br />
+<br />
+<a href="http://2.bp.blogspot.com/-opuibjzU9_I/UuJxa2QG1vI/AAAAAAAAALE/yMY5H4v2YBU/s1600/DSCN0625e.jpg" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://2.bp.blogspot.com/-opuibjzU9_I/UuJxa2QG1vI/AAAAAAAAALE/yMY5H4v2YBU/s1600/DSCN0625e.jpg" height="320" width="292" /></a>
+<a href="http://4.bp.blogspot.com/-RwYTQq7b_X0/UuJxZF2dN3I/AAAAAAAAAK8/G40LOi26B-U/s1600/DSCN0628e.jpg" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://4.bp.blogspot.com/-RwYTQq7b_X0/UuJxZF2dN3I/AAAAAAAAAK8/G40LOi26B-U/s1600/DSCN0628e.jpg" height="320" width="279" /></a>
+<a href="http://1.bp.blogspot.com/-bMjGO2zIqPI/UuJxcCzoZvI/AAAAAAAAALM/ruR6MexJmBw/s1600/DSCN0629.JPG" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://1.bp.blogspot.com/-bMjGO2zIqPI/UuJxcCzoZvI/AAAAAAAAALM/ruR6MexJmBw/s1600/DSCN0629.JPG" height="240" width="320" /></a>
+<br />
+<br />
+( could be a relative of disney's wall-e )<br />
+<h2>
+    The parcours</h2>
+As said, in this tutorial we will focus on the ability of the infrared sensor to locate objects and return the objects' distance.<br />
+<br />
+The scenario I created for that purpose:<br />
+We have a walled zone (cage). The robot is placed anywhere in that cage and the robot will always move forwards until he is directly in front of a wall. He then will turn left (90°) and will again move forwards until he reaches the next wall.<br />
+<br />
+<div class="separator" style="clear: both; text-align: center;">
+    <a href="http://4.bp.blogspot.com/--kzkAggDFmw/UuJzfiCnFJI/AAAAAAAAALU/DnGSbJe2vxY/s1600/DSCN0632.JPG" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://4.bp.blogspot.com/--kzkAggDFmw/UuJzfiCnFJI/AAAAAAAAALU/DnGSbJe2vxY/s1600/DSCN0632.JPG" height="249" width="320" /></a></div>
+<br />
+<br />
+<h2>
+    The infrared sensor API</h2>
+So, before looking at the code let's talk a bit about what classes and methods the api offers for the infrared sensor.<br />
+<br />
+It's quite easy to use an infrared sensor. You can simply instantiate an object of the EV3InfraredSensor-class. The (slightly) harder part is to tell the program to use the functionality of the sensor to detect objects and return their distances - and react on the returned values of course. Therefore you need: RangeFinderAdaptor, RangeFeatureDetector and FeatureListener.<br />
+<br />
+But it's not as hard as it might seem now.<br />
+The aim is to have a listener on the sensor, so that the it returns the distance of a recognized object in regular time intervals (let's say: return the object's distance every second).<br />
+We need a class, which implements the FeatureListener, to do that. In my opinion the name FeatureListener is a bit confusing.. "Feature" means the object that has been detected by the sensor. The class which implements it has to implement the method<br />
+public void featureDetected(final Feature feature, final FeatureDetector detector);<br />
+And this method is called in the given interval, so we react to the distance of the detected object here (we will see how that works in the code for the parcours).<br />
+But that implementing class is the last thing we will do.<br />
+The regular order for realizing our aim with the instantiated Sensor-object is:<br />
+<ol>
+    <li>Instantiate a RangeFinderAdaptor-object and tell it in which mode the sensor is used</li>
+    <li>Instantiate a RangeFeatureDetector-object and tell it: the interval of checking the object's distance and the maximum distance of objects. It also needs the (prior to this step) created RangeFinderAdaptor-object.</li>
+    <li>Instantiate an object of the class which implements the FeatureListener</li>
+    <li>Add the instantiated listener from step 3 to the RangeFeatureDetector-object from step 2.</li>
+</ol>
+That's it. So after the theory let's have a look at the finished plain code.<br />
+<br />
+<h2>
+    The code </h2>
+We have two classes this time. The Main-Class (as always) and the class which implements the needed FeatureListener.<br />
+<br />
+Let's start with the Main-Class:<br />
+<br />
+<pre class="brush: java">import lejos.hardware.Button;
+import lejos.hardware.motor.Motor;
+import lejos.hardware.port.SensorPort;
+import lejos.hardware.sensor.EV3IRSensor;
+import lejos.robotics.RangeFinderAdaptor;
+import lejos.robotics.navigation.DifferentialPilot;
+import lejos.robotics.objectdetection.FeatureListener;
+import lejos.robotics.objectdetection.RangeFeatureDetector;
+import lejos.utility.Delay;
+
+public class Main {
+
+    protected final static double NINETY_DEGREES = 90.0;
+    protected final static double PILOT_SPEED = 50.0;
+    protected final static int PILOT_ACCELERATION = 25;
+    protected final static float MAX_DISTANCE = 100.0f;
+    protected final static int INTERVAL = 500;
+    protected final static double WHEEL_DIAMETER = 30.0f;
+    protected final static double DISTANCE_BETWEEN_WHEELS = 170.0;
+
+    public static void main(String[] args) {
+
+        final DifferentialPilot pilot = new DifferentialPilot(WHEEL_DIAMETER, DISTANCE_BETWEEN_WHEELS, Motor.C, Motor.B);
+        final EV3IRSensor infraredSensor = new EV3IRSensor(SensorPort.S2);
+
+        configurePilot(pilot);
+        configureInfraredSensor(infraredSensor, pilot);
+
+        //wait for the sensor to be completely initialized and start the robot
+        Delay.msDelay(5000);
+        System.out.println("    Starting!");
+        pilot.forward();
+        Button.waitForAnyPress();
+    }
+
+    private static void configureInfraredSensor(final EV3IRSensor infraredSensor, final DifferentialPilot pilot) {
+        final RangeFinderAdaptor rangeFinderAdaptor = new RangeFinderAdaptor(infraredSensor.getDistanceMode());
+        final RangeFeatureDetector rangeFeatureDetector = new RangeFeatureDetector(rangeFinderAdaptor, MAX_DISTANCE, INTERVAL);
+        final FeatureListener detectedObjectListener = new DetectedObjectListener(pilot);
+        rangeFeatureDetector.addListener(detectedObjectListener);
+    }
+
+    private static void configurePilot(final DifferentialPilot pilot) {
+        pilot.setAcceleration(PILOT_ACCELERATION);
+        pilot.setRotateSpeed(PILOT_SPEED);
+        pilot.setTravelSpeed(PILOT_SPEED);
+    }
+}
+</pre>
+<br />
+The main-method is quite short and simple. In the first part we instantiate the pilot to control the wheels/motors and the infrared sensor. For more information on the pilot check the corresponding postings about using motors with the lejos api if you haven't done yet).<br />
+The EV3InfraredSensor-class only needs to know which plug it is plugged into to create a corresponding object.<br />
+<br />
+After creating our needed pilot and sensor we need to configure them. Have a look at the configureInfraredSensor-method. That's were we realize the things described in the last paragraph.<br />
+<ol>
+    <li>We create a RangeFinderAdaptor-object by telling the constructor in which mode the sensor should work.</li>
+    <li>We create a RangeFeatureDetector and assign the RangeFinderAdaptor-object plus the maximum distance of objects and the interval where the sensor should check for objects.</li>
+    <li>We create a FeatureListener-object which needs the pilot because we will control the pilot in it. We will see the implementation of the listener next.</li>
+    <li>We assign the created listener to the RangeFeatureDetector so the featureDetected-method of the listener is called in the configured interval.</li>
+</ol>
+After configuring the sensor I set a delay of five seconds because the configuration needs some time. When I tried starting the pilot without a delay it came to weird reactions like the robot moving forwards and backwards some millimeters jerkily.<br />
+After the delay the robot will start moving forwards and the rest of the code is done in the listener, so let's have a look at it next. (Button.waitForAnyPress() is just used to let the program continue. Without that line the program would just end before the robot even started moving.)<br />
+<br />
+The Listener-class:<br />
+<br />
+<pre class="brush: java">import lejos.robotics.navigation.DifferentialPilot;
+import lejos.robotics.objectdetection.Feature;
+import lejos.robotics.objectdetection.FeatureDetector;
+import lejos.robotics.objectdetection.FeatureListener;
+import static org.rapidpm.ev3.infrared.Main.*;
+
+public class DetectedObjectListener implements FeatureListener {
+
+    private DifferentialPilot pilot;
+
+    public DetectedObjectListener(final DifferentialPilot pilot) {
+        this.pilot = pilot;
+    }
+
+    @Override
+    public void featureDetected(final Feature feature, final FeatureDetector detector) {
+        int range = (int)feature.getRangeReading().getRange();
+        if(range &lt;= 10){
+            if(range &lt;=2){
+                System.exit(0);
+            }
+            pilot.stop();
+            pilot.rotate(NINETY_DEGREES);
+            pilot.forward();
+        }
+    }
+}
+</pre>
+<br />
+We have a field for the pilot from the constructor which we will use in the featureDetected()-method which is called in the configured interval.<br />
+In that method we get the distance/range of a recognized object from the Feature-object (which represents the detected object).<br />
+If the range is greater than 10 (centimeters), nothing will happen. The robot will of course continue moving forward (remember that in the main-method we called pilot.forward() and told the program to wait for a button press to exit the program).<br />
+If the range is lower than 10, we know that the robot has reached a wall. So we tell the pilot to stop. After that we let the robot rotate by 90°. At last we tell the pilot to move forwards again. An exception to that behavior is the special case if the range is lower or equals 2 cm. If that is the case the program will exit. Why is that? Without that backdoor, the program would run until any button of the brick is pressed (remember the main-method). But instead of having to grab the robot and press a button we now can just hold any object directly in front of the infrared sensor and the program will exit.<br />
+<h2>
+    The result</h2>
+At the end I added some console output to the featureDetected-method to have some feedback during the execution of the program.<br />
+<br />
+<pre class="brush: java">    @Override
+    public void featureDetected(final Feature feature, final FeatureDetector detector) {
+        int range = (int)feature.getRangeReading().getRange();
+        if(range &lt;= 10){
+            if(range &lt;=3){
+                System.out.println("Recognized signal directly on front of me: exiting!");
+                System.exit(0);
+            }
+            System.out.print("Reached wall! Stopping...");
+            pilot.stop();
+            System.out.println("done!");
+            System.out.print("Rotating 90 degrees...");
+            pilot.rotate(NINETY_DEGREES);
+            System.out.println("done!");
+            pilot.forward();
+        } else {
+            System.out.println("range: "+range);
+        }
+    }
+</pre>
+<br />
+And here is the result (watch on youtube for better quality):<br />
+<br />
+<div class="separator" style="clear: both; text-align: center;">
+    <object class="BLOGGER-youtube-video" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0" data-thumbnail-src="https://ytimg.googleusercontent.com/vi/OzLn8FzbEto/0.jpg" height="266" width="320"><param name="movie" value="https://www.youtube.com/v/OzLn8FzbEto?version=3&f=user_uploads&c=google-webdrive-0&app=youtube_gdata" /><param name="bgcolor" value="#FFFFFF" /><param name="allowFullScreen" value="true" /><embed width="320" height="266"  src="https://www.youtube.com/v/OzLn8FzbEto?version=3&f=user_uploads&c=google-webdrive-0&app=youtube_gdata" type="application/x-shockwave-flash" allowfullscreen="true"></embed></object></div>
+<br />

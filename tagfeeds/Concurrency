@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title>Concurrency</title>
+    <category label="Concurrency"/>
+    <updated>2015-01-10T01:39:11.554+01:00</updated>
+    <id>http://rapidpm.github.io</id>
+    <author>
+        <name>Sven Ruppert</name>
+    </author>
+    <entry>
+        <title>Java8 CompletableFuture for JavaFX and CDI Part I</title>
+        <category label="CDI"/>
+        <category label="Concurrency"/>
+        <category label="Core Java"/>
+        <category label="Java8"/>
+        <category label="JavaFX"/>
+        <published>2014-03-28T00:00:00+01:00</published>
+        <author>
+            <name>Sven Ruppert</name>
+        </author>
+        <content type="html">&lt;article class="article clearfix"&gt;
+							&lt;header class="article-header"&gt;
+								&lt;h2 class="article-title"&gt;&lt;a href="/2014/03/28/java8-completablefuture-for-javafx-and.html" rel="tag"&gt;Java8 CompletableFuture for JavaFX and CDI Part I&lt;/a&gt;&lt;/h2&gt;
+								&lt;p&gt;&lt;time datetime="2014-03-28"&gt;2014-03-28&lt;/time&gt; &lt;a href="/team/sven-ruppert" rel="author"&gt;from Sven Ruppert&lt;/a&gt;&lt;/p&gt;
+							&lt;/header&gt;
+							&lt;div class="article-content clearfix"&gt;
+								&lt;div class="post-thumb"&gt;
+									&lt;img src="./site/content/post_thumb.jpg" width="" height="" alt="" /&gt;
+								&lt;/div&gt;
+								&lt;div class="post-excerpt"&gt;Java8 CompletableFuture for JavaFX and CDI Part I
+
+Java8 will give you a few more tools to solve concurrency problems.&lt;br/&gt;
+One of them is the CompletableFuture. I will show you, how you could sync the &lt;br/&gt;
+two different init-cycles from CDI and JavaFX with this.&lt;br/&gt;
+&lt;br/&gt;
+CDI and JavaFX are using a life-cycle during the init process. &lt;br/&gt;
+For CDI you can use the method that is annotated with the &lt;br/&gt;
+AnnotationLiteral @Postconstruct and for JavaFX you can use the method initialize(..)
+&lt;br/&gt;
+If you want to have a method that is called after both others are finished you have to think &lt;br/&gt;
+about the problem that it is not clear which method is called first.&lt;br/&gt;
+To show more in detail what the problem is let us think about the following.
+&lt;br /&gt;
+&lt;pre class="brush: java"&gt; 
+private String pattern;
+private SimpleDateFormat sdf;
+
+//beispielhaft für eine init
+public void createSDF(){
+    this.sdf = new SimpleDateFormat(this.pattern);        
+}
+
+//beispielhaft für eine init
+public void newPattern(final String pattern) {
+    this.pattern = pattern;
+}
+
+public String format(final Date date){
+    return sdf.fomat(date);
+}
+&lt;/pre&gt;
+
+To use the method format(..) you must use the methods newPattern(..) and createSDF first.&lt;br/&gt;
+But both in the right order like the following code snipp.
+&lt;br /&gt;
+&lt;pre class="brush: java"&gt; 
+newPattern("yyyy.MM.dd");
+createSDF();
+final String s = versionAB.format(new Date());
+System.out.println("s = " + s);
+&lt;/pre&gt;
+If you are calling first createSDF(..) for example you will get an exception.&lt;br/&gt;
+But thinking to the problem with CDI and JavaFX it must be
+valid to do something like the following.
+&lt;br /&gt;
+&lt;pre class="brush: java"&gt; 
+createSDF();
+newPattern("yyyy.MM.dd");
+
+final String s = versionAB.format(new Date());
+System.out.println("s = " + s);
+&lt;/pre&gt;
+The method creatdSDF(..) is called before newPattern(..).&lt;br/&gt;
+The solution is quite simple. The method call from createSDF must be non blocking but&lt;br/&gt;
+waiting with the execution until newPattern(..) was called.&lt;br/&gt;
+The same with format(..). This method call must wait until both are finished but itself it &lt;br/&gt;
+is an blocking method call. This is to give the developer the feeling he expected, &lt;br/&gt;
+if he is working with the result from format(..).
+&lt;br/&gt;
+To solve this we have to booleans called initCompleteA and initCompleteB. &lt;br/&gt;
+Both are false in the beginning. If newPattern(..) is called initcompleteA will be true, &lt;br/&gt;
+and initCompleteB will be true after the method creatSDF() is ready.
+
+&lt;br /&gt;
+&lt;pre class="brush: java"&gt; 
+public void newPattern(final String pattern) {
+    this.pattern = pattern;
+    initCompleteA=true;
+    System.out.println("newPattern = " + pattern);
+}
+public void createSDF(){
+    CompletableFuture&amp;lt;Void&amp;gt; supplyAsync
+        = CompletableFuture
+        .supplyAsync(taskCreateSDF, cachedThreadPool);
+    supplyAsync.thenAccept(System.out::println);
+}
+public Supplier&amp;lt;Void&amp;gt; taskCreateSDF = ()-&amp;gt; {
+    while(! initCompleteA ){
+        try {
+            System.out.println("createSDF is waiting" );
+            TimeUnit.MILLISECONDS.sleep(4);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    sdf = new SimpleDateFormat(pattern);
+    initCompleteB = true;
+    return null;
+};
+&lt;/pre&gt;
+
+The Method format(..) now is only waiting for both...
+&lt;br /&gt;
+&lt;pre class="brush: java"&gt; 
+public Supplier&amp;lt;String&amp;gt; task = ()-&amp;gt; {
+//Warten bis alle true
+    while(! (initCompleteA &amp;&amp; initCompleteB) ){
+        try {
+            System.out.println("initCompleteA = " + initCompleteA);
+            System.out.println("initCompleteB = " + initCompleteB);
+            System.out.println("pattern = " + pattern);
+            System.out.println("sdf = " + sdf);
+            TimeUnit.MILLISECONDS.sleep(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    return sdf.format(this.date);
+};
+private Date date;
+
+public String format(final Date date){
+    this.date = date;
+    supplyAsync = CompletableFuture
+        .supplyAsync(task, cachedThreadPool);
+    try {
+        return supplyAsync.get();
+    } catch (InterruptedException | ExecutionException e) {
+        e.printStackTrace();
+    }
+    return "";
+}
+&lt;/pre&gt;
+
+The example you will find at
+&lt;a href="http://stash.rapidpm.org/projects/PUB/repos/jaxenter.de-0016-async-calls/browse"&gt;http://stash.rapidpm.org/projects/PUB/repos/jaxenter.de-0016-async-calls/browse&lt;/a&gt;
+&lt;br/&gt;
+The next Part will show how we have to implement
+the JavaFX CDI bootstrapping to use this.
+&lt;/div&gt;
+							&lt;/div&gt;
+							&lt;footer class="article-footer clearfix"&gt;
+								&lt;span class="post-author"&gt;&lt;a href="/team/sven-ruppert" rel="author"&gt;Sven Ruppert&lt;/a&gt;&amp;nbsp;&amp;nbsp;|&amp;nbsp;&amp;nbsp;&lt;/span&gt;
+								&lt;span class="post-date"&gt;&lt;a href="#" rel="date"&gt;2014-03-28&lt;/a&gt;&amp;nbsp;&amp;nbsp;|&amp;nbsp;&amp;nbsp;&lt;/span&gt;
+							&lt;/footer&gt;
+						&lt;/article&gt;</content>
+        <summary>Das ist der Inhalt der in Kurzform angezeigt werden soll</summary>
+    </entry>
+</feed>

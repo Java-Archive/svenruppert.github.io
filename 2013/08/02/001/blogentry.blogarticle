@@ -1,0 +1,98 @@
+Grundgedanke: Warum CDI? (<a href="http://wiki.rapidpm.org/display/PHB/02+-+CDI+for+JavaEE+and+JavaSE" target="_blank">Wiki</a>) <br />
+CDI als eine Technik die auf der SE als auch auf der EE Seite zur Verfügung steht ist ein mächtiges Werkzeug um Quelltext in einer Anwendung zu entkoppeln.  <br />
+Der modulare Aufbau kann auf einfache Art und Weise unterstützt und bei Alt-Anwendungen eingeführt werden.  <br />
+<b>kürzere Notation?</b><br />Manchmal ist die Notation per Inject kürzer. Sobald allerdings die einzelnen Qualifier dazukommen, ist meist der Aufwand zum Aufruf eines Konstruktors kaum unterschiedlich.  <br />
+<b>lösen von statischen Abhängigkeiten?</b><br />Dieser Punkt ist einer der Wesentlichen. Wie kann man zur Entwicklungszeit die Abhängigkeiten zu den anderen Projektmodulen möglichst gering halten?<br />Gehen wir von der Definition einer Liste aus. Als Rückgabewert einer Methode wird die List verwendet.  <br />
+<b>Definition Rückgabewert</b>  <br />
+<a href="http://lh4.ggpht.com/-d-b41AM1HyQ/UftGL4WdLuI/AAAAAAABS8s/oGfAp2F9_EA/s1600-h/image%25255B28%25255D.png"><img alt="image" border="0" src="http://lh4.ggpht.com/-j1uXwlxRVDo/UftGMdAbWjI/AAAAAAABS80/tnx7-9PIgr8/image_thumb%25255B20%25255D.png?imgmax=800" height="69" style="background-image: none; border-bottom: 0px; border-left: 0px; border-right: 0px; border-top: 0px; display: inline; padding-left: 0px; padding-right: 0px; padding-top: 0px;" title="image" width="437" /></a>  <br />
+Damit sind nachfolgende Aufrufer nicht mehr an die Implementierung der List gebunden. In der Methode jedoch besteht meist die Abhängigkeit zu der entsprechenden Implementierung obwohl auch das meist nicht notwendig ist.  <br />
+<b>Erzeugen der Liste</b>  <br />
+<code><a href="http://lh4.ggpht.com/-7I3g1Dg0N14/UftGMotqprI/AAAAAAABS88/_I8F01DVLhM/s1600-h/image%25255B27%25255D.png"><img alt="image" border="0" src="http://lh6.ggpht.com/-Q9Pu7l58d_Q/UftGNH6eGCI/AAAAAAABS9E/7YyW5wH005M/image_thumb%25255B19%25255D.png?imgmax=800" height="206" style="background-image: none; border-bottom: 0px; border-left: 0px; border-right: 0px; border-top: 0px; display: inline; padding-left: 0px; padding-right: 0px; padding-top: 0px;" title="image" width="437" /></a></code>  <br />
+<code></code> <br />
+Gehen wir davon aus, dass keine spezifischen Methoden der ArrayList verwendet werden. Selten werden Methoden wie z.B. trimToSize() verwendet. Somit ist die statische Abhängigkeit zu der ArrayList nicht notwendig. Sollte sich zur Laufzeit herausstellen, das die Wahl dieser Implementierung nicht optimal gewesen ist, muss der Quelltext angepasst und neu verteilt werden. Mit std SE Mitteln kann man das durch entsprechende Factories lösen. Beispielhaft soll hier folgende Implementierung verwendet werden.  <br />
+<b>Definition ListFactory</b>  <br />
+<code><a href="http://lh6.ggpht.com/-MpWEc3Vj5Ss/UftGNUj5LWI/AAAAAAABS9M/Bv4kRfLVI1w/s1600-h/image%25255B15%25255D.png"><img alt="image" border="0" src="http://lh5.ggpht.com/-n3H4xK_UpBQ/UftGN8uScSI/AAAAAAABS9U/_tYw3ap0ImU/image_thumb%25255B9%25255D.png?imgmax=800" height="484" style="background-image: none; border-bottom-width: 0px; border-left-width: 0px; border-right-width: 0px; border-top-width: 0px; display: inline; padding-left: 0px; padding-right: 0px; padding-top: 0px;" title="image" width="437" /></a></code>  <br />
+Der Entwickler selbst schreibt nun seinen Quelltext unter Verwendung der Factory. Die Factory sollte unter Umständen immer neu erzeugt werden, um Nebenläufigkeitsprobleme sofort auszuschliessen. Selbstverständlich kann auch die Factory threadsave programmiert werden, im schlimmsten Fall mit den Schlüsselwort synchronized.  <br />
+<b>Verwendung ListFactory</b>  <br />
+<a href="http://lh3.ggpht.com/-oFzYiG5IAQ4/UftGOSJ28dI/AAAAAAABS9c/fXECqVj2NQY/s1600-h/image%25255B30%25255D.png"><img alt="image" border="0" src="http://lh5.ggpht.com/-CVfHTeJNC_E/UftGOxUS5bI/AAAAAAABS9k/ldG5rybeNBs/image_thumb%25255B22%25255D.png?imgmax=800" height="157" style="background-image: none; border-bottom: 0px; border-left: 0px; border-right: 0px; border-top: 0px; display: inline; padding-left: 0px; padding-right: 0px; padding-top: 0px;" title="image" width="437" /></a>  <br />
+Bisher wurde nun die statische Abhängigkeit zur ArrayList verhindert, die Entscheidung eine ArrayList zu nehmen ist jedoch immer noch expliziet gefallen.  <br />
+Umgehen kann man das durch die Verwendung der ListFactory.&nbsp; <br />
+Die Implementierung der ListFactory selber hat auch wieder die statischen Abhängigkeiten zu allen vorgesehenen Implementierungen.&nbsp; <br />
+Der nächste Schritt kann ein ContextRsolver sein, der in die Factory eingebunden wird und zur Laufzeit die Wahl der Implementierung trifft.  <br />
+Der ContextResolver wird entweder beim Methodenaufruf übergeben, oder bei der Initialisierung der Factory erzeugt/übergeben/geholt.  <br />
+Möchte man nun die Factory so erstellen, das diese wiederum nicht statische Abhängigkeiten zu den jeweiligen Contexten bzw Implementierungen der Liste hat, muss eine Registry gebaut werden.  <br />
+Dort kann man zur Laufzeit die jeweiligen Implementierungen registrieren und für eine Auflösung zur Verfügung stellen.  <br />
+Spätestens ab diesem Zeitpunkt wird die Implementierung aufwendig, da man entweder diesen Mechanismus für alle Implementierungen vorhalten muss, oder eine generische Implementierung notwendig ist.  <br />
+Hier Hilft CDI durch seine Konzepte, ohne das man sich mit der Basisimplementierung der Infrastruktur beschäftigen muss.&nbsp; <br />
+<b></b>&nbsp; <br />
+<b>Wie ist nun die Lösung mittels CDI?</b> <br />
+Für den Entwickler sieht die Verwendung exemplarisch (<b>CDILegacyTest</b>) wie folgt aus. <br />
+<b>Def List per CDI</b> <br />
+<a href="http://lh4.ggpht.com/-bLcZPIibAx4/UftGPNKMxiI/AAAAAAABS9s/d4Dcxqv8XTk/s1600-h/image%25255B34%25255D.png"><img alt="image" border="0" src="http://lh5.ggpht.com/-YjcOGqGEVvM/UftGPoSfgvI/AAAAAAABS90/uMCmYSSMRXU/image_thumb%25255B24%25255D.png?imgmax=800" height="71" style="background-image: none; border-bottom: 0px; border-left: 0px; border-right: 0px; border-top: 0px; display: inline; padding-left: 0px; padding-right: 0px; padding-top: 0px;" title="image" width="437" /></a> <br />
+Die Verwendung erfolgt wie gewohnt. Das AnnotationsLiteral <b>CDILegacyTest</b> gibt an, welcher Producer zu wählen ist. <br />
+<b>Def ListProducer</b> <br />
+<a href="http://lh4.ggpht.com/-Mqa6FjW3nVY/UftGP4pVxLI/AAAAAAABS98/lnd4vw1eVW0/s1600-h/image%25255B38%25255D.png"><img alt="image" border="0" src="http://lh3.ggpht.com/-K3k-sZg_3AY/UftGQXAGksI/AAAAAAABS-E/BD2wV4v8EVk/image_thumb%25255B26%25255D.png?imgmax=800" height="60" style="background-image: none; border-bottom: 0px; border-left: 0px; border-right: 0px; border-top: 0px; display: inline; padding-left: 0px; padding-right: 0px; padding-top: 0px;" title="image" width="437" /></a> <br />
+Fertig sind wir. <br />
+<b>dynamische Rekonfiguration?</b> <br />
+CDI stellt eine sehr angenehme Basis zur Erzeugung dynamisch rekonfigurierbarer Systeme dar. Das Konzept der Instance&lt;T&gt; ist hier der Einstiegspunkt. <br />
+In der Definition der Attribute wird der Proxy Instance&lt;T&gt; verwendet. <br />
+<b>Def List-Instance</b> <br />
+<a href="http://lh3.ggpht.com/-Jx7pcJ8Lljc/UftGQu_1iaI/AAAAAAABS-I/YN22O1upDnA/s1600-h/image%25255B42%25255D.png"><img alt="image" border="0" src="http://lh6.ggpht.com/-x0LxTetnq6Y/UftGRDDqJ5I/AAAAAAABS-U/-_opHCRoGzw/image_thumb%25255B28%25255D.png?imgmax=800" height="60" style="background-image: none; border-bottom: 0px; border-left: 0px; border-right: 0px; border-top: 0px; display: inline; padding-left: 0px; padding-right: 0px; padding-top: 0px;" title="image" width="437" /></a> <br />
+<code></code> <br />
+Zu dem Zeitpunkt wenn auf die Variable zugegriffen werden muss, wird per get() die konkrete Implementierung geholt. <br />
+<b>Verwendung der Liste</b> <br />
+<a href="http://lh6.ggpht.com/-pxLHjI0MXfo/UftGRdDxBxI/AAAAAAABS-Y/OjA7SmGkyis/s1600-h/image%25255B46%25255D.png"><img alt="image" border="0" src="http://lh4.ggpht.com/-4qL8gg2H9OA/UftGR5ul8nI/AAAAAAABS-k/_SCq8OqH7-0/image_thumb%25255B30%25255D.png?imgmax=800" height="65" style="background-image: none; border-bottom: 0px; border-left: 0px; border-right: 0px; border-top: 0px; display: inline; padding-left: 0px; padding-right: 0px; padding-top: 0px;" title="image" width="437" /></a> <br />
+<code></code> <br />
+Damit kann die Entscheidung von der Erzeugung der verwendenden Instanz auf den Zeitpunkt der Verwendung verschoben werden. <br />
+In diesem Moment sollten im System hinreichend Informationen zur Verfügung stehen um die richtige Implementierung wählen zu können. Das Konzept basiert auf einem ContextResolver. <br />
+In diesem werden die Zustandsinformationen der Laufzeitumgebung, des Benutzers und was immer notwendig ist aggregiert und führen zu einer deklarativen Entscheidung. <br />
+Das Ergebnis ist ein umgebungsspezifisches AnnotationsLiteral mit dessen Hilfe die zur Verfügung stehenden Producer ausgewählt werden. Fertig ist das dynamisch rekonfigurierbare System. <br />
+Die Implementierung des ContextResolvers kann wiederum lean selektiert werden <img alt="(Zwinkern)" src="http://wiki.rapidpm.org/s/de_DE-1988229788/4249/84a11b3502ae79dd6028856f37ff89838963c1cc.5/_/images/icons/emoticons/wink.png" />  <br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />

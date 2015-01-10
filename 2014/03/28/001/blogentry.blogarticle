@@ -1,0 +1,130 @@
+Java8 CompletableFuture for JavaFX and CDI Part I
+
+Java8 will give you a few more tools to solve concurrency problems.<br/>
+One of them is the CompletableFuture. I will show you, how you could sync the <br/>
+two different init-cycles from CDI and JavaFX with this.<br/>
+<br/>
+CDI and JavaFX are using a life-cycle during the init process. <br/>
+For CDI you can use the method that is annotated with the <br/>
+AnnotationLiteral @Postconstruct and for JavaFX you can use the method initialize(..)
+<br/>
+If you want to have a method that is called after both others are finished you have to think <br/>
+about the problem that it is not clear which method is called first.<br/>
+To show more in detail what the problem is let us think about the following.
+<br />
+<pre class="brush: java"> 
+private String pattern;
+private SimpleDateFormat sdf;
+
+//beispielhaft für eine init
+public void createSDF(){
+    this.sdf = new SimpleDateFormat(this.pattern);        
+}
+
+//beispielhaft für eine init
+public void newPattern(final String pattern) {
+    this.pattern = pattern;
+}
+
+public String format(final Date date){
+    return sdf.fomat(date);
+}
+</pre>
+
+To use the method format(..) you must use the methods newPattern(..) and createSDF first.<br/>
+But both in the right order like the following code snipp.
+<br />
+<pre class="brush: java"> 
+newPattern("yyyy.MM.dd");
+createSDF();
+final String s = versionAB.format(new Date());
+System.out.println("s = " + s);
+</pre>
+If you are calling first createSDF(..) for example you will get an exception.<br/>
+But thinking to the problem with CDI and JavaFX it must be
+valid to do something like the following.
+<br />
+<pre class="brush: java"> 
+createSDF();
+newPattern("yyyy.MM.dd");
+
+final String s = versionAB.format(new Date());
+System.out.println("s = " + s);
+</pre>
+The method creatdSDF(..) is called before newPattern(..).<br/>
+The solution is quite simple. The method call from createSDF must be non blocking but<br/>
+waiting with the execution until newPattern(..) was called.<br/>
+The same with format(..). This method call must wait until both are finished but itself it <br/>
+is an blocking method call. This is to give the developer the feeling he expected, <br/>
+if he is working with the result from format(..).
+<br/>
+To solve this we have to booleans called initCompleteA and initCompleteB. <br/>
+Both are false in the beginning. If newPattern(..) is called initcompleteA will be true, <br/>
+and initCompleteB will be true after the method creatSDF() is ready.
+
+<br />
+<pre class="brush: java"> 
+public void newPattern(final String pattern) {
+    this.pattern = pattern;
+    initCompleteA=true;
+    System.out.println("newPattern = " + pattern);
+}
+public void createSDF(){
+    CompletableFuture&lt;Void&gt; supplyAsync
+        = CompletableFuture
+        .supplyAsync(taskCreateSDF, cachedThreadPool);
+    supplyAsync.thenAccept(System.out::println);
+}
+public Supplier&lt;Void&gt; taskCreateSDF = ()-&gt; {
+    while(! initCompleteA ){
+        try {
+            System.out.println("createSDF is waiting" );
+            TimeUnit.MILLISECONDS.sleep(4);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    sdf = new SimpleDateFormat(pattern);
+    initCompleteB = true;
+    return null;
+};
+</pre>
+
+The Method format(..) now is only waiting for both...
+<br />
+<pre class="brush: java"> 
+public Supplier&lt;String&gt; task = ()-&gt; {
+//Warten bis alle true
+    while(! (initCompleteA && initCompleteB) ){
+        try {
+            System.out.println("initCompleteA = " + initCompleteA);
+            System.out.println("initCompleteB = " + initCompleteB);
+            System.out.println("pattern = " + pattern);
+            System.out.println("sdf = " + sdf);
+            TimeUnit.MILLISECONDS.sleep(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    return sdf.format(this.date);
+};
+private Date date;
+
+public String format(final Date date){
+    this.date = date;
+    supplyAsync = CompletableFuture
+        .supplyAsync(task, cachedThreadPool);
+    try {
+        return supplyAsync.get();
+    } catch (InterruptedException | ExecutionException e) {
+        e.printStackTrace();
+    }
+    return "";
+}
+</pre>
+
+The example you will find at
+<a href="http://stash.rapidpm.org/projects/PUB/repos/jaxenter.de-0016-async-calls/browse">http://stash.rapidpm.org/projects/PUB/repos/jaxenter.de-0016-async-calls/browse</a>
+<br/>
+The next Part will show how we have to implement
+the JavaFX CDI bootstrapping to use this.

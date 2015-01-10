@@ -1,0 +1,200 @@
+<br />
+With this posting I will start a series of articles where I explain which components/sensors are contained in the Lego Mindstorms EV3-set an how to work with them.<br />
+<br />
+In this posting I will start with one of the most basic components - the motors. The Mindstorms-set includes three motors: two of the same size and a smaller one.<br />
+<br />
+Both types work the same way and so they have the same api-methods.<br />
+<br />
+I will build a simple program were I let the robot perform some movements to different directions.<br />
+<br />
+Before we can start developing, we first need a robot which we will control with the program. I built a simple robot for that. It consists of only one single component connected to the brick: One of the bigger motors. There are two wheels plugged into the motor and two more wheels which aren't connected to the motor and just work as stabilization. Here are some pics:<br />
+<br />
+<a href="http://4.bp.blogspot.com/-gJ0BPfi2Pb0/Us6us3v_eeI/AAAAAAAAAIk/EenQtF2MY7M/s1600/DSCN0594.JPG" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://4.bp.blogspot.com/-gJ0BPfi2Pb0/Us6us3v_eeI/AAAAAAAAAIk/EenQtF2MY7M/s1600/DSCN0594.JPG" height="240" width="320" /></a>
+<a href="http://1.bp.blogspot.com/-lGWCS5TqS3s/Us6uusRK-GI/AAAAAAAAAIs/mEk-cZr8jKg/s1600/DSCN0596.JPG" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://1.bp.blogspot.com/-lGWCS5TqS3s/Us6uusRK-GI/AAAAAAAAAIs/mEk-cZr8jKg/s1600/DSCN0596.JPG" height="240" width="320" /></a>
+<a href="http://1.bp.blogspot.com/-Lp-Hs7-z_nw/Us6uzYNSw6I/AAAAAAAAAI8/eLNfIbfRkEg/s1600/DSCN0597.JPG" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://1.bp.blogspot.com/-Lp-Hs7-z_nw/Us6uzYNSw6I/AAAAAAAAAI8/eLNfIbfRkEg/s1600/DSCN0597.JPG" height="320" width="240" /></a>
+<a href="http://1.bp.blogspot.com/-4mXFS9dCiYg/Us6u4bC5xlI/AAAAAAAAAJM/XT-HV-eSpSg/s1600/DSCN0599.JPG" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://1.bp.blogspot.com/-4mXFS9dCiYg/Us6u4bC5xlI/AAAAAAAAAJM/XT-HV-eSpSg/s1600/DSCN0599.JPG" height="240" width="320" /></a><br />
+( There are different ways at different abstract levels to control the motors, but I will use the most basic method by using the Motor-class directly in this first part. We couldn't use a more abstract method which enable features like driving turns or following paths because we only have a single motor connected to our robot here. So the robot can just move forwards and backwards. )<br />
+<br />
+I plugged the motor into plug connection B on the brick.<br />
+<br />
+So, now we are ready to develop the program for our new robot. I set up an IntelliJ-project as described in our posting about <a href="http://www.rapidpm.org/2013/12/developing-lejos-programs-with-intellij.html">developing leJOS programs with IntelliJ on Windows</a>.<br />
+<br />
+First, here is the plain code which is quite easy to understand:<br />
+<br />
+<pre class="brush: java">import lejos.hardware.motor.Motor;
+import lejos.utility.Delay;
+
+public class Main {
+    public static void main(String[] args) {
+
+        Motor.B.setAcceleration(200);
+        Motor.B.setSpeed(90);
+        Motor.B.rotate(360);
+        Motor.B.setSpeed(180);
+        Motor.B.rotate(360);
+        Motor.B.setSpeed(360);
+        Motor.B.rotate(360);
+        Motor.B.backward();
+        Delay.msDelay(3000);
+        Motor.B.stop();
+
+    }
+}
+</pre>
+What does that code do?<br />
+We address the motor in plug connection B via Motor.B. Then we set its acceleration to 200. The standard value is 6000 which means that the motor will accelerate by 6000 degrees per second per second. This is quite fast and so we lowered the value to 200 to get a smoother acceleration.<br />
+Then we set the speed of the motor to 90 degrees per second. After we "configured" the motor, we let it start rotating by 360 degrees. This operation is a blocking operation which means that the program will stop here until the motor rotated 360 degrees (which will be done after 4 seconds at the configured speed of 90 degrees per second).<br />
+After the motor rotated 360 degrees we double the speed to 180 degrees per second and let the motor rotate 360 degrees again. This time the motor will need half the time (2 seconds), of course.<br />
+After that the same happens again with a speed of 360 degrees per second.<br />
+Then, as the last part of the program, we call the backward-method. In contrast to the rotate-method, this method is non-blocking. That means, that the program will continue directly after calling that method, it won't wait till the backwards-movement is done (otherwise the motor wouldn't stop rotating anymore, there is no parameter for defining how long the motor should rotate). Recognize that there is also a rotate()-method with a second, boolean parameter. If you use that one with the boolean parameter = true the method becomes non-blocking like backward(). <br />
+In the next line we tell the program to do nothing for 3 seconds, the motor will of course continue rotating (at the speed which was set as last = 360 degrees per second) during that time. <br />
+Then after these 3 seconds we let the motor stop und the program is at its end.<br />
+<br />
+To get some feedback on what the robot is exactly doing through the program execution, we added some printlns to the console.<br />
+<br />
+<pre class="brush: java">import lejos.hardware.motor.Motor;
+import lejos.utility.Delay;
+
+public class Main {
+    public static void main(String[] args) {
+        /*
+        The standard value for acceleration is (6000 degrees per second) per second
+        which results in a very jerky start when the motor starts rotating.
+        To make the start smoother, the acceleration is set to a lower level.
+         */
+        Motor.B.setAcceleration(200);
+        
+        Motor.B.setSpeed(90);
+        System.out.println("Set speed to 90 degrees per second.");
+        System.out.print("Rotating 360 degrees...");
+        Motor.B.rotate(360);
+        System.out.println("done!");
+        
+        Motor.B.setSpeed(180);
+        System.out.println("Set speed to 180 degrees per second.");
+        System.out.print("Rotating 360 degrees...");
+        Motor.B.rotate(360);
+        System.out.println("done!");
+        
+        Motor.B.setSpeed(360);
+        System.out.println("Set speed to 360 degrees per second...");
+        System.out.print("Rotating 360 degrees...");
+        Motor.B.rotate(360);
+        System.out.println("done!");
+        
+        Motor.B.backward();
+        System.out.print("Now rotating backwards for 3s");
+        Delay.msDelay(3000);
+        System.out.print("...3s are over...");
+        Motor.B.stop();
+        System.out.println("and stopped!");
+
+    }
+}
+</pre>
+That code looks better now, but there's tons of duplicate code. So we put the code for setting different speeds and letting the motor rotate in a function.<br />
+<br />
+<pre class="brush: java">import lejos.hardware.motor.Motor;
+import lejos.utility.Delay;
+
+public class Main {
+    public static void main(String[] args) {
+        /*
+        The standard value for acceleration is (6000 degrees per second) per second
+        which results in a very jerky start when the motor starts rotating.
+        To make the start smoother, the acceleration is set to a lower level.
+         */
+        Motor.B.setAcceleration(200);
+
+        rotateDegreesAtSpeed(360, 90);
+        rotateDegreesAtSpeed(360, 180);
+        rotateDegreesAtSpeed(360, 360);
+
+        Motor.B.backward();
+        System.out.print("Now rotating backwards for 3s");
+        Delay.msDelay(3000);
+        System.out.print("...3s are over...");
+        Motor.B.stop();
+        System.out.println("and stopped!");
+
+    }
+
+    private static void rotateDegreesAtSpeed(final int degreesToRotate, final int degreesPerSecond) {
+        Motor.B.setSpeed(degreesPerSecond);
+        System.out.println("Set speed to "+degreesPerSecond+ "degrees per second.");
+        System.out.print("Rotating "+ degreesToRotate + "degrees...");
+        Motor.B.rotate(degreesToRotate);
+        System.out.println("done!");
+    }
+}</pre>
+<br />
+That was it. After transfering the program onto the brick (via WiFi) we executed the program. Here's a video of how the result looks like (console output readable in higher qualities).<br />
+<br />
+<div class="separator" style="clear: both; text-align: center;">
+    <object class="BLOGGER-youtube-video" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0" data-thumbnail-src="https://ytimg.googleusercontent.com/vi/qr14DFO60Tk/0.jpg" height="266" width="320"><param name="movie" value="https://www.youtube.com/v/qr14DFO60Tk?version=3&f=user_uploads&c=google-webdrive-0&app=youtube_gdata" /><param name="bgcolor" value="#FFFFFF" /><param name="allowFullScreen" value="true" /><embed width="320" height="266"  src="https://www.youtube.com/v/qr14DFO60Tk?version=3&f=user_uploads&c=google-webdrive-0&app=youtube_gdata" type="application/x-shockwave-flash" allowfullscreen="true"></embed></object></div>
+<br />
+<br />
+Perfect. The next thing we did was extending the robot by a second motor - the smaller one. The result looked like the following:<br />
+<br />
+<a href="http://1.bp.blogspot.com/-eNXOOaEsic0/Us6u60ZBzHI/AAAAAAAAAJY/q4p4IaTrQIM/s1600/DSCN0600.JPG" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://1.bp.blogspot.com/-eNXOOaEsic0/Us6u60ZBzHI/AAAAAAAAAJY/q4p4IaTrQIM/s1600/DSCN0600.JPG" height="240" width="320" /></a>
+<a href="http://3.bp.blogspot.com/-SIUBBBpNqBk/Us6u9ehJ2VI/AAAAAAAAAJg/GP55djU9xZk/s1600/DSCN0601.JPG" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://3.bp.blogspot.com/-SIUBBBpNqBk/Us6u9ehJ2VI/AAAAAAAAAJg/GP55djU9xZk/s1600/DSCN0601.JPG" height="240" width="320" /></a>
+<a href="http://1.bp.blogspot.com/-tEuoOrBUdaY/Us6u_wRN4EI/AAAAAAAAAJo/Bp31UBL3OtY/s1600/DSCN0602.JPG" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://1.bp.blogspot.com/-tEuoOrBUdaY/Us6u_wRN4EI/AAAAAAAAAJo/Bp31UBL3OtY/s1600/DSCN0602.JPG" height="240" width="320" /></a><br />
+So the second motor will make the three "razorblades" rotate ( some eyecandy :) ).<br />
+We put the second motor in plug connection A of the brick.<br />
+<br />
+The aim for that second motor should be: The razorblades should always rotate the same speed, the first motor has.<br />
+<br />
+So we extended our program. Here's the finished code:<br />
+<pre class="brush: java">import lejos.hardware.motor.Motor;
+import lejos.utility.Delay;
+
+public class Main {
+    public static void main(String[] args) {
+
+        final int ACCELERATION = 200;
+        final int ONE_ROTATION = 360;
+        /*
+        The standard value for acceleration is (6000 degrees per second) per second
+        which results in a very jerky start when the motor starts rotating.
+        To make the start smoother, the acceleration is set to a lower level.
+         */
+        Motor.B.setAcceleration(ACCELERATION);
+        Motor.A.setAcceleration(ACCELERATION);
+
+        Motor.A.forward();
+        rotateDegreesAtSpeed(ONE_ROTATION, 90);
+        rotateDegreesAtSpeed(ONE_ROTATION, 180);
+        rotateDegreesAtSpeed(ONE_ROTATION, 360);
+
+        Motor.A.backward();
+        System.out.println("Switched Motor A from forward to backward. Waiting for the direction change.");
+        Delay.msDelay(2000);
+        Motor.B.backward();
+
+        System.out.print("Now rotating backwards for 3s");
+        Delay.msDelay(3000);
+        System.out.print("...3s are over...");
+        Motor.B.stop();
+        Motor.A.stop();
+        System.out.println("and stopped!");
+
+    }
+
+    private static void rotateDegreesAtSpeed(final int degreesToRotate, final int degreesPerSecond) {
+        Motor.A.setSpeed(degreesPerSecond);
+        Motor.B.setSpeed(degreesPerSecond);
+        System.out.println("Set speed of motors to "+degreesPerSecond+ " degrees per second.");
+        System.out.print("Rotating "+ degreesToRotate + " degrees...");
+        Motor.B.rotate(degreesToRotate);
+        System.out.println("done!");
+    }
+}</pre>
+At the beginning of the program we set the acceleration of motor A to 200, too. Then we call Motor.A.forward(), which is a non-blocking operation like the backward()-method. We added one line in the created function to set the speed for motor A which is the same as for motor B, of course. After the three function calls we first call bachwards() on motor A. This will make the motor stop as the first step, and then start rotating backwards in a second step. Recognize, that Motor.A.backward() will be called when motor B stopped rotating. To let the robot wait until motor A also stopped, we added a delay of two seconds. After these two seconds the robot will start turning backwards (motor B will rotate into the other direction). At the same time, motor A will start rotating in the other direction, too.<br />
+We will let the robot move backwards for three seconds and then stop both motors.<br />
+<br />
+So, here is the final result:<br />
+<br />
+<div class="separator" style="clear: both; text-align: center;">
+    <object class="BLOGGER-youtube-video" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0" data-thumbnail-src="https://ytimg.googleusercontent.com/vi/F_TNtE2B6Lg/0.jpg" height="266" width="320"><param name="movie" value="https://www.youtube.com/v/F_TNtE2B6Lg?version=3&f=user_uploads&c=google-webdrive-0&app=youtube_gdata" /><param name="bgcolor" value="#FFFFFF" /><param name="allowFullScreen" value="true" /><embed width="320" height="266"  src="https://www.youtube.com/v/F_TNtE2B6Lg?version=3&f=user_uploads&c=google-webdrive-0&app=youtube_gdata" type="application/x-shockwave-flash" allowfullscreen="true"></embed></object></div>
+<br />
+In the next article I will use the DifferentialPilot-class, which is the superior level of abstraction for controlling the motors, to move a two-wheeled robot which can drive turns for example.

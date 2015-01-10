@@ -2,64 +2,337 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title>javafx</title>
     <category label="javafx"/>
-    <updated>2014-11-19T05:33:00.844+01:00</updated>
+    <updated>2015-01-10T01:39:11.554+01:00</updated>
     <id>http://rapidpm.github.io</id>
     <author>
         <name>Sven Ruppert</name>
     </author>
+    <author>
+        <name>Alexander Bischof</name>
+    </author>
     <entry>
-        <title>Und so beginnt alles</title>
+        <title>Java8 CompletableFuture for JavaFX and CDI Part II</title>
         <category label="java"/>
         <category label="javafx"/>
-        <category label="cdi"/>
-        <published>2014-11-14T00:00:00+01:00</published>
+        <category label="blub"/>
+        <published>2014-04-13T00:00:00+02:00</published>
         <author>
             <name>Sven Ruppert</name>
         </author>
-        <content type="html">&lt;div class="blog-post"&gt;
-&lt;h2 class="blog-post-title"&gt;&lt;a href=/2014/11/14/und-so-beginnt-alles.html&gt;Und so beginnt alles&lt;/a&gt;&lt;/h2&gt;
-&lt;p class="blog-post-meta"&gt;2014-11-14 from &lt;a href="/team/sven-ruppert/"&gt;Sven Ruppert&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Und nun ist es soweit... Ich starte hier einen deutschen Blog in dem ich
-    alles mögliche aus dem Entwickleralltag poste.&lt;/p&gt;
-&lt;blockquote&gt;
-    &lt;p&gt;Auf englisch sind die längeren Artikel zu finden unter &lt;strong&gt;www.rapidpm.org&lt;/strong&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;dann mal los....&lt;/p&gt;
+        <content type="html">&lt;article class="article clearfix"&gt;
+							&lt;header class="article-header"&gt;
+								&lt;h2 class="article-title"&gt;&lt;a href="/2014/04/13/java8-completablefuture-for-javafx-and.html" rel="tag"&gt;Java8 CompletableFuture for JavaFX and CDI Part II&lt;/a&gt;&lt;/h2&gt;
+								&lt;p&gt;&lt;time datetime="2014-04-13"&gt;2014-04-13&lt;/time&gt; &lt;a href="/team/sven-ruppert" rel="author"&gt;from Sven Ruppert&lt;/a&gt;&lt;/p&gt;
+							&lt;/header&gt;
+							&lt;div class="article-content clearfix"&gt;
+								&lt;div class="post-thumb"&gt;
+									&lt;img src="./site/content/post_thumb.jpg" width="" height="" alt="" /&gt;
+								&lt;/div&gt;
+								&lt;div class="post-excerpt"&gt;The last part was describing how you could reach the goal to make the order of some dependent method calls independent.
+Now we will see, how we could use this for the combination of CDI and JavaFX.
+&lt;br/&gt;
+If you want to have CDI managed Controllers inside your JavaFX application you have to deal with the two life cycles.
+The init from CDI and the init from JavaFX. If you are combining both technologies, you will have the problem that
+the order of the livecycle steps are not always in the same order. Depending from the technology that will start,
+the order of the init methods will change. For CDI it is the method with the annotation Postconstruct and for JavaFX the method initialize.
+&lt;br/&gt;
+Well, lets see what you could do..
+&lt;br/&gt;
+For this example I will start with the FXMLoader. Check the Method setControllerFactory.
+You will see, that after the creation of the Controller instance the method initInstance() will be called.
+&lt;br /&gt;
+&lt;pre class="brush: java"&gt;
+@Singleton
+public class FXMLLoaderSingleton {
 
-&lt;/div&gt;</content>
+    private @Inject @CDILogger Logger logger;
+    private @Inject Instance&amp;lt;CDIJavaFxBaseController&amp;gt; instance;
+
+    private final ClassLoader cachingClassLoader = new FXClassLoader(FXMLLoader.getDefaultClassLoader());
+    private final Map&amp;lt;Class, FXMLLoader&amp;gt; class2LoaderMap = new HashMap&amp;lt;Class, FXMLLoader&amp;gt;();
+
+    public FXMLLoader getFXMLLoader(Class clazz) {
+        final Map&amp;lt;Class, FXMLLoader&amp;gt; loaderMap = class2LoaderMap;
+        final String name = clazz.getName();
+        if (loaderMap.containsKey(clazz)) {
+            if (logger.isDebugEnabled()) {
+                logger.debug(&amp;quot;fx loader fuer diese klasse schon in der map &amp;quot; + name);
+            }
+        } else {
+            final String fxmlFileName = clazz.getSimpleName() + &amp;quot;.fxml&amp;quot;;
+            if (logger.isDebugEnabled()) {
+                logger.debug(&amp;quot;fxmlFileName -&amp;gt; &amp;quot; + fxmlFileName);
+            }
+            final URL resource = clazz.getResource(fxmlFileName);
+//            FXMLLoader loader = new CDIFXMLLoader(resource);
+            FXMLLoader loader = new FXMLLoader(resource);
+            loader.setClassLoader(cachingClassLoader);
+            loader.setControllerFactory(new Callback&amp;lt;Class&amp;lt;?&amp;gt;, Object&amp;gt;() {
+                @Override
+                public Object call(Class&amp;lt;?&amp;gt; param) {
+                    final Class&amp;lt;JavaFXBaseController&amp;gt; p = (Class&amp;lt;JavaFXBaseController&amp;gt;) param;
+                    final JavaFXBaseController controller = instance.select(p).get();
+                    &lt;b&gt;controller.initInstance(); //trigger async call&lt;/b&gt;
+                    return controller;
+                }
+            });
+            try {
+                final Class&amp;lt;?&amp;gt; aClass = Class.forName(clazz.getName() + &amp;quot;Controller&amp;quot;);
+                final CDIJavaFxBaseController call = (CDIJavaFxBaseController) loader.getControllerFactory().call(aClass);
+                loader.setController(call);
+            } catch (ClassNotFoundException e) {
+                logger.error(e);
+            }
+            loaderMap.put(clazz, loader);
+        }
+        return loaderMap.get(clazz);
+    }
+
+    private FXMLLoaderSingleton() {
+    }
+}
+&lt;/pre&gt;
+&lt;br/&gt;
+The method &lt;b&gt;initInstance()&lt;/b&gt; will trigger the init-process. Inside the method the task will be called async.
+The task itself will wait until the CDi and JavaFX init will be ready. After this the method  initBusinessLogic will be called.
+This means, thet the developer only will have to implement the method &lt;b&gt;initBusinessLogic&lt;/b&gt; and he will be sure that all init stuff is done.
+&lt;br/&gt;
+Happy coding ;-)
+
+&lt;br /&gt;
+&lt;pre class="brush: java"&gt;
+public abstract class JavaFXBaseController implements CDIJavaFxBaseController {
+
+    public static final String DONE = "done";
+
+    private boolean mockModusActive = false;
+    public boolean isMockModusActive() {
+        return mockModusActive;
+    }
+    public void setMockModusActive(boolean mockModusActive) {
+        this.mockModusActive = mockModusActive;
+    }
+
+    public abstract void cleanUp();
+
+    public abstract void setI18n();
+
+    private @Inject @CDILogger Logger logger;
+
+    private Boolean initCompleteCDI = false;
+    private Boolean initCompleteFX = false;
+
+    public CompletableFuture&amp;lt;String&amp;gt; supplyAsync;
+
+    @Override
+    public final void initInstance(){
+       final CachedThreadPoolSingleton instance = CachedThreadPoolSingleton.getInstance();
+       supplyAsync = CompletableFuture.supplyAsync(task, instance.cachedThreadPool);
+       if (logger.isDebugEnabled()) supplyAsync.thenAccept(logger::debug);  //logger
+    }
+
+    public final Supplier&amp;lt;String&amp;gt; task = ()-&gt; {
+        //        Warten bis alle true
+        while(! (initCompleteCDI &amp;&amp; initCompleteFX) ){
+        try {
+        //evtl loggen
+        if (logger.isDebugEnabled()) {
+        logger.debug("initCompleteCDI = " + initCompleteCDI);
+        logger.debug("initCompleteFX = " + initCompleteFX);
+        logger.debug("getClass().getName() = " + getClass().getName());
+        }
+        TimeUnit.MILLISECONDS.sleep(1);
+        } catch (InterruptedException e) {
+        e.printStackTrace();
+        return e.toString();
+        }
+        }
+
+        if (logger.isInfoEnabled()) {
+        logger.info("initBusinessLogic() =&gt; called now");
+        }
+        final boolean fxApplicationThread = Platform.isFxApplicationThread();
+        if ( ! fxApplicationThread){
+        Platform.runLater(this::initBusinessLogic);
+        } else {
+        initBusinessLogic();
+        }
+
+
+        if (logger.isInfoEnabled()) {
+        logger.info("initBusinessLogic() =&gt; done now");
+        }
+        return DONE;
+        };
+
+        @PostConstruct
+        public final void postconstruct(){
+        if (logger.isDebugEnabled()) {
+        logger.debug("PostConstruct mockModusActive == " + mockModusActive);
+        }
+        cdiPostConstruct();
+        initCompleteCDI = true;
+        if (logger.isDebugEnabled()) {
+        logger.debug("postconstruct ready " + getClass().getName());
+        }
+        }
+
+        public abstract void cdiPostConstruct();
+
+        @Override
+        public final void initialize(URL url, ResourceBundle resourceBundle) {
+        if (logger.isDebugEnabled()) {
+        logger.debug("initialize mockModusActive== " + mockModusActive);
+        }
+        initializeFX(url, resourceBundle);
+        initCompleteFX = true;
+        if (logger.isDebugEnabled()) {
+        logger.debug("initialize ready " + getClass().getName());
+        }
+        }
+
+
+        protected abstract void initializeFX(URL url, ResourceBundle resourceBundle);
+        /**
+        * wird nach der init von CDI und JavaFX aufgerufen,
+        * egal in welcher Reihenfolge die init durchlaufen wird.
+        *
+        * ein blockierender method call
+        *
+        */
+        public abstract void initBusinessLogic();
+        }
+&lt;/pre&gt;
+
+
+
+
+
+&lt;/div&gt;
+							&lt;/div&gt;
+							&lt;footer class="article-footer clearfix"&gt;
+								&lt;span class="post-author"&gt;&lt;a href="/team/sven-ruppert" rel="author"&gt;Sven Ruppert&lt;/a&gt;&amp;nbsp;&amp;nbsp;|&amp;nbsp;&amp;nbsp;&lt;/span&gt;
+								&lt;span class="post-date"&gt;&lt;a href="#" rel="date"&gt;2014-04-13&lt;/a&gt;&amp;nbsp;&amp;nbsp;|&amp;nbsp;&amp;nbsp;&lt;/span&gt;
+							&lt;/footer&gt;
+						&lt;/article&gt;</content>
         <summary>Das ist der Inhalt der in Kurzform angezeigt werden soll</summary>
     </entry>
     <entry>
-        <title>Und wieder auf zu JUG´s</title>
+        <title>Big data collections with MapDB</title>
         <category label="java"/>
         <category label="javafx"/>
-        <category label="iot"/>
-        <category label="tinkerforge"/>
-        <published>2014-11-16T00:00:00+01:00</published>
+        <category label="mapdb"/>
+        <published>2014-06-11T00:00:00+02:00</published>
         <author>
-            <name>Sven Ruppert</name>
+            <name>Alexander Bischof</name>
         </author>
-        <content type="html">&lt;div class="blog-post"&gt;
-&lt;h2 class="blog-post-title"&gt;&lt;a href=/2014/11/16/und-wieder-auf-zu-jugs.html&gt;Und wieder auf zu JUG´s&lt;/a&gt;&lt;/h2&gt;
-&lt;p class="blog-post-meta"&gt;2014-11-16 from &lt;a href="/team/sven-ruppert/"&gt;Sven Ruppert&lt;/a&gt;&lt;/p&gt;
+        <content type="html">&lt;article class="article clearfix"&gt;
+							&lt;header class="article-header"&gt;
+								&lt;h2 class="article-title"&gt;&lt;a href="/2014/06/11/big-data-collections-with-mapdb.html" rel="tag"&gt;Big data collections with MapDB&lt;/a&gt;&lt;/h2&gt;
+								&lt;p&gt;&lt;time datetime="2014-06-11"&gt;2014-06-11&lt;/time&gt; &lt;a href="/team/alexander-bischof" rel="author"&gt;from Alexander Bischof&lt;/a&gt;&lt;/p&gt;
+							&lt;/header&gt;
+							&lt;div class="article-content clearfix"&gt;
+								&lt;div class="post-thumb"&gt;
+									&lt;img src="./site/content/post_thumb.jpg" width="" height="" alt="" /&gt;
+								&lt;/div&gt;
+								&lt;div class="post-excerpt"&gt;&lt;div&gt;
+        This article gives a short overview over the open source software&amp;nbsp;&lt;a href="http://www.mapdb.org/"&gt;MapDB&lt;/a&gt;&amp;nbsp;which is now in version 1.0.3.
+    &lt;br /&gt;&lt;br/&gt;
+    &lt;h2&gt;
+        What is MapDB?&lt;/h2&gt;
+    &lt;div&gt;
+        Original designed as a storage engine for an astronomical desktop application it had two design goals &lt;b&gt;minimal overhead&lt;/b&gt; and &lt;b&gt;simplicity&lt;/b&gt;. Over the time the engine had evolved and the third goal &lt;b&gt;provide an alternative Java memory model&lt;/b&gt;&amp;nbsp;was added. So now it is a storage engine which is specialized for big data collections and for that has some cool features.&lt;br /&gt;
+        For example:&lt;/div&gt;
+    &lt;ul&gt;
+        &lt;li&gt;Write to Heap, OffHeap, File or TempFile&lt;/li&gt;
+        &lt;li&gt;Synchronization of Maps/TreeMaps/Sets and Queues&amp;nbsp;&lt;/li&gt;
+        &lt;ul&gt;
+            &lt;li&gt;Maps can also be build with composite keys&lt;/li&gt;
+            &lt;li&gt;bidirectional maps&lt;/li&gt;
+            &lt;li&gt;synchronization between maps (in case you have a 1-N association)&lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;li&gt;Caching&lt;/li&gt;
+        &lt;ul&gt;
+            &lt;li&gt;expiration on disk usage, access or write time&lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;li&gt;Compression&lt;/li&gt;
+        &lt;li&gt;Faceting aka Histogram&lt;/li&gt;
+        &lt;li&gt;Simulated Auto-Increment&lt;/li&gt;
+        &lt;li&gt;Transactions (Note: a single transaction can only be used once)&lt;/li&gt;
+        &lt;li&gt;Querying&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/div&gt;
+&lt;div&gt;
+    &lt;h2&gt;
+        Small Example&lt;/h2&gt;
+    The following example shows the simplicity in the context of IoT where i put 10 million temperature values into a collection which is backed by an off-heap and group the values into five groups (cold, fresh, warm, hot and burns). For filling the cache I also use auto increment.&lt;/div&gt;
+&lt;pre class="brush: java"&gt;
+    public class TemperatureRepository {
+    private final Atomic.Long keyinc;
+    private ConcurrentHashMap&amp;lt;String, Long&amp;gt; histogram;
+    private HTreeMap&amp;lt;Long, Integer&amp;gt; temperatureMap;
 
-&lt;p&gt;Und wieder bin auf dem Weg zu verschiedenen JUG´s.
-    In diesem Fall einmal zur JUG Berlin Brandenburg und dann am Di zu der JUG Hamburg.&lt;/p&gt;
+    public TemperatureRepository() {
+        //Create off-heap memory cache
+        temperatureMap = DBMaker.newCache(1.0);
 
-&lt;p&gt;Bei beiden Events wird es um IoT TinkerForge und Java8 gehen.&lt;/p&gt;
+        //Get Autoincrement counter
+        DB db = new DB(temperatureMap.getEngine());
+        keyinc = db.getAtomicLong("map_temp");
 
-&lt;blockquote&gt;
-    &lt;p&gt;JUG Berlin-Brandenburg - &lt;a href="http://www.jug-berlin-brandenburg.de/blog/2014/10/22/tinkerforge-workshop/"&gt;
-        TinkerForge - Industrial Prototyping in Action
-    &lt;/a&gt;&lt;strong&gt;17.11.2014&lt;/strong&gt;
-    &lt;/p&gt;
-    &lt;p&gt;JUG Hamburg - &lt;a href="http://www.meetup.com/jug-hamburg/events/214076512/"&gt;
-        TinkerForge and IoT (Wiederholung)
-    &lt;/a&gt;&lt;strong&gt;18.11.2014&lt;/strong&gt;
-    &lt;/p&gt;
-&lt;/blockquote&gt;
+        // histogram, category is a key, count is a value
+        histogram = new ConcurrentHashMap&amp;lt;String, Long&amp;gt;(); //any map will do
 
-&lt;/div&gt;</content>
+        // bind histogram to primary map
+        // we need function which returns category for each map entry
+        Bind.histogram(temperatureMap, histogram, (key, value) -&amp;gt; {
+            String ret = null;
+
+            if (value &amp;lt; 0) {
+                ret = "cold";
+            } else if (value &amp;lt; 10) {
+                ret = "fresh";
+            } else if (value &amp;lt; 20) {
+                ret = "warm";
+            } else if (value &amp;lt; 30) {
+                ret = "hot";
+            } else {
+                ret = "burns";
+            }
+            return ret;
+        });
+    }
+
+    public void add(int temperature) {
+        temperatureMap.put(keyinc.incrementAndGet(), temperature);
+    }
+
+    public void printHistogram() {
+        System.out.println(histogram);
+    }
+
+    public static void main(String[] args) {
+        TemperatureRepository temperatureRepository = new TemperatureRepository();
+        new Random().ints(-10,40).parallel().limit(1_000_000).forEach(e-&amp;gt; temperatureRepository.add(e));
+        temperatureRepository.printHistogram();
+    }
+}
+&lt;/pre&gt;
+&lt;div&gt;
+    &lt;br /&gt;
+    &lt;h2&gt;
+        Fazit&lt;/h2&gt;
+    &lt;br /&gt;&lt;/div&gt;
+&lt;div&gt;
+    Until now I haven't had the chance to use MapDB in a productive environment but on our playground at&amp;nbsp;&lt;a href="http://www.rapidpm.org/"&gt;www.rapidpm.org&lt;/a&gt;&amp;nbsp;it makes a very good impression.&lt;/div&gt;
+
+&lt;/div&gt;
+							&lt;/div&gt;
+							&lt;footer class="article-footer clearfix"&gt;
+								&lt;span class="post-author"&gt;&lt;a href="/team/alexander-bischof" rel="author"&gt;Alexander Bischof&lt;/a&gt;&amp;nbsp;&amp;nbsp;|&amp;nbsp;&amp;nbsp;&lt;/span&gt;
+								&lt;span class="post-date"&gt;&lt;a href="#" rel="date"&gt;2014-06-11&lt;/a&gt;&amp;nbsp;&amp;nbsp;|&amp;nbsp;&amp;nbsp;&lt;/span&gt;
+							&lt;/footer&gt;
+						&lt;/article&gt;</content>
         <summary>Das ist der Inhalt der in Kurzform angezeigt werden soll</summary>
     </entry>
 </feed>

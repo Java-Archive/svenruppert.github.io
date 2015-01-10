@@ -1,0 +1,70 @@
+So WildFly 8 is final now.<br />
+In this article i like to show how you can create a development/testing wildly cluster with raspberry pis and only one power supply.<br />
+<br />
+I have bought:<br />
+<ul>
+    <li>5x Raspberry Pis (Model B) with Wireless USB-Adapters</li>
+    <li>1x 10-Port USB 2.0 Hub</li>
+    <li>5x USB to Micro USB Adpapter</li>
+</ul>
+<div class="separator" style="clear: both; text-align: center;">
+    <a href="http://2.bp.blogspot.com/-kpQJO9A_2ls/UvldlgnYDdI/AAAAAAAAAAk/W-_zu4KexQQ/s1600/Foto.JPG" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://2.bp.blogspot.com/-kpQJO9A_2ls/UvldlgnYDdI/AAAAAAAAAAk/W-_zu4KexQQ/s1600/Foto.JPG" height="400" width="300" /></a></div>
+<div>
+    <br /></div>
+The Raspberries are configured with Raspbian Wheezy (wlan auto), JDK 8 and Wildfly 8 Final.<br />
+<div>
+    In this combination you have to remove the '-server' from the domain.sh otherwise WildFly won't start.</div>
+<br />
+The WildFly Configuration can be made within 5 minutes.<br />
+<ol>
+    <li>Master</li>
+    <ol>
+        <li>Create management user admin (./add-user.sh)</li>
+        <li>Create a management slave user for each of your pi slaves (./add-user.sh)</li>
+        <ul>
+            <li>Remember the secret value at the end of this process for each slave (e.g.<span style="font-family: Menlo; font-size: 11px;">&lt;secret value="MTIzNDU=" /&gt;</span>)</li>
+        </ul>
+        <li>Bind the interfaces to the public interface (e.g. 192.168.0.103)&nbsp;</li>
+    </ol>
+    <li>Slave</li>
+    <ol>
+        <li>Configure host.xml with the slave name of 1.1</li>
+        <ul>
+            <li><div style="font-family: Menlo; font-size: 11px;">
+                &lt;host name="slave1" xmlns="urn:jboss:domain:2.0"&gt;</div>
+            </li>
+        </ul>
+        <li>Configure the server identity</li>
+        <ul>
+            <li><div style="font-family: Menlo; font-size: 11px;">
+                &lt;server-identities&gt;
+                &lt;secret value="MTIzNDU="/&gt;
+                &lt;/server-identities&gt;
+            </div>
+            </li>
+        </ul>
+        <li>Bind the interfaces to master and public interface (e.g. 192.168.0.104)</li>
+        <ul>
+            <li>To simply the typing i have written a small script that takes the master-ip and the bind-ip</li>
+<span style="font-family: Menlo; font-size: 11px;"><pre>#MasterAdress
+MASTER_ADDRESS=$1
+
+# Bind Addresses
+BIND_ADDRESS=$2
+
+JBOSS_BIND_ADDRESS_MANAGEMENT=$BIND_ADDRESS
+JBOSS_BIND_ADDRESS=$BIND_ADDRESS
+JBOSS_BIND_ADDRESS_UNSECURE=$BIND_ADDRESS
+
+sudo ./domain.sh -Djboss.bind.address.unsecure=$JBOSS_BIND_ADDRESS_UNSECURE -Djboss.bind.address.management=$BOSS_BIND_ADDRESS_MANAGEMENT -Djboss.bind.address=$JBOSS_BIND_ADDRESS -Djboss.domain.master.address=$MASTER_ADDRESS</pre>
+</span>
+
+        </ul>
+    </ol>
+</ol>
+Ready. Now you can deploy any archive either to main-server-group (just a domain) or other-server-group (full cluster).<br />
+<div class="separator" style="clear: both; text-align: center;">
+</div>
+<div class="separator" style="clear: both; text-align: center;">
+</div>
+<br />

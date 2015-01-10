@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+
+		<title>Home | The Rapidpm Blog</title>
+		<link rel="stylesheet" type="text/css" href="./site/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="./site/css/bootstrap-theme.min.css">
+		<link rel="stylesheet" type="text/css" href="./site/css/jquery.snippet.css" />
+		<link rel="stylesheet" type="text/css" href="./site/css/style.css">
+
+		<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,700,800&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+		<script type="text/javascript" src="./site/js/jquery.min.js"></script>
+		<script type="text/javascript" src="./site/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="./site/js/script.js"></script>
+		<script type="text/javascript" src="./site/js/jquery.snippet.js"></script>
+
+		<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+	</head>
+
+	<body class="blog">
+		<div id="wrapper" class="container-fluid"><div id="holder">
+			<nav class="col-md-1">
+				<h2 class="menu-title">Main menu</h2>
+				<ul>
+					<li class="active-trail"><a class="active" href="index.html">Rapidpm</a></li>
+					<li><a href="conferences/index.html">Conferences /Talks</a></li>
+					<li><a href="publications/index.html">Publications</a></li>
+					<li><a href="license/index.html">License</a></li>
+					<li><a href="releases/index.html">Releases</a></li>
+					<li><a href="contact/index.html">Contact</a></li>
+					<li><a href="impressum/index.html">Impressum</a></li>
+				</ul>
+			</nav>
+
+			<header id="header" class="page-header">
+				<div class="wrapper row">
+					<div class="col-md-4">
+						<h1 id="site-title">The Rapidpm Blog.</h1>
+						<h2 id="description"><span>we are speaking java,</span><span/>because it is a great pleasure for us.</span></h2>
+					</div>
+					<aside class="col-md-5 col-md-offset-2">
+						<!---------------------- Carousel ---------------------->
+						<div id="header-carousel" class="carousel slide" data-ride="carousel">
+							<div class="carousel-inner">
+								<div class="item active">
+									<img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="First slide">
+									<div class="carousel-container">
+										<div class="carousel-caption">
+											<h1>New Version 2.0.1</h1>
+											<p>The new version is available at<br>Maven Central<br>we added a new module for<br>IOT with thinkerforge.</p>
+											<p><a class="btn btn-lg" href="#" role="button">Jump to Maven Central</a></p>
+										</div>
+									</div>
+								</div>
+								<div class="item">
+									<img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="First slide">
+									<div class="carousel-container">
+										<div class="carousel-caption">
+                    <img src="/team/sven-ruppert/images/slider750x374.jpg ">
+                    <p>@SvenRuppert (Core Java / CDI / JavaFX / Reflection)</p>
+										</div>
+									</div>
+								</div>
+								<div class="item">
+									<img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="First slide">
+									<div class="carousel-container">
+										<div class="carousel-caption">
+                            <img src="/team/alex-bischof/images/bildalexquer.JPG">
+                            <p>@A_Bischof (Core Java / CDI / JavaEE )</p>
+										</div>
+									</div>
+								</div>
+							</div>
+							<a class="control left" href="#header-carousel" onclick="return false" role="button" data-slide="prev"><span class="control-ico"></span></a>
+							<a class="control right" href="#header-carousel" onclick="return false" role="button" data-slide="next"><span class="control-ico"></span></a>
+						</div><!-- /.carousel -->
+					</aside>
+				</div>
+			</header>
+
+			<section class="main-content clearfix">
+				<div class="wrapper row">
+					<section class="col-md-7"><article class="article clearfix">
+							<header class="article-header">
+								<h2 class="article-title"><a href="/2013/07/17/cdi-commons-dynamic-service-resolver.html" rel="tag">CDI Commons - Dynamic Service Resolver</a></h2>
+								<p><time datetime="2013-07-17">2013-07-17</time> <a href="/team/sven-ruppert" rel="author">from Sven Ruppert</a></p>
+							</header>
+							<div class="article-content clearfix">
+								<div class="post-thumb">
+									<img src="./site/content/post_thumb.jpg" width="" height="" alt="" />
+								</div>
+								<div class="post-excerpt">In meinem Blog vom <a href="http://www.rapidpm.org/2013/06/cdi-commons-dynamic-service-resolver.html" target="_blank">26.6.2013</a> habe ich über die Möglichkeit geschrieben, wie man zur Laufzeit die <br />
+Implementierung auswählen kann die in die entsprechende Stelle injected wird.<br />
+Es war immer noch notwendig die Producer anzupassen wie in dem Beispiel des SimpleDateFormatterProducer<br />
+<a href="http://lh6.ggpht.com/-3nOsUPRQFBY/UeZRhRWi8FI/AAAAAAABSyE/ydt6LTVhrd4/s1600-h/image%25255B4%25255D.png"><img alt="image" border="0" src="http://lh4.ggpht.com/-Z1PL3KBjqb8/UeZRhzjaSxI/AAAAAAABSyM/HgBpBsB-kQ0/image_thumb%25255B2%25255D.png?imgmax=800" height="291" style="background-image: none; border-bottom: 0px; border-left: 0px; border-right: 0px; border-top: 0px; display: inline; padding-left: 0px; padding-right: 0px; padding-top: 0px;" title="image" width="1028" /></a><br />
+<br />
+Gleich mehrere Dinge die nicht angenehm sind. <br />
+1) der ContextResolver ist hier hart per Qualifier angegeben.<br />
+2) Die Implementierung eines Constructors selbst<br />
+3) Lazy-Init des AttributespropertyregistryService <br />
+4) fehlende Default Implementierung<br />
+<br />
+Aus Sicht der Entwickler wäre folgendes wünschenswert.<br />
+Ein Inject des PropertyregistryService mit folgender Anweisung: <br />
+<a href="http://lh3.ggpht.com/-45yPDOnUJxw/UeZRiZrDRSI/AAAAAAABSyQ/Y1ZESUxf9YM/s1600-h/image%25255B23%25255D.png"><img alt="image" border="0" src="http://lh5.ggpht.com/-I-yScB0k1CI/UeZRi_UnpXI/AAAAAAABSyc/3u4HtZS8jz0/image_thumb%25255B13%25255D.png?imgmax=800" height="37" style="background-image: none; border-bottom: 0px; border-left: 0px; border-right: 0px; border-top: 0px; display: inline; padding-left: 0px; padding-right: 0px; padding-top: 0px;" title="image" width="644" /></a><br />
+Um das zu erreichen wird die Klasse <strong>PropertyRegistryServiceProducer</strong> implementiert.<br />
+Hier wird ein allgemeiner Producer für den PropertyregistryServcie geschrieben.<br />
+<a href="http://lh4.ggpht.com/-sylKRPpui48/UeZRjfS06YI/AAAAAAABSyk/GXdNjNHsl28/s1600-h/image%25255B13%25255D.png"><img alt="image" border="0" src="http://lh3.ggpht.com/-tfvsFsLLHiM/UeZRjzBZnlI/AAAAAAABSyo/ESmx0QU5_0o/image_thumb%25255B7%25255D.png?imgmax=800" height="544" style="background-image: none; border-bottom: 0px; border-left: 0px; border-right: 0px; border-top: 0px; display: inline; padding-left: 0px; padding-right: 0px; padding-top: 0px;" title="image" width="1028" /></a><br />
+<br />
+zwei Dinge sind hier von Bedeutung:<br />
+1) Der Inject einer Default-Implementierung , in diesem Fall der Inject einer FileBasedRegistry<br />
+2) Der Inject einers ContextResolvers mit @Any und @Default<br />
+Nun kann zur Laufzeit der ContextResolver ausgewertet werden um die Endscheidung zu treffen welche Implementierung verwendet werden soll.<br />
+Der ContextResolver selbst wird wohl immer eine spezialisierte Implementierung in einem Projekt darstellen und muss deshalb selbst Implementiert werden.<br />
+Eine Default-Implementierung ist dem Projekt als Beispiel in den test – Foldern beigelegt. (<strong>DefaultPropertyContextResolver</strong>)<br />
+<a href="http://lh3.ggpht.com/-TCFHS7F4WGA/UeZRkTfzDOI/AAAAAAABSyw/m0xYmEL6KP4/s1600-h/image%25255B18%25255D.png"><img alt="image" border="0" src="http://lh5.ggpht.com/-JkhZXOORYrM/UeZRkqRcRnI/AAAAAAABSy8/vuUpFYsOYKw/image_thumb%25255B10%25255D.png?imgmax=800" height="162" style="background-image: none; border-bottom: 0px; border-left: 0px; border-right: 0px; border-top: 0px; display: inline; padding-left: 0px; padding-right: 0px; padding-top: 0px;" title="image" width="644" /></a></div>
+							</div>
+							<footer class="article-footer clearfix">
+								<span class="post-author"><a href="/team/sven-ruppert" rel="author">Sven Ruppert</a>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+								<span class="post-date"><a href="#" rel="date">2013-07-17</a>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+							</footer>
+						</article></section>
+
+					<aside id="sidebar" class="col-md-3 col-md-offset-1">
+						<div class="widget">
+							<h3 class="widget-title">About <span>Us</span></h3>
+							<div class="widget-content">We are a group of developers, speaking Java and proud to be nerds ;-)</div>
+						</div>
+
+						<div class="widget">
+							<h3 class="widget-title">Sponsoring</h3>
+							<div class="widget-content">
+								<ul>
+									<li><a href="http://www.codecentric.de">codecentric AG</a></li>
+									<li><a href="http://www.intellij.com/">JetBrains</a></li>
+									<li><a href="http://zeroturnaround.com/">zeroturnaround</a></li>
+									<li><a href="https://www.atlassian.com/">Atlassian</a></li>
+								</ul>
+							</div>
+						</div>
+
+						<div class="widget">
+							<h3 class="widget-title"><span>We</span> are at</h3>
+							<div class="widget-content">
+								<ul>
+									<li><a href="https://github.com/RapidPM">GitHub</a></li>
+									<li><a href="https://twitter.com/SvenRuppert">Twitter - Sven Ruppert</a></li>
+									<li><a href="https://plus.google.com/u/0/+SvenRuppert/">GooglePlus - Sven Ruppert</a></li>
+									<li><a href="https://twitter.com/A_Bischof">Twitter - Alexander Bischof</a></li>
+									<li><a href="https://plus.google.com/u/0/100135686516251171415/">GooglePlus - Alexander Bischof</a></li>
+								</ul>
+							</div>
+						</div>
+
+						<div class="widget blog-posts">
+							<h3 class="widget-title"><span>Latest</span> Blog</h3>
+							<div class="widget-content">
+								<ul>
+									<li class="clearfix">
+										<div class="thumb">
+											<a href="#"><img src="./site/content/fx.jpg" width="99" height="100" /></a>
+										</div>
+										<div>
+											<h4>What is MapDB?</h4>
+											<p>Original designed as a storage engine for</p>
+										</div>
+									</li>
+									<li class="clearfix">
+										<div class="thumb">
+											<a href="#"><img src="./site/content/developer_cafe.jpg" width="99" height="100" /></a>
+										</div>
+										<div>
+											<h4>What is MapDB?</h4>
+											<p>Original designed as a storage engine for an</p>
+										</div>
+									</li>
+									<li class="clearfix">
+										<div class="thumb">
+											<a href="#"><img src="./site/content/java_8_streams.jpg" width="99" height="100" /></a>
+										</div>
+										<div>
+											<h4>What is MapDB?</h4>
+											<p>Original designed as a storage engine for</p>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+
+						<div class="widget event-schedules">
+							<h3 class="widget-title"><span>conferences</span>  / JUG meetings</h3>
+							<div class="widget-content">
+								<ul>
+									<li>
+										<p class="date">2014.12.18-18</p>
+										<p class="event-name">JUG Augsburg</p>
+										<p class="event-theme">Java 8 Streams</p>
+									</li>
+									<li>
+										<p class="date">2014.11.17-17</p>
+										<p class="event-name">JUG Berlin</p>
+										<p class="event-theme">IoT mit TinkerForge und Java 8 - LiveHacking</p>
+									</li>
+									<li>
+										<p class="date">2014.11.03-07</p>
+										<p class="event-name">w-jax 2014</p>
+										<p class="event-theme">Test driven development with JavaFX</p>
+									</li>
+									<li>
+										<p class="date">2014.10.23-23</p>
+										<p class="event-name">UG Ostfalen</p>
+										<p class="event-theme">CDI Pattern</p>
+									</li>
+									<li>
+										<p class="date">2014.10.22-22</p>
+										<p class="event-name">JUG Berlin</p>
+										<p class="event-theme">IoT mit TinkerForge und Java 8</p>
+									</li>
+								</ul>
+							</div>
+						</div>
+
+						<div class="widget banner">
+							<h3 class="widget-title hidden">Banner</h3>
+							<div class="widget-content">
+								<a href="#"><img src="./site/content/banner.jpg" width="100%" /></a>
+							</div>
+						</div>
+
+						<div class="widget arhives">
+							<h3 class="widget-title">Archives</h3>
+							<div class="widget-content">
+								<ul>
+									<li><a href="#">2014-07</a></li>
+									<li><a href="#">2014-06</a></li>
+									<li><a href="#">2014-05</a></li>
+									<li><a href="#">2014-04</a></li>
+									<li><a href="#">2014-03</a></li>
+									<li><a href="#">2014-02</a></li>
+									<li><a href="#">...more</a></li>
+								</ul>
+							</div>
+						</div>
+
+					</aside><!-- /sidebar -->
+				</div><!-- /.wrapper -->
+			</section><!-- /.main-content -->
+	</body>
+</html>

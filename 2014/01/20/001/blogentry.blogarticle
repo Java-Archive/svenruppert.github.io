@@ -1,0 +1,281 @@
+One of the interesting features of <a href="http://www.tinkerforge.com/">TinkerForge</a> is the possibility to
+put different elements like sensors, physical buttons, and more on a MasterBrick<br />
+<br />
+This is what we want to do today.
+<br />
+<br />
+<b>The Barometer</b><br />
+Today we are using the <a href="http://www.tinkerforge.com/en/doc/Hardware/Bricklets/Barometer.html">Barometer-Bricklet</a>.
+The Barometer Bricklet can be used to extend the features of Bricks
+by the capability to measure air pressure in range of 10 to 1200mbar
+with a resolution of 0.012mbar. The measurement is temperature
+compensated internally. The Bricklet is equipped with
+a MS5611-01BA01 sensor which is designed to be used as an altimeter, too.
+<br />
+<br />
+<i>At <a href="https://bitbucket.org/rapidpm/jaxenter.de-0012-iot-tinkerforge">https://bitbucket.org/rapidpm/jaxenter.de-0012-iot-tinkerforge</a> are all source codes you will need, including the TinkerForge API itself.
+    I spoke with TinkerForge and we decided to put the API into maven. After we have done this, I will inform you.
+    If you are interested, follow me on Twitter please ( <b>@SvenRuppert</b> )
+</i><br />
+<br />
+The most interesting part for us today will be the presents of two sensors inside of one Bricklet.<br />
+How we can handle it and how we will get the data to the screen?<br />
+<br />
+<b>Connect to n - Sensor-units</b><br />
+To remember... To connect to a sensor you need an instance of the representing class.
+To get the value from the sensor you have to implement an ActionListener.
+Here the short example from my last blog about TinkerForge. <i>(<a href="http://www.rapidpm.org/2014/01/iot-with-java8-and-tinkerforge-part-1.html">engl</a> /<a href="http://jaxenter.de/artikel/Internet-of-Things-mit-Java-8-und-TinkerForge-Teil-1-170511"> ger</a>)</i><br />
+<br />
+<pre class="brush: java">import com.tinkerforge.BrickletTemperature;
+import com.tinkerforge.IPConnection;
+public class ExampleCallback {
+  private static final String host = "localhost";
+  private static final int port = 4223;
+  private static final String UID = "dXj";
+  public static void main(String args[]) throws Exception {
+    IPConnection ipcon = new IPConnection();
+    BrickletTemperature temp = new BrickletTemperature(UID, ipcon);
+    ipcon.connect(host, port);
+    temp.setTemperatureCallbackPeriod(1000);
+    temp.addTemperatureListener(new
+    BrickletTemperature.TemperatureListener() {
+      public void temperature(short temperature) {
+        System.out.println("Temperature: "
+        + temperature/100.0 + " °C");
+      }
+    });
+    ipcon.disconnect();
+}
+}
+</pre>
+The same will be with the two sensor-units inside the Barometer-Bricklet.
+The class name will be BrickletBarometer, and you have to implement two ActionListeners.
+One for the air-pressure called AirPressureListener and one for the altitude called AltitudeListener.
+<br />
+<br />
+<pre class="brush: java">public class ExampleCallback {
+    private static final String host = "localhost";
+    private static final int port = 4223;
+    private static final String UID = "jY4";
+
+    public static void main(String args[]) throws Exception {
+        IPConnection ipcon = new IPConnection();
+        BrickletBarometer b = new BrickletBarometer(UID, ipcon);
+        ipcon.connect(host, port);
+        b.setAirPressureCallbackPeriod(1000);
+        b.setAltitudeCallbackPeriod(1000);
+        b.addAirPressureListener(
+                new BrickletBarometer.AirPressureListener() {
+                    public void airPressure(int airPressure) {
+                        System.out.println("Air Pressure: "
+                                + airPressure / 1000.0 + " mbar");
+                    }
+                }
+        );
+        b.addAltitudeListener(new BrickletBarometer.AltitudeListener() {
+            public void altitude(int altitude) {
+                System.out.println("Altitude: " + altitude / 100.0 + " m");
+            }
+        });
+        ipcon.disconnect();
+    }
+}
+</pre>
+<b>Connection to JavaFX</b><br />
+The connection to JavaFX could be simple. The basic steps are always the same.
+You have to start an Thread outside our JavaFX GUI Thread. Inside this thread you have to configure the sensor
+and inside the run()- method you have to add the action listener.
+All steps that are manipulating the GUI, you have to start again inside a Platform.runLater()
+Now, we have to sensor-units. This means that we are doing this twice.
+To reuse the code later, we are extracting it into an separate class.
+If we would do it for the temperature sensor we used last time, it will look like the following.
+<br />
+<br />
+<pre class="brush: java">public class Temp implements Runnable {
+
+  private String UID;
+  private ObservableList seriesData;
+
+  public Temp(final String UID, final XYChart.Series series) {
+      this.UID = UID;
+      this.seriesData = series.getData();
+  }
+
+  @Override
+  public void run() {
+      IPConnection ipcon = new IPConnection();
+      BrickletTemperature temp = new BrickletTemperature(UID, ipcon);
+      try {
+          ipcon.connect(Barometer.host, Barometer.port);
+          temp.setTemperatureCallbackPeriod(1000);
+          temp.addTemperatureListener(new BrickletTemperature.TemperatureListener() {
+              public void temperature(short temperature) {
+                  Platform.runLater(new Runnable() {
+                      @Override
+                      public void run() {
+                          final double temp = temperature / 100.0;
+                          System.out.println("Temperature: " + temp + " °C");
+                          final XYChart.Data data = new XYChart.Data(new Date(), temp);
+                          seriesData.add(data);
+       }
+                  });
+              }
+          });
+      } catch (IOException 
+       | AlreadyConnectedException 
+    | TimeoutException 
+    | NotConnectedException e) {
+          e.printStackTrace();
+      }
+  }
+}
+</pre>
+For the Barometer-Bricklet I was writing two classes. One for the airpressure and one for the altitude.
+Both are identically, with one difference. The implementation of the ActionListener.
+Every sensor will put his data to a separate LineChart.<br />
+&nbsp;This implementation is not perfect, because we are not disconnecting
+from the sensor in the end, and for one Bricklet we have two representing classes.
+Both instances are in a different thread.
+But this is still running over a longer period. (at least a few days with my laptop)
+How to encapsulate this in better way we will see in one of my next posts.
+
+<br />
+<br />
+<pre class="brush: java">public class Altitude implements Runnable {
+
+    private String UID;
+    private ObservableList seriesData;
+
+    public Altitude(final String UID, final XYChart.Series series) {
+        this.UID = UID;
+        this.seriesData = series.getData();
+    }
+
+    @Override
+    public void run() {
+        IPConnection ipcon = new IPConnection();
+        BrickletBarometer b = new BrickletBarometer(UID, ipcon);
+
+        try {
+            ipcon.connect(Barometer.host, Barometer.port);
+            b.setAirPressureCallbackPeriod(1000);
+            b.addAltitudeListener(new BrickletBarometer.AltitudeListener() {
+                public void altitude(int altitude) {
+                    System.out.println("Altitude: " + altitude / 100.0 + " m");
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            final double temp = altitude / 100.0;
+                            final XYChart.Data data = new XYChart.Data(new Date(), temp);
+                            seriesData.add(data);
+                        }
+                    });
+                }
+            });
+        } catch (IOException | AlreadyConnectedException | TimeoutException | NotConnectedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+</pre>
+<br />
+<pre class="brush: java">public class Airpressure implements Runnable {
+
+    private String UID;
+    private ObservableList seriesData;
+
+    public Airpressure(final String UID, final XYChart.Series series) {
+        this.UID = UID;
+        this.seriesData = series.getData();
+    }
+
+    @Override
+    public void run() {
+        IPConnection ipcon = new IPConnection();
+        BrickletBarometer b = new BrickletBarometer(UID, ipcon);
+
+        try {
+            ipcon.connect(Barometer.host, Barometer.port);
+            b.setAirPressureCallbackPeriod(1000);
+            b.addAirPressureListener(new BrickletBarometer.AirPressureListener() {
+                public void airPressure(int airPressure) {
+                    System.out.println("Air Pressure: " + airPressure / 1000.0 + " mbar");
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            final double temp = airPressure / 1000.0 ;
+                            final XYChart.Data data = new XYChart.Data(new Date(), temp);
+                            seriesData.add(data);
+                        }
+                    });
+                }
+            });
+        } catch (IOException 
+     | AlreadyConnectedException 
+     | TimeoutException 
+     | NotConnectedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+</pre>
+Putting all together we will get the following main.
+
+<br />
+<br />
+<pre class="brush: java">public class Barometer extends Application {
+    public static final String host = "localhost";
+    public static final int port = 4223;
+
+
+    public static void main(String args[]) throws Exception {
+        launch(args);
+    }
+
+    public static XYChart.Series seriesTemp = new XYChart.Series();
+    public static XYChart.Series seriesAirpressure = new XYChart.Series();
+    public static XYChart.Series seriesAltitude = new XYChart.Series();
+
+    @Override
+    public void start(Stage stage) {
+        stage.setTitle("Line Chart TinkerForge Sample");
+
+        final VBox box = new VBox();
+        seriesTemp.setName("Temp");
+        seriesAirpressure.setName("Airpressure");
+        seriesAltitude.setName("Altitude");
+
+        final ObservableList<node> boxChildren = box.getChildren();
+        boxChildren.add(createLineChart("Temp", seriesTemp));
+        boxChildren.add(createLineChart("Airpressure", seriesAirpressure));
+        boxChildren.add(createLineChart("Altitude", seriesAltitude));
+
+        Scene scene = new Scene(box, 2000, 1500);
+
+        stage.setScene(scene);
+        stage.show();
+        Platform.runLater(new Temp("dXj", seriesTemp));
+        Platform.runLater(new Airpressure("jY4", seriesAirpressure));
+        Platform.runLater(new Altitude("jY4", seriesAltitude));
+        }
+
+        private LineChart createLineChart(final String chartName,final XYChart.Series series ){
+        final DateAxis dateAxis = new DateAxis();
+        dateAxis.setLabel("Time");
+        final NumberAxis yAxis = new NumberAxis();
+
+        final LineChart<date number=""> lineChart = new LineChart&lt;&gt;(dateAxis, yAxis);
+            lineChart.setTitle(chartName);
+            lineChart.getData().add(series);
+
+            return lineChart;
+            }
+            }
+        </date></node></pre>
+<br />
+<i>At&nbsp;<a href="https://bitbucket.org/rapidpm/jaxenter.de-0012-iot-tinkerforge">https://bitbucket.org/rapidpm/jaxenter.de-0012-iot-tinkerforge</a>&nbsp;are all source codes you will need, including the TinkerForge API itself. I spoke with TinkerForge and we decided to put the API into maven. After we have done this, I will inform you. If you are interested, follow me on Twitter please (&nbsp;<b>@SvenRuppert</b>&nbsp;)</i><br />
+<i><br /></i>
+Short and simple.. as always ..
+But if we are using more sensors in a way like this, we will get performance problems.
+To solve this we are connecting different <b>NoSQL</b> systems soon. And we have to build the next version of JavaFX GUI-Elements...
+.... stay tuned..  and happy coding.

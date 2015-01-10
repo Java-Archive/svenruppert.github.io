@@ -1,0 +1,100 @@
+Hier ein kleines Tutorial über den Umgang mit Vaadin-Tabellen und deren Editierbarkeit. Der Anwendungsfall (aus der Praxis) ist simpel:<br />
+<br />
+Eine Tabelle enthält Entitäten des Typs <i>Parameter</i>. Ein <i>Parameter </i>besteht aus dem Parameter-Namen, einer Beschreibung, einem Standard-Wert und einem benutzerdefinierten Wert (welcher den Standard-Wert ersetzt). Die Vaadin-Tabelle enthält einen Container mit <i>Parameter</i>-Beans und besteht somit aus den vier Spalten <i>Name, Beschreibung, Standard-Wert, benutzerdefinierter Wert</i>. <i>Name, Beschreibung</i> und <i>Standard-Wert</i> sind fix, während der<i> benutzerdefinierte Wert</i> editierbar sein soll.<br />
+<br />
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody>
+<tr><td style="text-align: center;"><a href="http://3.bp.blogspot.com/-qWl7LhM7gzE/UdmFviRAh_I/AAAAAAAAAAg/zaS9wO2q9EA/s1600/vaadintable1.png" imageanchor="1" style="margin-left: auto; margin-right: auto;"><img border="0" height="159" src="http://3.bp.blogspot.com/-qWl7LhM7gzE/UdmFviRAh_I/AAAAAAAAAAg/zaS9wO2q9EA/s320/vaadintable1.png" width="320" /></a></td></tr>
+<tr><td class="tr-caption" style="text-align: center;">Ziel</td></tr>
+</tbody></table>
+<br />
+<br />
+Um Vaadin-Tabellen editierbar zu machen existiert die Methode <i>setEditable(boolean b)</i>. Wird dieser ein <i>true </i>übergeben wird die gesamte Tabelle editierbar. Sprich: Alle Zellen werden zu Textfeldern. Oftmals ist dies natürlich nicht gewünscht da beispielsweise bestimmte Spalten nicht editierbar sein sollen (wie in unserem Fall). Um das Verhalten der Tabelle den eigenen Wünschen anzupassen muss man die von der Tabelle verwendete <i>TableFieldFactory </i>überschreiben (standardmäßig wird hier eine Instanz der <i>DefaultFieldFactory </i>verwendet, welche sämtliche Zellen der Tabelle editierbar macht). An dieser Stelle möchte ich etwas vorgreifen und schonmal die Codestelle zeigen, in welcher der Tabelle die neu implementierte FieldFactory zugewiesen wird. Die entsprechende Implementierung unserer eigenen TableFieldFactory folgt dann im Anschluss.<br />
+<br />
+<code>
+parametersTable.addItemClickListener(new ItemClickEvent.ItemClickListener() {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; @Override<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; public void itemClick(ItemClickEvent itemClickEvent) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; final CrawlerParameter crawlerParameter = (CrawlerParameter) itemClickEvent.getItemId();<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if(crawlerParameter == null){<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; buttonLeiste.setVisible(false);<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; parametersTable.setEditable(false);<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; } else {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; buttonLeiste.setVisible(true);<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; parametersTable.setTableFieldFactory(new EditSelectedParamFieldFactory(crawlerParameter));<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; parametersTable.setEditable(true);<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+&nbsp; &nbsp; &nbsp; &nbsp; });<br />
+</code>
+Der Tabelle (parametersTable) wird ein ItemClickListener hinzugefügt welcher die itemClick()-Methode ausführt wenn eine Zeile der Tabelle durch den Benutzer markiert wurde. Innerhalb dieser Methode wird zuerst der vom Benutzer ausgewählte Parameter in einer entsprechenden Variable gespeichert. Achtung: <span style="color: red;">Den aktuellen Parameter bekommt man nicht via parametersTable.getValue()! Dies liefert nicht den aktuell angeklickten Parameter, sondern den zuvor ausgewählten (Bei Benutzung dieser Methode ist man also immer genau einen Schritt hinterher). Der aktuell ausgewählte Parameter ist&nbsp;per getValue()&nbsp;erst NACH Durchführung der itemClick()-Methode abrufbar</span>. Anschließend wird überprüft ob überhaupt ein Parameter ausgewählt ist. Ist dies nicht der Fall soll die Tabelle auch nicht editierbar sein, andernfalls bekommt die Tabelle eine neue FieldFactory - nämlich unsere eigene Implementation. Diese bekommt als Parameter den angeklickten Parameter übergeben (die Implementation folgt gleich). Anschließend wird die Tabelle editierbar gemacht (per setEditable(true)). Nun ist die Spalte BenutzerdefWert der ausgewählten Zeile editierbar.<br />
+<br />
+Lösen wir das Rätsel und schauen uns die EditSelectedParamFieldFactory-Implementation an:<br />
+<br />
+<code>
+public class EditSelectedParamFieldFactory extends AbstractFieldFactory {<br />
+<br />
+&nbsp; &nbsp; private CrawlerParameter selectedCrawlerParameter;<br />
+<br />
+&nbsp; &nbsp; public EditSelectedParamFieldFactory(final CrawlerParameter selectedCrawlerParameter){<br />
+&nbsp; &nbsp; &nbsp; &nbsp; this.selectedCrawlerParameter = selectedCrawlerParameter;<br />
+&nbsp; &nbsp; }<br />
+&nbsp; &nbsp; @Override<br />
+&nbsp; &nbsp; public Field&lt;?&gt; createField(Container container, Object aParameter, Object spaltenname, Component uiContext) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; CrawlerParameter parameter = (CrawlerParameter)&nbsp;aParameter;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; switch(spaltenname.toString()){<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; case NAME:<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return null;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; case DESCR:<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return null;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; case DEFAULT_VALUE:<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return null;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; case USER_VALUE:<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if(selectedCrawlerParameter != null){<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if(selectedCrawlerParameter.equals(parameter)){<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if(parameter.getDefaultValue().getClass() == Boolean.class) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return new CheckBox();<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if(parameter.getDefaultValue().getClass() == Integer.class) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; final TextField integerTextField = new TextField();<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; configureField(integerTextField, Integer.class);<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return integerTextField;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if(parameter.getDefaultValue().getClass() == Double.class) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; final TextField doubleTextField = new TextField();<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; configureField(doubleTextField, Double.class);<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return doubleTextField;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if(parameter.getDefaultValue().getClass() == String.class) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; final TextField textField = new TextField();<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; configureField(textField, String.class);<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return textField;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; } else {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return null;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; default:<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return null;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; }<br />
+&nbsp; &nbsp; }<br />
+}<br />
+</code>
+<br />
+<code><br /></code>
+Wie bereits erwähnt, muss ein selbst implementierte FieldFactory das Interface TableFieldFactory implementieren. Warum erweitert unsere Klasse also AbstractFieldFactory anstatt TableFieldFactory zu implementieren? Ganz einfach: Die Klasse AbstractFieldFactory ist abstrakt und implementiert das TableFieldFactory-Interface (zusätzlich wird in ihr die (für uns nun nicht relevante) Methode configureField() implementiert, welche die zu erstellenden Felder je nach enthaltenem Datentyp mit entsprechenden Validatoren etc. versieht). Wir implementieren also die Methode &nbsp;public Field&lt;?&gt; createField(Container container, Object itemId, Object propertyId, Component uiContext) des TableFieldFactory-Interfaces. Außerdem besitzt die Klasse ein Attribut, welches den aktuell ausgewählten Parameter speichert. Für jede Zelle der Tabelle wird dann die Methode durchlaufen. Innerhalb der Methode wird bei jedem Durchlauf zunächst geprüft in welcher Zeile (CrawlerParameter parameter) und in welcher Spalte (switch(spaltenname.toString()) wir uns befinden. Befinden wir uns in einer Zelle der Spalten <i>Name</i>, <i>Beschreibung</i> oder <i>StandardWert </i>ist eine Prüfung der Zeile unnötig, da Zellen dieser Spalten eh nicht editierbar sein sollen, egal ob es sich um die ausgewählte Zeile handelt oder nicht. Daher wird in diesen Fällen ein null-Wert zurückgegeben --&gt; Die Zelle ist nicht editierbar. Falls wir uns in der <i>BenutzerdefWert</i>-Spalte befinden wird überprüft ob es sich um die vom Benutzer ausgewählte Zeile handelt. Falls nicht, wird ebenfalls ein null zurückgegeben. Falls doch wird überprüft welchen Datentyp der Parameter besitzt (ist es ein boolescher Parameter, ein Integer-Parameter, ...?). Anschließend wird ein entsprechendes TextFeld (oder eine CheckBox bei einem booleschen Parameter) erstellt und mit entsprechenden Convertern/Validatoren etc. versehen. Anschließend wird das TextFeld bzw. die CheckBox zurückgegeben. Diese Zelle ist also nun editierbar. Damit haben wir das Ziel erreicht: Nur der benutzerdefinierte Wert des aktuell ausgewählten Parameters ist editierbar.<br />
+<br />
+<b>Zusammenfassung</b><br />
+Soll nur die aktuell ausgewählte Zeile (bzw. Teile davon) der Tabelle editierbar sein so muss folgendes getan werden:<br />
+<br />
+<ul>
+<li>Tabelle einen ItemClickListener hinzufügen</li>
+<li>Im ItemClickListener wird der Tabelle eine Instanz einer selbst erstellten, das Interface <i>TableFieldFactory </i>implementierenden, Klasse zugewiesen (setTableFieldFactory(new MyFieldFactory(currentSelectedEntity)) und die Tabelle auf editable gesetzt (setEditable(true)).</li>
+<li>In der eigenen Implementierung der TableFieldFactory (welche per Konstruktor-Parameter die selektierte Entität übergeben bekommt) wird überprüft ob es sich um eine Zelle handelt welche sich in der selektierten Zeile (und in einer editierbaren Spalte) befindet. Ist dies der Fall wird eine entsprechende Eingabe-Komponente (z.B. ein Textfeld oder eine CheckBox) erstellt und zurückgegeben (andernfalls wird <i>null </i>zurückgegeben und die Zelle ist nicht editierbar).</li>
+</ul>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody>
+<tr><td style="text-align: center;"><a href="http://2.bp.blogspot.com/-5097075qitI/UdmF8mtS0FI/AAAAAAAAAAo/e1DZtGQ776I/s1600/vaadintable2.png" imageanchor="1" style="margin-left: auto; margin-right: auto;"><img border="0" height="158" src="http://2.bp.blogspot.com/-5097075qitI/UdmF8mtS0FI/AAAAAAAAAAo/e1DZtGQ776I/s320/vaadintable2.png" width="320" /></a></td></tr>
+<tr><td class="tr-caption" style="text-align: center;">Hier werden alle Zellen der Spalte BenutzerdefWert editierbar gemacht, unabhängig von der Selektion</td></tr>
+</tbody></table>
+<br />
+<br />
+<br />

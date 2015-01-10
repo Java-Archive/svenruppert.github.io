@@ -1,0 +1,275 @@
+Today I will show the first step how you can use a dynamic proxy for JavaFX Controller.<br/>
+This we will need for the CDI support inside TestFX.. but this later..<br/>
+<br/>
+During I was writing on my reflection shortcut together with Dr. Heinz Kabutz<br/>
+(will be first available in german, later in english if asked for) I was thinking about his Newsletter <br/>
+about "Object Adapter based on Dynamic Proxy". <br/>
+Based on this we will now transform this into an CDI pattern for JavaFX Controller.<br/>
+<br/>
+The basic target will be an decorator for an CDI environment, to switch between implementations of defined methods<br/>
+of an controller. Ok, there is an decorator defined inside the CDI environment but with some hard limitations.<br/>
+<br/>
+First of all, you have to define the decorator inside the beans.xml. I don´t like this. <br/>
+If something will be changed you have to restart the container. And the definition is static.<br/>
+The second I not like, is the usage of an decorator. <br/>
+<br/>
+You have to annotate the class, <br/>
+you have to inject the basic implementation<br/>
+and you have to extend the basic implementation.  <br/>
+<br/>
+This is too much and the main disadvantage: you have to decide what decorator to use in the static context.<br/>
+<br/>
+How to solve this? <br/>
+<br/>
+Let´s start with the basic step. With the default methods in JDK8 you don´t need a basic Implementation class.<br/>
+But you have an interface. Let´s say we have an interface called DemoLogic.<br/>
+<br />
+<pre class="brush: java">
+@CDINotMapped
+public interface DemoLogic {
+
+    public default int add(int a, int b){
+        return a+b;
+    }
+
+    public default int sub(int a, int b){
+        return a-b;
+    }
+}
+    </class></pre>
+
+Importand is the annotation, to exclude this from the default scope inside CDI. You will see it later why..<br/>
+<br/>
+The next thing we want to have is an special implementation from the add method. This we will implement inside a class <br/>
+called DemoLogicAdapter_A.<br/>
+<br />
+<pre class="brush: java">
+@CDINotMapped
+public class DemoLogicAdapter_A implements DemoLogic{
+
+    public int add(int a, int b){
+        System.out.println("DemoLogicAdapter_A.add");
+        return a+b + 100;
+    }
+}
+    </class></pre>
+
+Same here with the annotation. The good thing is, you really have to implement the changed method only.<br/>
+No other delegator stuff.<br/>
+<br/>
+Next we need, is something to decide dynamically if we want to use the original implementation or the special one.<br/>
+This we will simulate with a singleton calles Context. This class with only one boolean attribute called original<br/>
+is to simulate a decicion logic.<br/>
+If the attribute is true, we are in context original otherwise we are inside the context customer specific.<br/>
+
+<br />
+<pre class="brush: java">
+@Singleton
+public class Context {
+
+    public boolean original = true;
+}
+    </class></pre>
+
+Now we will use it like the developer will do it later in a high level way.<br/>
+For this we write a jUnit Test to test this.<br/>
+The test will do the following.<br/>
+Inject the DemoLogic, call the method add and test if the original version was used.<br/>
+After this switch the context by setting the attribut original to false.<br/>
+Now get the demologic again and call the method add. <br/>
+If all is all right we will get the customer specific result.<br/>
+
+
+<br />
+<pre class="brush: java">
+@RunWith(Arquillian.class)
+public class DemoLogicTest {
+    @Deployment
+    public static JavaArchive createDeployment() {
+        return ShrinkWrap.create(JavaArchive.class)
+                .addPackages(true, "org.rapidpm.commons")
+                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+    }
+
+    @Inject @DynamicDecoratorTest Instance<DemoLogic> demoLogic;
+    @Inject Context context;
+    @Test
+    public void testDemoLogicOriginalTest() throws Exception {
+    Assert.assertNotNull(demoLogic);
+    final DemoLogic demoLogic1 = demoLogic.get();
+    final int add = demoLogic1.add(1, 1);
+    Assert.assertEquals(2,add);
+    System.out.println("add = " + add);
+
+    context.original = false;
+    final DemoLogic demoLogic2 = demoLogic.get();
+    final int addAdapted = demoLogic2.add(1, 1);
+    Assert.assertEquals(102,addAdapted);
+    System.out.println("addAdapted = " + addAdapted);
+    }
+    }
+    </class></pre>
+I am using arquillian to have CDI support inside my jUnit Tests.<br/>
+The annotation DynamicDecoratorTest is to separate this test from the rest of my tests.<br/>
+<br/>
+You see the usage quite clear. The developer will only see the interface. He will use it like <br/>
+he will do it as normal. No change to see! Let´s asume the context switch is done by the system,<br/>
+hidden, so the the develper is not able to see it. <br/>
+He will write code only with the thinking about the business logic to implement.<br/>
+<br/>
+Afer we described what we want to have, we will implement the core. <br/>
+To get an instance of the DemoLogic, we need a producer. We will call the class DemoLogicProducer.<br/>
+<br />
+<pre class="brush: java">
+public class DemoLogicProducer {
+
+    @Inject Instance<DynamicObjectAdapterFactory> dynamicObjectAdapterFactoryInstance;
+
+    @Inject Context context;
+
+    @Produces @DynamicDecoratorTest
+    public DemoLogic create(ManagedInstanceCreator instanceCreator){
+    final DemoLogic demoLogic = instanceCreator.activateCDI(new DemoLogic() {});
+
+    final DynamicObjectAdapterFactory dynamicObjectAdapterFactory = dynamicObjectAdapterFactoryInstance.get();
+
+    final Object adapter;
+    if (context.original){
+    adapter = new Object();
+    } else {
+    adapter = instanceCreator.activateCDI(new DemoLogicAdapter_A());
+    }
+
+    return dynamicObjectAdapterFactory.adapt(demoLogic, DemoLogic.class, adapter);
+    }
+    }
+    </class></pre>
+The basic what we are simulating here ist the switch between original and customer specific.<br/>
+This will be more comfortable in the next post. (using a ContextResolver)<br/>
+But to show the basic step this is made explicite simple.<br/>
+If the attribute is true, use the original one otherwise use the customer specific.<br/>
+Very simple.. Both instances are manually put inside the CDI environment. <br/>
+This ist only to show that the adapter itself can be managed too.<br/>
+<br/>
+The most importand step is the transparent wrapping with the DynamicObjectAdapterFactory.<br/>
+The developer will not see this, until he is debugging ;-)<br/>
+<br/>
+How this factory is working? <br/>
+The factory is using the java.lang.reflect.Proxy from the JDK itself. An old but very usefull class.<br/>
+In my case I will use this in side a CDI managed environment. <br/>
+
+<br />
+<pre class="brush: java">
+public class DynamicObjectAdapterFactory {
+
+    @Inject Instance<CDIInvocationHandler> cdiInvocationHandlerInstance;
+
+    public  <T> T adapt(final Object adaptee,final Class<T> target,final Object adapter) {
+
+        final CDIInvocationHandler invocationHandler = cdiInvocationHandlerInstance
+        .get()
+        .adapter(adapter)
+        .adaptee(adaptee);
+
+        return (T) Proxy.newProxyInstance(
+        target.getClassLoader(),
+        new Class[]{target},
+        invocationHandler
+        );
+        }
+
+        }
+        </class></pre>
+This means I will be able to inject, for example, the InvocationHandler. <br/>
+This I need, because I need a managed InvocationHandler. <br/>
+The usage of the Proxy is nothing complex. But the InvocationHandler is the final and importand step.<br/>
+<br />
+<pre class="brush: java">
+public class CDIInvocationHandler implements InvocationHandler {
+
+    @Inject @CDILogger Logger logger;
+
+    private Map<MethodIdentifier, Method> adaptedMethods = new HashMap<>();
+
+    private Object adapter;
+    private Object adaptee;
+
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+
+        if (adaptedMethods.isEmpty()){
+            final Class<?> adapterClass = adapter.getClass();
+            Method[] methods = adapterClass.getDeclaredMethods();
+            for (Method m : methods) {
+                adaptedMethods.put(new MethodIdentifier(m), m);
+            }
+        }else{
+            if (logger.isDebugEnabled()) {
+                logger.debug("adaptedMethods is initialized..");
+            }
+        }
+        try {
+            Method other = adaptedMethods.get(new MethodIdentifier(method));
+            if (other != null) {
+                return other.invoke(adapter, args);
+            } else {
+                return method.invoke(adaptee, args);
+            }
+        } catch (InvocationTargetException e) {
+            throw e.getTargetException();
+        }
+    }
+
+    public CDIInvocationHandler adapter(final Object adapter) {
+        this.adapter = adapter;
+        return this;
+    }
+
+    public CDIInvocationHandler adaptee(final Object adaptee) {
+        this.adaptee = adaptee;
+        return this;
+    }
+
+
+}
+
+public class MethodIdentifier {
+    private final String name;
+    private final Class[] parameters;
+
+    public MethodIdentifier(Method m) {
+        name = m.getName();
+        parameters = m.getParameterTypes();
+    }
+
+    // we can save time by assuming that we only compare against
+    // other MethodIdentifier objects
+    public boolean equals(Object o) {
+        MethodIdentifier mid = (MethodIdentifier) o;
+        return name.equals(mid.name) &&
+                Arrays.equals(parameters, mid.parameters);
+    }
+
+    public int hashCode() {
+        return name.hashCode();
+    }
+}
+
+    </class></pre>
+
+The method invoke is called every time a method is called on the proxy. This is the place to decide which method will be called.<br/>
+From the adapter we will get all methods and put them inside a HashMap. The key is based on method-name and attributes. <br/>
+If a method is called with this key, we will get the adapter instance of this method from the map and <br/>
+will call this instead of the original one.<br/>
+If not key found, we will call the original nethod.<br/>
+This is really simple!<br/>
+<br/>
+This means you have everywhere CDI managed instances.<br/>
+You have only to implement what you whant to change.<br/>
+It is dynamic with every request.<br/>
+No beans.xml must be edited.<br/>
+<br/>
+You never need the decorator from CDI anymore. ;-)  <br/>
+<br/>
+Next step will be the integration iside an JavaFX controller.. and TestFX CDI Support<br/>
+<br/>

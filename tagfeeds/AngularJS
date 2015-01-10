@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title>AngularJS</title>
+    <category label="AngularJS"/>
+    <updated>2015-01-10T01:39:11.553+01:00</updated>
+    <id>http://rapidpm.github.io</id>
+    <author>
+        <name>Oliver Milke</name>
+    </author>
+    <entry>
+        <title>AngularJS directives put to use - Part 1</title>
+        <category label="HTML"/>
+        <category label="AngularJS"/>
+        <published>2014-11-10T00:00:00+01:00</published>
+        <author>
+            <name>Oliver Milke</name>
+        </author>
+        <content type="html">&lt;article class="article clearfix"&gt;
+							&lt;header class="article-header"&gt;
+								&lt;h2 class="article-title"&gt;&lt;a href="/2014/11/10/angularjs-directives-put-to-use-part-1.html" rel="tag"&gt;AngularJS directives put to use - Part 1&lt;/a&gt;&lt;/h2&gt;
+								&lt;p&gt;&lt;time datetime="2014-11-10"&gt;2014-11-10&lt;/time&gt; &lt;a href="/team/oliver-milke" rel="author"&gt;from Oliver Milke&lt;/a&gt;&lt;/p&gt;
+							&lt;/header&gt;
+							&lt;div class="article-content clearfix"&gt;
+								&lt;div class="post-thumb"&gt;
+									&lt;img src="./site/content/post_thumb.jpg" width="" height="" alt="" /&gt;
+								&lt;/div&gt;
+								&lt;div class="post-excerpt"&gt;&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;&lt;a href="https://angularjs.org/"&gt;AngularJS&lt;/a&gt; is a JavaScript framework that greatly assists in building rich client-side web applications. It pushes techniques
+well known among backend developers to the frontend, for instance dependency injection (DI) or expression binding (more precisely two-way-binding).&lt;/p&gt;
+
+&lt;p&gt;Another truly helpful element of AngularJS are &lt;a href="https://docs.angularjs.org/guide/directive"&gt;directives&lt;/a&gt;. You can think of directives as your own means of extending HTML. Or consider it as a means
+to reduce repetitive code in HTML and therefore making it more readable and improving maintainability.&lt;/p&gt;
+
+&lt;p&gt;This blog entry assumes a basic knowledge of AngularJS' controller concept and how to bind to bind a value of the controller with {{}}.&lt;/p&gt;
+
+&lt;h2&gt;A Nav-Bar with Bootstrap&lt;/h2&gt;
+
+&lt;h3&gt;Initial Situation&lt;/h3&gt;
+&lt;p&gt;For a little app I currently develop, I copied the basic nav bar example from the Bootstrap example and extended it with a some behaviour:&lt;/p&gt;
+
+&lt;pre brush="html"&gt;
+&amp;lt;li class="dropdown" ng-class="{
+    active: isActive('/categories') || isActive('/fortune') ||
+    isActive('/entry-report') || isActive('/savings') || isActive('/audit')
+    }"&amp;gt;
+
+    &amp;lt;a href="#" class="dropdown-toggle" data-toggle="dropdown"&amp;gt;
+        &amp;lt;span class="glyphicon glyphicon-stats"&amp;gt;&amp;lt;/span&amp;gt; Reports &amp;lt;b class="caret"&amp;gt;&amp;lt;/b&amp;gt;
+    &amp;lt;/a&amp;gt;
+    &amp;lt;ul class="dropdown-menu"&amp;gt;
+        &amp;lt;li ng-class="{active: isActive('/categories')}"&amp;gt;
+            &amp;lt;a href="#/categories"&amp;gt;Categories&amp;lt;/a&amp;gt;
+        &amp;lt;/li&amp;gt;
+
+        &amp;lt;li ng-class="{active: isActive('/entry-report')}"&amp;gt;
+            &amp;lt;a href="#/entry-report"&amp;gt;Entries&amp;lt;/a&amp;gt;
+        &amp;lt;/li&amp;gt;
+
+        &amp;lt;li ng-class="{active: isActive('/savings')}"&amp;gt;
+            &amp;lt;a href="#/savings"&amp;gt;Savings&amp;lt;/a&amp;gt;
+        &amp;lt;/li&amp;gt;
+
+        &amp;lt;li ng-class="{active: isActive('/fortune')}"&amp;gt;
+            &amp;lt;a href="#/fortune"&amp;gt;Fortune&amp;lt;/a&amp;gt;
+        &amp;lt;/li&amp;gt;
+
+        &amp;lt;li ng-class="{active: isActive('/audit')}"&amp;gt;
+            &amp;lt;a href="#/audit"&amp;gt;Audit&amp;lt;/a&amp;gt;
+        &amp;lt;/li&amp;gt;
+
+    &amp;lt;/ul&amp;gt;
+&amp;lt;/li&amp;gt;
+&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;ng-class&lt;/code&gt; is used to add a CSS classes to the element if the specified condition is met. &lt;code&gt;isActive&lt;/code&gt; is a method of the corresponding
+AngularJS controller, which simply returns &lt;code&gt;true&lt;/code&gt; if the currently active URI of the application ends with the provided string. This way an item is
+highlighted if the respective link is displayed.&lt;/p&gt;
+
+&lt;p&gt;As you can see, there is some repetition if you want to add another entry to the nav bar. You always have to specify the URI for &lt;code&gt;isActive&lt;/code&gt; and the
+&lt;code&gt;href&lt;/code&gt; attribute. Additionally every nav bar entry mostly looks the same, except for the URI and the title of the link.&lt;/p&gt;
+
+&lt;p&gt;There is a better way: an AngularJS directive helps us to remove the repetition with both of the above mentioned problems.&lt;/p&gt;
+
+&lt;h3&gt;The solution&lt;/h3&gt;
+
+&lt;p&gt;We create a directive:&lt;/p&gt;
+
+&lt;pre brush="javascript"&gt;
+var myDirectives = angular.module('myApp.directives', []);
+
+myDirectives.directive('navEntry', ['$location', function ($location) {
+
+    function link(scope, element, attrs) {
+
+        function setSafeLink(element) {
+
+            var link = element.find('a');
+            link.attr('href', '#' + attrs.path);
+        }
+
+        setSafeLink(element);
+
+        scope.$watch(function () {
+            return $location.path();
+        }, function (newLocation) {
+
+            if (attrs.path === newLocation) {
+                element.addClass('active');
+            } else {
+                element.removeClass('active');
+            }
+        });
+    }
+
+    return {
+        replace: true,
+        restrict: 'E',
+        scope: {
+            path: '@',
+            title: '@'
+        },
+        templateUrl: '/js/directives/navEntry/nav-entry.html',
+        link: link
+    };
+
+
+}]);
+&lt;/pre&gt;
+
+&lt;figure style="float: right; margin: 5px 0 5px 15px; text-align: center"&gt;
+    &lt;img src="http://www.rapidpm.org/2014/11/10/folderStructure.png" &gt;
+    &lt;figcaption&gt;Folder Structure&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;This is the template, that the directives links to:&lt;/p&gt;
+
+&lt;pre brush="html"&gt;
+&amp;lt;li&amp;gt;
+    &amp;lt;a &amp;gt;{{title}}&amp;lt;/a&amp;gt;
+&amp;lt;/li&amp;gt;
+&lt;/pre&gt;
+
+&lt;p&gt;Here are the core explanations&lt;/p&gt;
+
+&lt;ul&gt;
+    &lt;li&gt;the name of the directive is &lt;code&gt;navEntry&lt;/code&gt;, which means it can be used as &lt;code&gt;&amp;lt;nav-entry&amp;gt;&lt;/code&gt; in the HTML. This is Angulars standard way of using directives.&lt;/li&gt;
+    &lt;li&gt;we depend on &lt;code&gt;$location&lt;/code&gt; being injected (for checking which URI is currently active)&lt;/li&gt;
+    &lt;li&gt;the function &lt;code&gt;link(scope, element, attrs)&lt;/code&gt; is executed once for each actual usage (instance) of the directive&lt;/li&gt;
+     &lt;ul&gt;
+         &lt;li&gt;the link of our navigation entry is set with &lt;code&gt;setSafeLink()&lt;/code&gt; to the value of the path attribute and the title of the title attribute of the directive instance&lt;/li&gt;
+         &lt;li&gt;a listener, which triggers when the URI changes, is registered&lt;/li&gt;
+         &lt;li&gt;if the URI changes, we check whether the currently active URI matches the path attribute of the directive instance (which governs whether or not the navigation entry is active)&lt;/li&gt;
+     &lt;/ul&gt;
+    &lt;li&gt;&lt;code&gt;restrict: 'E'&lt;/code&gt;: the directive is used like a separate element&lt;/li&gt;
+    &lt;li&gt;&lt;code&gt;templateUrl&lt;/code&gt;: the path of content of the directive&lt;/li&gt;
+    &lt;li&gt;&lt;code&gt;scope&lt;/code&gt;:&lt;/li&gt;
+        &lt;ul&gt;
+            &lt;li&gt;this defines an own scope for each directive instance, isolated from the scope of the controller actually being responsible (isolate scope)&lt;/li&gt;
+            &lt;li&gt;path: '@' the directive element shall have an attribute path, which value is mapped to the scope property path &lt;code&gt;(&amp;lt;nav-bar path="/mypath"&amp;gt;)&lt;/code&gt;&lt;/li&gt;
+            &lt;li&gt;shorthand notation for &lt;code&gt;path: '@path'&lt;/code&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;li&gt;&lt;code&gt;replace: true&lt;/code&gt;: means that the directive usage in the HTML is replaced by content of the template of the
+        directive when building the final DOM&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Actually I wanted to set the &lt;code&gt;href&lt;/code&gt; attribute in the template, but AngularJS has some security mechanism that prevents us from using something like&lt;/p&gt;
+
+&lt;pre brush="html"&gt;
+    &amp;lt;a href="#{{path}}"&amp;gt;...&amp;lt;/a&amp;gt;
+&lt;/pre&gt;
+
+&lt;p&gt;That's why setSafeLink() adds href instead.&lt;/p&gt;
+
+&lt;h3&gt;The Result&lt;/h3&gt;
+        
+&lt;pre brush="html"&gt;
+&amp;lt;li class="dropdown" ng-class="{
+    active: isActive('/categories') || isActive('/fortune') ||
+    isActive('/entry-report') || isActive('/savings') || isActive('/audit')
+    }"&amp;gt;
+
+    &amp;lt;a href="#" class="dropdown-toggle" data-toggle="dropdown"&amp;gt;
+        &amp;lt;span class="glyphicon glyphicon-stats"&amp;gt;&amp;lt;/span&amp;gt; Reports &amp;lt;b class="caret"&amp;gt;&amp;lt;/b&amp;gt;
+    &amp;lt;/a&amp;gt;
+    &amp;lt;ul class="dropdown-menu"&amp;gt;
+
+        &amp;lt;nav-entry path="/categories" title="Category Overview"&amp;gt;&amp;lt;/nav-entry&amp;gt;
+
+        &amp;lt;nav-entry path="/category" title="Category"&amp;gt;&amp;lt;/nav-entry&amp;gt;
+
+        &amp;lt;nav-entry path="/entry-report" title="Entries"&amp;gt;&amp;lt;/nav-entry&amp;gt;
+
+        &amp;lt;nav-entry path="/savings" title="Savings"&amp;gt;&amp;lt;/nav-entry&amp;gt;
+
+        &amp;lt;nav-entry path="/fortune" title="Fortune"&amp;gt;&amp;lt;/nav-entry&amp;gt;
+
+        &amp;lt;nav-entry path="/audit" title="Balance Audit"&amp;gt;&amp;lt;/nav-entry&amp;gt;
+
+    &amp;lt;/ul&amp;gt;
+&amp;lt;/li&amp;gt;
+&lt;/pre&gt;
+
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;This is a lot less code than in the initial setup and adding a new navigation entry is pretty easy now. We removed the duplication of the URI string, which is a
+little less error prone. Moreover, we now could the change the template in one place instead of touching all navigation entries, which makes it DRY.&lt;/p&gt;
+
+&lt;p&gt;The idea could even be taken a little further. A potential next step is to make the whole dropdown element a separate directive, which could lift the need to
+separately list each &lt;code&gt;isActive('/...') &lt;/code&gt; branch for the contained &amp;lt;nav-bar&amp;gt;.&lt;/p&gt;
+
+&lt;h2&gt;Outlook&lt;/h2&gt;
+&lt;p&gt;Stay tuned for another example of what you can do with directives in part 2. Next time we'll have a look into how to format currency values.&lt;/p&gt;&lt;/div&gt;
+							&lt;/div&gt;
+							&lt;footer class="article-footer clearfix"&gt;
+								&lt;span class="post-author"&gt;&lt;a href="/team/oliver-milke" rel="author"&gt;Oliver Milke&lt;/a&gt;&amp;nbsp;&amp;nbsp;|&amp;nbsp;&amp;nbsp;&lt;/span&gt;
+								&lt;span class="post-date"&gt;&lt;a href="#" rel="date"&gt;2014-11-10&lt;/a&gt;&amp;nbsp;&amp;nbsp;|&amp;nbsp;&amp;nbsp;&lt;/span&gt;
+							&lt;/footer&gt;
+						&lt;/article&gt;</content>
+        <summary></summary>
+    </entry>
+</feed>

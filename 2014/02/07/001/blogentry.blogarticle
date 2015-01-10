@@ -1,0 +1,167 @@
+Based on my <a href="http://www.rapidpm.org/2014/01/fxcontroller-with-cdi-managed.html">blog article part 1</a> we want to integrate the DynamicObjectAdapter into an JavaFX application.
+To remember: We have an interface called DemoLogic with two methods. add(..) and sub(..)
+The implementation is really simple, but at runtime we could switch the implementation partially.
+For this we needed an adapter.
+<br/>
+The biggest tdifference compared to the default CDI decorator was,
+that we need no definition inside the beans.xml. The implementation is smaller
+and no need for Qualifiers and other biolder-plate code.
+<br/>
+This DemoLogic we want to use now inside an JavaFX application.
+For this we ned first an fxml.file called DemoPane.fxml. Here we will define a few elements.
+
+<br />
+<pre class="brush: javafx">
+&lt;?import javafx.scene.control.Button?&gt;
+&lt;?import javafx.scene.control.TextField?&gt;
+&lt;?import javafx.scene.layout.VBox?&gt;
+&lt;?import javafx.scene.control.Label?&gt;
+&lt;?import javafx.scene.control.CheckBox?&gt;
+&lt;fx:root type=&quot;javafx.scene.layout.AnchorPane&quot;
+            xmlns:fx=&quot;http://javafx.com/fxml&quot;&gt;
+    &lt;children&gt;
+        &lt;VBox&gt;
+            &lt;children&gt;
+                &lt;Button fx:id=&quot;button&quot; text=&quot;Hello World&quot; /&gt;
+                &lt;CheckBox fx:id=&quot;checkbox&quot; text=&quot;switch context&quot;/&gt;
+                &lt;TextField fx:id=&quot;textFieldA&quot;/&gt;
+                &lt;TextField fx:id=&quot;textFieldB&quot;/&gt;
+                &lt;Label fx:id=&quot;label&quot;/&gt;
+            &lt;/children&gt;
+        &lt;/VBox&gt;
+
+    &lt;/children&gt;
+
+&lt;/fx:root&gt;
+    </class></pre>
+
+With the button we will activate the calculation, with the checkbox we will switch the context.
+To have a small as possible implementation, there is no error checking.
+<br/>
+The next will be the controller called DemoController. This is a normal JavaFX Controller, but CDI managed.
+How to get this? Well there is a good blog article here ;-) <a href="http://www.rapidpm.org/2013/08/javafxcdi-bootstrap-add-on.html">CDI JavaFX bootstrapping</a>.
+<br/>
+Inside the DemoController we will get an Instance of the DemoLogic and the Context.
+<br />
+<pre class="brush: java">
+@Inject
+    @DynamicDecoratorTest
+    Instance&lt;DemoLogic&gt; demoLogicInstance;
+
+    @Inject
+    Context context;
+    </class></pre>
+
+The full implementation will be like the following.
+<br />
+<pre class="brush: java">
+@DynamicDecoratorTest
+public class DemoController implements Initializable{
+
+    @FXML public TextField textFieldA;
+    @FXML public TextField textFieldB;
+    @FXML public Button button;
+    @FXML public Label label;
+    @FXML public CheckBox checkbox;
+
+    @Inject
+    @DynamicDecoratorTest
+    Instance&lt;DemoLogic&gt; demoLogicInstance;
+
+    @Inject
+    Context context;
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        button.setText(&quot;klick me&quot;);
+        button.setOnAction(actionEvent -&gt; {
+
+            final DemoLogic demoLogic = demoLogicInstance.get();
+
+            final String textFieldAText = textFieldA.getText();
+            final Integer a = Integer.valueOf(textFieldAText);
+
+            final String textFieldBText = textFieldB.getText();
+            final Integer b = Integer.valueOf(textFieldBText);
+
+            final int result = demoLogic.add(a, b);
+            label.setText(result+&quot;&quot;);
+
+        });
+
+        checkbox.setOnAction(actionEvent -&gt; {
+            context.original = checkbox.isSelected();
+        });
+    }
+}
+    </class></pre>
+
+Inside the method initialize you will find the connection between the GUI logic and the business logic.
+This is now clean devided.
+<br/>
+To test this I was using Arquillian. LAter we will see how we could do this with TestFX.
+We are working on the CDI Support.
+
+<br />
+<pre class="brush: java">
+@RunWith(Arquillian.class)
+public class DemoLogicTest {
+    @Deployment
+    public static JavaArchive createDeployment() {
+        return ShrinkWrap.create(JavaArchive.class)
+                .addPackages(true, &quot;org.rapidpm.demo&quot;)
+                .addPackages(true, &quot;junit.org.rapidpm.demo&quot;)
+                .addPackages(true, &quot;demo&quot;)
+                .addAsManifestResource(EmptyAsset.INSTANCE, &quot;beans.xml&quot;);
+    }
+
+    @Inject @DynamicDecoratorTest
+    Instance&lt;DemoController&gt; demoControllerInstance;
+    @Inject
+    Context context;
+
+    static final FXMLLoader loader = new FXMLLoader();
+
+    @Test
+    public void testDemoLogicJavaFXTest() throws Exception {
+        loader.setControllerFactory(param -&gt; demoControllerInstance.get());
+        Application.launch(DemoApp.class);
+    }
+
+
+    public static class DemoApp extends Application {
+        @Override
+        public void start(Stage stage) throws Exception {
+
+            final URL resource = getClass()
+                    .getClassLoader()
+                    .getResource(&quot;DemoPane.fxml&quot;);
+            loader.setLocation(resource);
+            final DemoController controller = (DemoController) loader
+                    .getControllerFactory()
+                    .call(DemoController.class);
+            try {
+
+                loader.setController(controller);
+                loader.setRoot(new AnchorPane());
+                final Parent root = (Parent) loader.load();
+
+                stage.setScene(new Scene(root));
+                stage.setTitle(&quot;Custom Control&quot;);
+                stage.setWidth(300);
+                stage.setHeight(200);
+                stage.show();
+            } catch (IOException exception) {
+                throw new RuntimeException(exception);
+            }
+
+        }
+
+        public static void main(String[] args) {
+            launch(args);
+        }
+    }
+}
+    </class></pre>
+<br/>
+You never need the decorator from CDI anymore. ;-)  

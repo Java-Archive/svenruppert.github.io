@@ -1,0 +1,25 @@
+In meinem Blog vom <a href="http://www.rapidpm.org/2013/06/cdi-commons-dynamic-service-resolver.html" target="_blank">26.6.2013</a> habe ich über die Möglichkeit geschrieben, wie man zur Laufzeit die <br />
+Implementierung auswählen kann die in die entsprechende Stelle injected wird.<br />
+Es war immer noch notwendig die Producer anzupassen wie in dem Beispiel des SimpleDateFormatterProducer<br />
+<a href="http://lh6.ggpht.com/-3nOsUPRQFBY/UeZRhRWi8FI/AAAAAAABSyE/ydt6LTVhrd4/s1600-h/image%25255B4%25255D.png"><img alt="image" border="0" src="http://lh4.ggpht.com/-Z1PL3KBjqb8/UeZRhzjaSxI/AAAAAAABSyM/HgBpBsB-kQ0/image_thumb%25255B2%25255D.png?imgmax=800" height="291" style="background-image: none; border-bottom: 0px; border-left: 0px; border-right: 0px; border-top: 0px; display: inline; padding-left: 0px; padding-right: 0px; padding-top: 0px;" title="image" width="1028" /></a><br />
+<br />
+Gleich mehrere Dinge die nicht angenehm sind. <br />
+1) der ContextResolver ist hier hart per Qualifier angegeben.<br />
+2) Die Implementierung eines Constructors selbst<br />
+3) Lazy-Init des AttributespropertyregistryService <br />
+4) fehlende Default Implementierung<br />
+<br />
+Aus Sicht der Entwickler wäre folgendes wünschenswert.<br />
+Ein Inject des PropertyregistryService mit folgender Anweisung: <br />
+<a href="http://lh3.ggpht.com/-45yPDOnUJxw/UeZRiZrDRSI/AAAAAAABSyQ/Y1ZESUxf9YM/s1600-h/image%25255B23%25255D.png"><img alt="image" border="0" src="http://lh5.ggpht.com/-I-yScB0k1CI/UeZRi_UnpXI/AAAAAAABSyc/3u4HtZS8jz0/image_thumb%25255B13%25255D.png?imgmax=800" height="37" style="background-image: none; border-bottom: 0px; border-left: 0px; border-right: 0px; border-top: 0px; display: inline; padding-left: 0px; padding-right: 0px; padding-top: 0px;" title="image" width="644" /></a><br />
+Um das zu erreichen wird die Klasse <strong>PropertyRegistryServiceProducer</strong> implementiert.<br />
+Hier wird ein allgemeiner Producer für den PropertyregistryServcie geschrieben.<br />
+<a href="http://lh4.ggpht.com/-sylKRPpui48/UeZRjfS06YI/AAAAAAABSyk/GXdNjNHsl28/s1600-h/image%25255B13%25255D.png"><img alt="image" border="0" src="http://lh3.ggpht.com/-tfvsFsLLHiM/UeZRjzBZnlI/AAAAAAABSyo/ESmx0QU5_0o/image_thumb%25255B7%25255D.png?imgmax=800" height="544" style="background-image: none; border-bottom: 0px; border-left: 0px; border-right: 0px; border-top: 0px; display: inline; padding-left: 0px; padding-right: 0px; padding-top: 0px;" title="image" width="1028" /></a><br />
+<br />
+zwei Dinge sind hier von Bedeutung:<br />
+1) Der Inject einer Default-Implementierung , in diesem Fall der Inject einer FileBasedRegistry<br />
+2) Der Inject einers ContextResolvers mit @Any und @Default<br />
+Nun kann zur Laufzeit der ContextResolver ausgewertet werden um die Endscheidung zu treffen welche Implementierung verwendet werden soll.<br />
+Der ContextResolver selbst wird wohl immer eine spezialisierte Implementierung in einem Projekt darstellen und muss deshalb selbst Implementiert werden.<br />
+Eine Default-Implementierung ist dem Projekt als Beispiel in den test – Foldern beigelegt. (<strong>DefaultPropertyContextResolver</strong>)<br />
+<a href="http://lh3.ggpht.com/-TCFHS7F4WGA/UeZRkTfzDOI/AAAAAAABSyw/m0xYmEL6KP4/s1600-h/image%25255B18%25255D.png"><img alt="image" border="0" src="http://lh5.ggpht.com/-JkhZXOORYrM/UeZRkqRcRnI/AAAAAAABSy8/vuUpFYsOYKw/image_thumb%25255B10%25255D.png?imgmax=800" height="162" style="background-image: none; border-bottom: 0px; border-left: 0px; border-right: 0px; border-top: 0px; display: inline; padding-left: 0px; padding-right: 0px; padding-top: 0px;" title="image" width="644" /></a>

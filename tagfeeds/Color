@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title>Color</title>
+    <category label="Color"/>
+    <updated>2015-01-10T01:39:11.562+01:00</updated>
+    <id>http://rapidpm.github.io</id>
+    <author>
+        <name>Sven Ruppert</name>
+    </author>
+    <entry>
+        <title>Lego Mindstorms EV3 Components: Color Sensor - Part 1</title>
+        <category label="0.6.0"/>
+        <category label="Color"/>
+        <category label="EV3"/>
+        <category label="Lego"/>
+        <category label="lejos"/>
+        <category label="Mindstorms"/>
+        <category label="sensor"/>
+        <published>2014-03-17T00:00:00+01:00</published>
+        <author>
+            <name>Sven Ruppert</name>
+        </author>
+        <content type="html">&lt;article class="article clearfix"&gt;
+							&lt;header class="article-header"&gt;
+								&lt;h2 class="article-title"&gt;&lt;a href="/2014/03/17/lego-mindstorms-ev3-components--color-.html" rel="tag"&gt;Lego Mindstorms EV3 Components: Color Sensor - Part 1&lt;/a&gt;&lt;/h2&gt;
+								&lt;p&gt;&lt;time datetime="2014-03-17"&gt;2014-03-17&lt;/time&gt; &lt;a href="/team/sven-ruppert" rel="author"&gt;from Sven Ruppert&lt;/a&gt;&lt;/p&gt;
+							&lt;/header&gt;
+							&lt;div class="article-content clearfix"&gt;
+								&lt;div class="post-thumb"&gt;
+									&lt;img src="./site/content/post_thumb.jpg" width="" height="" alt="" /&gt;
+								&lt;/div&gt;
+								&lt;div class="post-excerpt"&gt;In this and in our next postings on our Lego Mindstorms series we will have a closer look at the EV3 color sensor. Today we will use the sensor's ability of detecting and distinguishing different colors.&lt;br /&gt;
+&lt;br /&gt;
+Meanwhile version 0.7.0 of the lejos api was released. But in this tutorial we will still use the 0.6.0-release as 0.7.0s changes weren't dramatic. So you should be able to run the same program with 0.7.0, too.&lt;br /&gt;
+&lt;br /&gt;
+&lt;h2&gt;
+    The robot&lt;/h2&gt;
+The only task the robot will do in this tutorial is: Detecting colors and tell us which color was detected. So in fact we only need the sensor. No motors or something like that is needed. But as we already have a robot from our last articles on the infrared sensor we will take that one and only switch the infrared sensor with the new color sensor.&lt;br /&gt;
+&lt;br /&gt;
+&lt;div class="separator" style="clear: both; text-align: center;"&gt;
+    &lt;a href="http://1.bp.blogspot.com/-4ymIE9suwYE/UyW4_gA8p9I/AAAAAAAAAMM/ei3h5K1LB6w/s1600/DSCN0665.JPG" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" src="http://1.bp.blogspot.com/-4ymIE9suwYE/UyW4_gA8p9I/AAAAAAAAAMM/ei3h5K1LB6w/s1600/DSCN0665.JPG" height="320" width="240" /&gt;&lt;/a&gt;&lt;/div&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;h2&gt;
+    The parcours&lt;/h2&gt;
+We built a stick with different colors: red, green, yellow and blue. We will hold the different colors in front of the robot's sensor and the robot should give feedback on the detected color by letting the background-LED of the brick's buttons illuminate in the same color. One exception: If blue is detected the program should exit.&lt;br /&gt;
+&lt;br /&gt;
+&lt;div class="separator" style="clear: both; text-align: center;"&gt;
+    &lt;a href="http://4.bp.blogspot.com/-r5IwUOLzJ0Q/UyW8RDwVa_I/AAAAAAAAAMY/mODactZInrw/s1600/DSCN0667.JPG" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" src="http://4.bp.blogspot.com/-r5IwUOLzJ0Q/UyW8RDwVa_I/AAAAAAAAAMY/mODactZInrw/s1600/DSCN0667.JPG" height="96" width="320" /&gt;&lt;/a&gt;&lt;/div&gt;
+&lt;br /&gt;
+&lt;h2&gt;
+    The color sensor API&lt;/h2&gt;
+Like the infrared sensor the color sensor has different modes for different tasks. The infrared sensor for example had modes to detect signals of an infrared source or to detect objects and their distance to the robot.&lt;br /&gt;
+There is a mode for every task a sensor can execute. To detect different colors we need the color sensor's colorIDMode. Once the sensor is in the right mode we only need to call&amp;nbsp;colorSensor.getColorID to get the detected color.&lt;br /&gt;
+&lt;br /&gt;
+Sounds easy, IS easy. Here comes the code.&lt;br /&gt;
+&lt;br /&gt;
+&lt;h2&gt;
+    The code&lt;/h2&gt;
+We have two classes this time: The Main-class and the ColorRecognizerThread-class. First, let's look at the (really small) main-class:&lt;br /&gt;
+&lt;br /&gt;
+&lt;pre class="brush: java"&gt;public class Main {
+
+
+    public static void main(String[] args) throws InterruptedException {
+        final EV3ColorSensor colorSensor = new EV3ColorSensor(SensorPort.S2);
+        final SensorMode mode = colorSensor.getColorIDMode();
+        final ColorRecognizerThread colorRecognizerThread = new ColorRecognizerThread(colorSensor);
+
+        colorRecognizerThread.start();
+
+        Button.waitForAnyPress();
+    }
+
+}&lt;/pre&gt;
+&lt;br /&gt;
+In contrast to our earlier postings we don't need a DifferentialPilot this time because the robot doesn't have to move. So the only things we do is instantiating a new ColorSensor-Instance and set it to the colorIDMode. Then we instantiate a ColorRecognizerThread (which extends Thread) and give it the color sensor object as a constructor parameter. In that thread we will implement the logic to detect colors and let the LED illuminate in the same color.&lt;br /&gt;
+After starting the thread we wait for any button press as always so that our program won't just exit after starting the thread.&lt;br /&gt;
+&lt;br /&gt;
+The ColorRecognizerThread looks like the following:&lt;br /&gt;
+&lt;br /&gt;
+&lt;pre class="brush: java"&gt;public class ColorRecognizerThread extends Thread {
+
+    private EV3ColorSensor colorSensor;
+
+    public ColorRecognizerThread(final EV3ColorSensor colorSensor) {
+        this.colorSensor = colorSensor;
+    }
+
+    @Override
+    public void run() {
+        while(true){
+            final int colorId = colorSensor.getColorID();
+            switch (colorId){
+                //RED
+                case 0:
+                    Button.LEDPattern(2);
+                    break;
+                //GREEN
+                case 1:
+                    Button.LEDPattern(1);
+                    break;
+                //BLUE
+                case 2:
+                    Button.LEDPattern(4);
+                    threadSleep(2000);
+                    Button.LEDPattern(0);
+                    System.exit(0);
+                //YELLOW
+                case 3:
+                    Button.LEDPattern(3);
+                    break;
+                default:
+                    Button.LEDPattern(0);
+            }
+        }
+    }
+
+    private void threadSleep(final int ms) {
+        try {
+            Thread.sleep(ms);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+}&lt;/pre&gt;
+&lt;br /&gt;
+The constructor is easy as it only saves the color sensor object into a private variable so that we can use it in the run-method.&lt;br /&gt;
+The really interesting part is the run-method of course, which is called when starting the thread in the main class. We have a deadloop as we want the robot to detect colors continuously. In that loop we get the color found by the color sensor by calling the getColorID()-Method. As you can see it returns an integer. By having a look at the sources (Color.java) we find out which integer value stands for which color:&lt;br /&gt;
+&lt;br /&gt;
+&lt;pre class="brush: java"&gt;    public static final int RED = 0;
+    public static final int GREEN = 1;
+    public static final int BLUE = 2;
+    public static final int YELLOW = 3;
+    public static final int MAGENTA = 4;
+    public static final int ORANGE = 5;
+    public static final int WHITE = 6;
+    public static final int BLACK = 7;
+    public static final int PINK = 8;
+    public static final int GRAY = 9;
+    public static final int LIGHT_GRAY = 10;
+    public static final int DARK_GRAY = 11;
+    public static final int CYAN = 12;
+    public static final int BROWN = 13;
+    public static final int NONE = -1;&lt;/pre&gt;
+&lt;br /&gt;
+So, after getting the id we have a "switch case"-statement for that id. If the found color is red, green or yellow we just want the background-LED of the brick to illuminate in the same color (case 0, 1 and 3). Maybe you are curious why the integer parameter for the Button.LEDPattern-method doesn't match with the integer values from the Color-class. Well, the LED doesn't have a pattern for all of the colors. It has 9 different patterns in total (thanks to &lt;a href="http://www.lejos.org/forum/viewtopic.php?p=22564#p22564" target="_blank"&gt;tigger from the forum&lt;/a&gt; for that information!)&lt;br /&gt;
+&lt;br /&gt;
+&lt;blockquote class="tr_bq"&gt;
+    0: turn off button lights&lt;br /&gt;
+    1/2/3: static light green/red/yellow&lt;br /&gt;
+    4/5/6: normal blinking light green/red/yellow&lt;br /&gt;
+    7/8/9: fast blinking light green/red/yellow&lt;br /&gt;
+    &amp;gt;9: same as 9.&lt;/blockquote&gt;
+&amp;nbsp;If the color blue is found (case 2) I wanted the program to do the following: Turn the light of the color sensor of and exit the program. The api says that we can use the setFloodlight(int color)-method for that by calling it with Color.NONE:&lt;br /&gt;
+&lt;br /&gt;
+&lt;pre class="brush: java"&gt;/**
+* Used to turn on or off the floodlight by color. If the sensor has multiple light colors,
+* you can control which color is turned on or off. If the color does not exist, it does
+* nothing and returns false. You can turn the floodlight off by using Color.NONE.&lt;/pre&gt;
+But this throws an exception if you look at the sources of EV3ColorSensor (the default case of the switch-statement):&lt;br /&gt;
+&lt;br /&gt;
+&lt;pre class="brush: java"&gt;public boolean setFloodlight(int color)
+    {
+        int mode;
+        switch (color)
+        {
+        case Color.BLUE:
+            mode = COL_AMBIENT;
+            break;
+        case Color.WHITE:
+            mode = COL_COLOR;
+            break;
+        case Color.RED:
+            mode = COL_REFLECT;
+            break;
+        default:
+            // TODO: Should we ignore a wrong color or throw an exception?
+            throw new IllegalArgumentException("Invalid color specified");
+        }
+        switchMode(mode, SWITCH_DELAY);
+        // TODO Auto-generated method stub
+        return true;
+    }&lt;/pre&gt;
+&lt;br /&gt;
+But I never the less wanted to give some optic signal to show that the program is exiting. Turning off the LED wasn't enough because we already turn it of in our default case of our switch statement in the ColorRecognizerThread. In the end I decided to let the LED display the pattern 4 (blinking green) for two seconds before exiting the program. The threadSleep-method was just created to have the try-catch out of our run-method (because it looks stupid).&lt;br /&gt;
+&lt;br /&gt;
+That's all.&lt;br /&gt;
+&lt;br /&gt;
+&lt;h2&gt;
+    The result&lt;/h2&gt;
+And here is the tiny result (watch on youtube for better quality):&lt;br /&gt;
+&lt;br /&gt;
+&lt;div class="separator" style="clear: both; text-align: center;"&gt;
+    &lt;br /&gt;&lt;/div&gt;
+&lt;center&gt;
+    &lt;object class="BLOGGER-youtube-video" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0" data-thumbnail-src="https://i1.ytimg.com/vi/mhQgVQueluk/0.jpg" height="266" width="320"&gt;&lt;param name="movie" value="https://www.youtube.com/v/mhQgVQueluk?version=3&amp;f=user_uploads&amp;c=google-webdrive-0&amp;app=youtube_gdata" /&gt;&lt;param name="bgcolor" value="#FFFFFF" /&gt;&lt;param name="allowFullScreen" value="true" /&gt;&lt;embed width="320" height="266"  src="https://www.youtube.com/v/mhQgVQueluk?version=3&amp;f=user_uploads&amp;c=google-webdrive-0&amp;app=youtube_gdata" type="application/x-shockwave-flash" allowfullscreen="true"&gt;&lt;/embed&gt;&lt;/object&gt;&lt;/center&gt;
+&lt;br /&gt;
+&lt;div class="separator" style="clear: both; text-align: center;"&gt;
+&lt;/div&gt;
+&lt;br /&gt;
+&lt;br /&gt;&lt;/div&gt;
+							&lt;/div&gt;
+							&lt;footer class="article-footer clearfix"&gt;
+								&lt;span class="post-author"&gt;&lt;a href="/team/sven-ruppert" rel="author"&gt;Sven Ruppert&lt;/a&gt;&amp;nbsp;&amp;nbsp;|&amp;nbsp;&amp;nbsp;&lt;/span&gt;
+								&lt;span class="post-date"&gt;&lt;a href="#" rel="date"&gt;2014-03-17&lt;/a&gt;&amp;nbsp;&amp;nbsp;|&amp;nbsp;&amp;nbsp;&lt;/span&gt;
+							&lt;/footer&gt;
+						&lt;/article&gt;</content>
+        <summary>Das ist der Inhalt der in Kurzform angezeigt werden soll</summary>
+    </entry>
+</feed>

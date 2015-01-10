@@ -1,0 +1,143 @@
+In this second part on the mindstorm's infrared sensor we will focus on the remote control and the ability of the remote sensor to recognize commands from that remote control respectively. There are multiple buttons on that remote control and we will control the robot by pressing different buttons.<br />
+<br />
+<h2>
+    The robot</h2>
+We will use the robot from the first part as it already uses the infrared sensor. The mindstorm's remote control looks like the following:<br />
+<br />
+<div class="separator" style="clear: both; text-align: center;">
+    <a href="http://4.bp.blogspot.com/--ykPdzdmwGY/Uvd2Sls9PTI/AAAAAAAAAL8/l5i7epxq6rA/s1600/DSCN06462.jpg" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://4.bp.blogspot.com/--ykPdzdmwGY/Uvd2Sls9PTI/AAAAAAAAAL8/l5i7epxq6rA/s1600/DSCN06462.jpg" height="320" width="240" /></a></div>
+<br />
+There are two buttons on the left (red) and two buttons on the right (blue). There is a fifth button at the top center which is (in contrast to all other buttons) a toggling button. So if you press it one time, the remote control sends a signal continuously until the button is pressed a second time. Before taking the photo I pressed that button one time to activate the green signal led. We will use that toggle button on the next part of the infrared sensor articles.<br />
+The red slider at the bottom center is for selecting a frequency channel. You can select four channels and the current channel is shown in the red circle under the toggling button.<br />
+<h2>
+    The parcours</h2>
+There is the robot and there is the remote control. The aim is to press different buttons on the remote control to control and move the robot. We will use the two buttons on the left to let the robot rotate left/right, respectively the two buttons on the right to let the robot move forwards/backwards. When more than one button is pressed, the program should exit.<br />
+<br />
+<div class="separator" style="clear: both; text-align: center;">
+    <a href="http://3.bp.blogspot.com/-2hiF0vwZ5s0/Uvd2J57BhCI/AAAAAAAAAL0/nvAubN0xv3c/s1600/parcours.jpg" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://3.bp.blogspot.com/-2hiF0vwZ5s0/Uvd2J57BhCI/AAAAAAAAAL0/nvAubN0xv3c/s1600/parcours.jpg" height="240" width="320" /></a></div>
+<br />
+<h2>
+    The infrared sensor API</h2>
+There are two relevant modes for the infrared sensor. The distance mode and the seek mode. We used the former implicitly in the last article and we will use it in this one because it offers the possibility to receive commands from the infrared remote control. The latter can be used to receive the position and the distance of the remote control to the robot (the next tutorial will use the seek mode).<br />
+<br />
+It's very easy to receive a command from the remote control. The only method we will use is infraredSensor.getRemoteCommand(0);<br />
+This will return an integer value which represents the pressed button on the remote control (e.g. the left upper button on the remote control will return 1). The parameter of the method is also an integer value which represents the frequency channel which we use on the remote control. You can select one of four different channels (via the red slider on the remote control). In this case we use channel 0 (which is called channel 1 on the remote control).<br />
+<br />
+That's it. We don't need RangeFinderAdaptors, RangeFeatureDetectors or anything like that this time. So let's directly jump to the finished code and see how it works.<br />
+<h2>
+    The code </h2>
+There are two classes. The Main-class and an InfraredSignalCheckerThread, which extends Thread and contains the logic for received commands from the remote control.<br />
+<br />
+Let's start with the Main-Class:<br />
+<br />
+<pre class="brush: java">import lejos.hardware.Button;
+import lejos.hardware.motor.Motor;
+import lejos.hardware.port.SensorPort;
+import lejos.hardware.sensor.EV3IRSensor;
+import lejos.robotics.navigation.DifferentialPilot;
+
+public class Main {
+
+    protected final static double NINETY_DEGREES = 90.0;
+    protected final static double PILOT_SPEED = 100.0;
+    protected final static int PILOT_ACCELERATION = 500;
+    protected final static double WHEEL_DIAMETER = 30.0f;
+    protected final static double DISTANCE_BETWEEN_WHEELS = 170.0;
+
+    public static void main(String[] args) throws InterruptedException {
+
+        final DifferentialPilot pilot = new DifferentialPilot(WHEEL_DIAMETER, DISTANCE_BETWEEN_WHEELS, Motor.C, Motor.B);
+        final EV3IRSensor infraredSensor = new EV3IRSensor(SensorPort.S2);
+        final InfraredSignalCheckerThread checkerThread = new InfraredSignalCheckerThread(infraredSensor, pilot);
+
+        configurePilot(pilot);
+        checkerThread.start();
+        Button.waitForAnyPress();
+    }
+
+    private static void configurePilot(final DifferentialPilot pilot) {
+        pilot.setAcceleration(PILOT_ACCELERATION);
+        pilot.setRotateSpeed(PILOT_SPEED);
+        pilot.setTravelSpeed(PILOT_SPEED);
+    }
+}
+</pre>
+<br />
+If you've (hopefully) read our <a href="http://www.rapidpm.org/2014/01/lego-mindstorms-ev3-components-infrared.html">last article</a> on the infrared sensor, you will recognize that the Main-class became a bit smaller this time. We don't have to configure anything on the infrared sensor.<br />
+First we create instances for the pilot and the infrared sensor again. The new thing is the InfraredSignalCheckerThread which extends Thread. This class contains all the logic for received commands. The logic is implemented in a Thread-extending class because we want to listen continuously for any received commands. The created instance of the InfraredSignalCheckerThread needs the infraredSensor-object of course and it needs the pilot (because we will control/move the robot corresponding to the pressed button on the remote control).<br />
+<br />
+After we created the instances we configure the pilot and start the checkerThread. That's it. Let's have a look at the InfraredSignalCheckerThread-class now.<br />
+<br />
+The InfraredSignalCheckerThread-class:<br />
+<br />
+<pre class="brush: java">import lejos.hardware.sensor.EV3IRSensor;
+import lejos.robotics.navigation.DifferentialPilot;
+
+public class InfraredSignalCheckerThread extends Thread {
+
+    private EV3IRSensor infraredSensor;
+    private DifferentialPilot pilot;
+
+    public InfraredSignalCheckerThread(final EV3IRSensor infraredSensor, final DifferentialPilot pilot){
+        this.infraredSensor = infraredSensor;
+        this.pilot = pilot;
+    }
+
+    @Override
+    public void run() {
+        while(true){
+            final int remoteCommand = infraredSensor.getRemoteCommand(0);
+            switch (remoteCommand){
+                case 0:
+                    pilot.quickStop();
+                    break;
+                case 1:
+                    pilot.rotateLeft();
+                    break;
+                case 2:
+                    pilot.rotateRight();
+                    break;
+                case 3:
+                    pilot.forward();
+                    break;
+                case 4:
+                    pilot.backward();
+                    break;
+                default:
+                    System.out.println("button combination pressed..exiting...");
+                    System.exit(0);
+            }
+        }
+    }
+}
+</pre>
+<br />
+Let's have a look at the run-method. As you can see we have an infinite loop. In that loop we get an integer command from the method infraredSensor.getRemoteCommand(0). The given parameter (0) means that the infrared sensor should listen at frequency channel 0 (remember the red slider on the remote control for selecting a channel).<br />
+So now the thread is checking for any commands on channel 0 continuously. As next we check which command was sent. The different buttons send different integer values. Here is the documentation from within the EV3IRSensor-class:<br />
+<br />
+<pre class="brush: java">/** The button values are:
+* 1 TOP-LEFT
+* 2 BOTTOM-LEFT
+* 3 TOP-RIGHT
+* 4 BOTTOM-RIGHT
+* 5 TOP-LEFT + TOP-RIGHT
+* 6 TOP-LEFT + BOTTOM-RIGHT
+* 7 BOTTOM-LEFT + TOP-RIGHT
+* 8 BOTTOM-LEFT + BOTTOM-RIGHT
+* 9 CENTRE/BEACON
+* 10 BOTTOM-LEFT + TOP-LEFT
+* 11 TOP-RIGHT + BOTTOM-RIGHT
+* (0 means no buttons pressed)
+*/</pre>
+<br />
+So, as you can see if no button is pressed on the remote control the method will return 0. The four buttons we want to use return 1, 2, 3 and 4.<br />
+Knowing these return values the switch statement becomes very easy to understand. If no button is pressed the robot shouldn't move. If the top left button is pressed the robot should rotate to the left and so on, we just call the corresponding methods of the DifferentialPilot-class to control the motors. If more than one button is pressed at a time the program should exit.<br />
+<h2>
+    The result</h2>
+And here is the result (watch on youtube for better quality):<br />
+<br />
+<div class="separator" style="clear: both; text-align: center;">
+    <object class="BLOGGER-youtube-video" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0" data-thumbnail-src="https://i1.ytimg.com/vi/Bco7R93tYv0/0.jpg" height="266" width="320"><param name="movie" value="https://www.youtube.com/v/Bco7R93tYv0?version=3&f=user_uploads&c=google-webdrive-0&app=youtube_gdata" /><param name="bgcolor" value="#FFFFFF" /><param name="allowFullScreen" value="true" /><embed width="320" height="266"  src="https://www.youtube.com/v/Bco7R93tYv0?version=3&f=user_uploads&c=google-webdrive-0&app=youtube_gdata" type="application/x-shockwave-flash" allowfullscreen="true"></embed></object></div>
+<br />
+<br />
+Some words on complications that I had while writing the program: After starting the CheckerThread I had to wait around 30 seconds before pressing a button on the remote control. I have no explaination for that but when I pressed any button earlier the robot moved very jerkily. I tried different workarounds like Thread.sleep() and Delay.ms() in the main-method and the checker-thread. I also tried a timer in the CheckerThread which printed a message on the console to tell the user that the program isn't yet ready if he tried to press any button during those first 30 seconds. But none of these attempts worked. 

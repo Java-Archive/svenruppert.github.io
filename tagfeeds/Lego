@@ -1,0 +1,1314 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title>Lego</title>
+    <category label="Lego"/>
+    <updated>2015-01-10T01:39:11.559+01:00</updated>
+    <id>http://rapidpm.github.io</id>
+    <author>
+        <name>Sven Ruppert</name>
+    </author>
+    <entry>
+        <title>Our new project: Lego® Mindstorms® M1ndSuite</title>
+        <category label="EV3"/>
+        <category label="IoT"/>
+        <category label="Lego"/>
+        <category label="M1ndsuite"/>
+        <category label="M2M"/>
+        <category label="Mindstorms"/>
+        <category label="Mindsuite"/>
+        <published>2013-12-16T00:00:00+01:00</published>
+        <author>
+            <name>Sven Ruppert</name>
+        </author>
+        <content type="html">&lt;article class="article clearfix"&gt;
+							&lt;header class="article-header"&gt;
+								&lt;h2 class="article-title"&gt;&lt;a href="/2013/12/16/our-new-project--lego-mindstorms-m1nds.html" rel="tag"&gt;Our new project: Lego® Mindstorms® M1ndSuite&lt;/a&gt;&lt;/h2&gt;
+								&lt;p&gt;&lt;time datetime="2013-12-16"&gt;2013-12-16&lt;/time&gt; &lt;a href="/team/sven-ruppert" rel="author"&gt;from Sven Ruppert&lt;/a&gt;&lt;/p&gt;
+							&lt;/header&gt;
+							&lt;div class="article-content clearfix"&gt;
+								&lt;div class="post-thumb"&gt;
+									&lt;img src="./site/content/post_thumb.jpg" width="" height="" alt="" /&gt;
+								&lt;/div&gt;
+								&lt;div class="post-excerpt"&gt;*drum roll*..............Voila! Today we officially announce our new project called &lt;b&gt;M1ndSuite&lt;/b&gt;. It will be developed parallel to our cdi-commons project.&lt;br /&gt;
+&lt;div&gt;
+    &lt;br /&gt;&lt;/div&gt;
+&lt;div&gt;
+    &lt;h2&gt;
+        What is it / What is it going to be?&lt;/h2&gt;
+&lt;/div&gt;
+&lt;div&gt;
+    In general:&amp;nbsp;&lt;b&gt;MindSuite&lt;/b&gt;&amp;nbsp;(or "M1ndSuite") will be a gui- (web-)application for controlling and/or monitoring Lego® Mindstorms® robots.&lt;br /&gt;
+    &lt;br /&gt;
+    For those, who don't know what Lego® Mindstorms® is: The official &lt;a href="http://www.lego.com/en-gb/mindstorms/products/ev3/31313/"&gt;website &lt;/a&gt;says:&lt;br /&gt;
+    &lt;blockquote class="tr_bq"&gt;
+        &lt;span style="background-color: white; color: #63696a; font-family: verdana; font-size: 12px;"&gt;LEGO® MINDSTORMS® EV3 has arrived! Combining the versatility of the LEGO building system with the most advanced technology we’ve ever developed, unleash the creative powers of the new LEGO MINDSTORMS EV3 set to create and command Robots that walk, talk, think and do anything you can imagine. Follow the step-by-step 3D building instructions to create TRACK3R, R3PTAR, SPIK3R, EV3RSTORM and GRIPP3R and bring them to life with an easy, intuitive and icon-based programming interface.&lt;/span&gt;&lt;/blockquote&gt;
+    Sounds cool, doesn't it?&lt;br /&gt;
+    &lt;br /&gt;
+    Image what you could create with all those possilities! Or look what others already did :-D&lt;br /&gt;
+    &lt;br /&gt;
+    &lt;div class="separator" style="clear: both; text-align: center;"&gt;
+        &lt;object class="BLOGGER-youtube-video" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0" data-thumbnail-src="http://img.youtube.com/vi/MQvG6IgrgYQ/0.jpg" height="266" width="320"&gt;&lt;param name="movie" value="http://youtube.googleapis.com/v/MQvG6IgrgYQ&amp;source=uds" /&gt;&lt;param name="bgcolor" value="#FFFFFF" /&gt;&lt;param name="allowFullScreen" value="true" /&gt;&lt;embed width="320" height="266"  src="http://youtube.googleapis.com/v/MQvG6IgrgYQ&amp;source=uds" type="application/x-shockwave-flash" allowfullscreen="true"&gt;&lt;/embed&gt;&lt;/object&gt;&amp;nbsp;&amp;nbsp;&lt;object class="BLOGGER-youtube-video" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0" data-thumbnail-src="http://img.youtube.com/vi/tSXTirkNrCA/0.jpg" height="266" width="320"&gt;&lt;param name="movie" value="http://youtube.googleapis.com/v/tSXTirkNrCA&amp;source=uds" /&gt;&lt;param name="bgcolor" value="#FFFFFF" /&gt;&lt;param name="allowFullScreen" value="true" /&gt;&lt;embed width="320" height="266"  src="http://youtube.googleapis.com/v/tSXTirkNrCA&amp;source=uds" type="application/x-shockwave-flash" allowfullscreen="true"&gt;&lt;/embed&gt;&lt;/object&gt;&lt;/div&gt;
+    &lt;br /&gt;
+    &lt;div&gt;
+        But let's come back to our planned &lt;b&gt;MindSuite&lt;/b&gt;&amp;nbsp;application. At this juncture we can't tell what will be the &lt;b&gt;definite &lt;/b&gt;features because we first have to become acquainted with the whole subject. But &lt;u&gt;possible features&lt;/u&gt; might be:&lt;br /&gt;
+        &lt;ul&gt;
+            &lt;li&gt;offering pre-built programs for different robots&lt;/li&gt;
+            &lt;li&gt;possibility to create new (persistent) programs for any robot (like with the official Lego software) and real-time transfer of these into the robot's operating system&lt;/li&gt;
+            &lt;li&gt;real-time monitoring of the robot's sensors / motors / ...&lt;/li&gt;
+            &lt;li&gt;real-time control for the robot (e.g. "move forward/backward", "turn left/right", "play sound xyz" ...)&lt;/li&gt;
+        &lt;/ul&gt;
+        We can imagine &lt;b&gt;plenty &lt;/b&gt;of features, but (as already said) at this early moment we first have to get deeper into the topic. Our Mindstorm hardware just arrived on friday and we have just done our first experiments (we have built the Lego Mindstorm robot Gripp3r and loaded the standard Lego programs for it onto the EV3 brick so we could remote control it with the infrared remote control).&lt;br /&gt;
+        &lt;br /&gt;&lt;/div&gt;
+    &lt;h2&gt;
+        What frameworks will be used?&lt;/h2&gt;
+    &lt;div&gt;
+        Well, of course nothing is certain at this moment (we don't even have certain features xD) but chances are good that the (web-)application will use the spring framework.&lt;/div&gt;
+    &lt;div&gt;
+        There is already a java API for creating programs for the robots called LeJOS (&lt;a href="http://www.lejos.org/"&gt;http://www.lejos.org/&lt;/a&gt;). We're pretty sure that we will use that to realize the communication between the MindSuite and the robots.&lt;/div&gt;
+    &lt;div&gt;
+        &lt;br /&gt;&lt;/div&gt;
+    &lt;h2&gt;
+        Why are we doing this?&lt;/h2&gt;
+    &lt;div&gt;
+        Everyone is talking about the topics M2M (Machine-to-Machine) / IoT (Internet of Things) at the moment. We are very excited about these topics, too! And we love the idea behind Lego Mindstorms with all its possibilities! So creating a new software for controlling and monitoring those robots seems to be the perfect chance for us to get into that stuff. We can't wait to get started!&lt;br /&gt;
+        &lt;br /&gt;
+        As always with our projects, MindSuite will be open source and its code will be hosted on bitbucket. You will find the code at&amp;nbsp;&lt;a href="https://bitbucket.org/rapidpm/m1ndsuite"&gt;https://bitbucket.org/rapidpm/m1ndsuite&lt;/a&gt;,&amp;nbsp;but at this moment you won't find anything there of course. Give us some weeks ( or months? :) )..we don't have a roadmap yet. But we will regularly post updates on our blog to keep you informed of the current state, be curious! :D&lt;br /&gt;
+        &lt;br /&gt;
+        &lt;table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"&gt;&lt;tbody&gt;
+        &lt;tr&gt;&lt;td style="text-align: center;"&gt;&lt;a href="http://1.bp.blogspot.com/-eFqSgckFOXM/UqdDQzty4BI/AAAAAAAAAF4/wSqQjJA-h6c/s1600/mindsuite1.png" imageanchor="1" style="margin-left: auto; margin-right: auto;"&gt;&lt;img border="0" height="81" src="http://1.bp.blogspot.com/-eFqSgckFOXM/UqdDQzty4BI/AAAAAAAAAF4/wSqQjJA-h6c/s320/mindsuite1.png" width="320" /&gt;&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class="tr-caption" style="text-align: center;"&gt;first logo concept&lt;/td&gt;&lt;/tr&gt;
+        &lt;/tbody&gt;&lt;/table&gt;
+        &lt;table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"&gt;&lt;tbody&gt;
+        &lt;tr&gt;&lt;td style="text-align: center;"&gt;&lt;a href="http://1.bp.blogspot.com/-5zQKxZDJLAs/Uq244aBMYtI/AAAAAAAAAGI/A2VX2wV2HkU/s1600/DSCN0564%5B1%5D.JPG" imageanchor="1" style="margin-left: auto; margin-right: auto;"&gt;&lt;img border="0" height="240" src="http://1.bp.blogspot.com/-5zQKxZDJLAs/Uq244aBMYtI/AAAAAAAAAGI/A2VX2wV2HkU/s320/DSCN0564%5B1%5D.JPG" width="320" /&gt;&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class="tr-caption" style="text-align: center;"&gt;we already built one of the Lego Mindstorms (Gripp3r)&lt;/td&gt;&lt;/tr&gt;
+        &lt;/tbody&gt;&lt;/table&gt;
+        &lt;br /&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+							&lt;/div&gt;
+							&lt;footer class="article-footer clearfix"&gt;
+								&lt;span class="post-author"&gt;&lt;a href="/team/sven-ruppert" rel="author"&gt;Sven Ruppert&lt;/a&gt;&amp;nbsp;&amp;nbsp;|&amp;nbsp;&amp;nbsp;&lt;/span&gt;
+								&lt;span class="post-date"&gt;&lt;a href="#" rel="date"&gt;2013-12-16&lt;/a&gt;&amp;nbsp;&amp;nbsp;|&amp;nbsp;&amp;nbsp;&lt;/span&gt;
+							&lt;/footer&gt;
+						&lt;/article&gt;</content>
+        <summary>Das ist der Inhalt der in Kurzform angezeigt werden soll</summary>
+    </entry>
+    <entry>
+        <title>Developing leJOS programs with IntelliJ on Windows</title>
+        <category label="0.5.0"/>
+        <category label="EV3"/>
+        <category label="IntelliJ"/>
+        <category label="Lego"/>
+        <category label="lejos"/>
+        <category label="Mindstorms"/>
+        <category label="Mindsuite"/>
+        <category label="windows"/>
+        <published>2013-12-27T00:00:00+01:00</published>
+        <author>
+            <name>Sven Ruppert</name>
+        </author>
+        <content type="html">&lt;article class="article clearfix"&gt;
+							&lt;header class="article-header"&gt;
+								&lt;h2 class="article-title"&gt;&lt;a href="/2013/12/27/developing-lejos-programs-with-intelli.html" rel="tag"&gt;Developing leJOS programs with IntelliJ on Windows&lt;/a&gt;&lt;/h2&gt;
+								&lt;p&gt;&lt;time datetime="2013-12-27"&gt;2013-12-27&lt;/time&gt; &lt;a href="/team/sven-ruppert" rel="author"&gt;from Sven Ruppert&lt;/a&gt;&lt;/p&gt;
+							&lt;/header&gt;
+							&lt;div class="article-content clearfix"&gt;
+								&lt;div class="post-thumb"&gt;
+									&lt;img src="./site/content/post_thumb.jpg" width="" height="" alt="" /&gt;
+								&lt;/div&gt;
+								&lt;div class="post-excerpt"&gt;&lt;a href="http://www.lejos.org/"&gt;LeJOS&lt;/a&gt; is the java library which is needed to develop and run java programs on Lego Mindstorms robots. Four days ago, the newest alpha version 0.5.0 was released. One big new feature is an all new gui-menu which is displayed on the LCD-Display for executing programs on the brick without executing a remote command (via telnet or SSH).&lt;br /&gt;
+&lt;br /&gt;
+The official guides use eclipse as the IDE for developing lejos programs and in this tutorial I want to explain how to develop programs with IntelliJ on Windows. I will also show how to transfer finished programs to the brick and execute it via remote connection and via the new display menu.&lt;br /&gt;
+&lt;br /&gt;
+&lt;h2&gt;
+    Initial situation &lt;/h2&gt;
+&lt;br /&gt;
+You have created the bootable MicroSD-Card for running Lejos (version 0.5.0-alpha) on the Mindstorms brick and inserted it into the brick (a tutorial on how to create is can be found &lt;a href="http://sourceforge.net/p/lejos/wiki/Creating%20a%20bootable%20SD%20card/"&gt;here&lt;/a&gt;. Recognize that the procedure has changed from version 0.4.0-alpha to 0.5.0-alpha). You also have a compatible WiFi-Stick (e.g. Netgear WNA1100) which is inserted into the USB-Plug on the brick.&lt;br /&gt;
+&lt;br /&gt;
+So let's start. What we will do is:&lt;br /&gt;
+&lt;ol&gt;
+    &lt;li&gt;Clone the official lejos git repository to get the sources which we need to build our program&lt;/li&gt;
+    &lt;li&gt;Create and configure the IntelliJ-Project for our lejos program&lt;/li&gt;
+    &lt;li&gt;Write the code for the program (the usual HelloWorld from the official guide)&lt;/li&gt;
+    &lt;li&gt;Create a runnable JAR-File of the program&lt;/li&gt;
+    &lt;li&gt;Transfer the JAR-File onto the brick via WiFi / SSH&lt;/li&gt;
+    &lt;li&gt;Execute the program via the new display menu&lt;/li&gt;
+    &lt;li&gt;Alternative way of executing the program: Execute the program via WiFi / SSH (the old-fashioned pre-0.5.0-way)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3&gt;
+    1 Clone the official lejos git repository to get the sources which we need to build our program&lt;/h3&gt;
+For cloning the lejos git repository you must have installed git (which can be obtained from &lt;a href="http://git-scm.com/download/win"&gt;here&lt;/a&gt;). For comfort (not having to use single git commands on the command line) we used the free-to-use (for non-commercial use) GUI-Tool SmartGitHg 5
+(version 5.0.5) by syntevo which rocks and can be downloaded on the &lt;a href="http://www.syntevo.com/smartgithg/"&gt;official site&lt;/a&gt;. When you start the program for the first time you have to tell SmartGitHg where your git installation is located, but thats quite straight-forward and the wizard will help you doing that. After you have started and configured SmartGitHg choose:&lt;br /&gt;
+"Project" --&amp;gt; "Clone ..."&lt;br /&gt;
+Then choose:&lt;br /&gt;
+"Remote Git, Mercurial or Subversion Repository" and enter git://git.code.sf.net/p/lejos/ev3 into the textfield.&lt;br /&gt;
+Then click "Next". In the next window make sure both check boxes are checked. Click "Next" again. Choose a path where the source should be copied to (We chose the path "F:\projects\ev3-sources" which we will call EV3-SOURCES by now). Then click "Next" again. On the last window choose the option "Open in new project" and leave the name in the textfield as it is. Finally press "Finish". SmartGitHg will then start downloading all files from the repository. This might need some minutes. You can watch the progress in the right bottom corner of the window.&lt;br /&gt;
+After the download has finished the window should look like the following:&lt;br /&gt;
+&lt;br /&gt;
+&lt;table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td style="text-align: center;"&gt;&lt;a href="http://3.bp.blogspot.com/-xkC9OuClBk8/UrwFhuo8rQI/AAAAAAAAAHE/r32vb_FL6F0/s1600/smartgit.PNG" imageanchor="1" style="margin-left: auto; margin-right: auto;"&gt;&lt;img border="0" height="346" src="http://3.bp.blogspot.com/-xkC9OuClBk8/UrwFhuo8rQI/AAAAAAAAAHE/r32vb_FL6F0/s640/smartgit.PNG" width="640" /&gt;&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class="tr-caption" style="text-align: center;"&gt;SmartGitHg, downloaded EV3-sources&lt;/td&gt;&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+At last we have to choose the 0.5.0-alpha tag branch. Choose "Branch" --&amp;gt; "Checkout...". In the following window choose the 0.5.0-alpha tag branch as shown in the following picture:&lt;br /&gt;
+&lt;br /&gt;
+&lt;table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td style="text-align: center;"&gt;&lt;a href="http://3.bp.blogspot.com/-mgazNPhkl0A/UrwG1L3NueI/AAAAAAAAAHM/PkYvjIjN3co/s1600/checkout.PNG" imageanchor="1" style="margin-left: auto; margin-right: auto;"&gt;&lt;img border="0" height="427" src="http://3.bp.blogspot.com/-mgazNPhkl0A/UrwG1L3NueI/AAAAAAAAAHM/PkYvjIjN3co/s640/checkout.PNG" width="640" /&gt;&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class="tr-caption" style="text-align: center;"&gt;checking out the 0.5.0-alpha tag branch&lt;/td&gt;&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+Press "Check out" and then choose "Check out commit without switching to a branch".&lt;br /&gt;
+&lt;br /&gt;
+Now that we have the lejos sources in version 0.5.0-alpha let's start creating our IntelliJ project for our HelloWorld-Program.&lt;br /&gt;
+&lt;br /&gt;
+&lt;h3&gt;
+    2 Create and configure the IntelliJ-Project for our lejos program&lt;/h3&gt;
+Start IntelliJ and choose: "File" --&amp;gt; "New Project...". Choose "Java Module" and call it HelloWorld. We saved it in "F:\projects\HelloWorld" (which I will call HELLOWORLD by now). Then press "Next" and "Finish".&lt;br /&gt;
+&lt;br /&gt;
+Now that we have a raw new project, lets first configure it before creating the HelloWorld-code. Open the project settings ("File"--&amp;gt;"Project Structure") and click on "modules". Then click on "Add Content Root" and choose EV3-SOURCES\ev3-classes\src and click on "OK". Do the same with EV3-SOURCES\DBusJava\src.&lt;br /&gt;
+As next click on "Librarys" on the "Project Structure"-window. Click on the green "+" and choose "Java". Then choose the folder EV3-SOURCES\ev3-classes\lib and click on "OK". Click on "OK" again.&lt;br /&gt;
+Press "Apply" and "OK" to close the project structure window now.&lt;br /&gt;
+Your project structure should now look like this:&lt;br /&gt;
+&lt;br /&gt;
+&lt;table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td style="text-align: center;"&gt;&lt;a href="http://1.bp.blogspot.com/-c-xu3vKyXxc/UrwK2KtZTRI/AAAAAAAAAHY/IbJkJ7Tbf7E/s1600/projectstructure.PNG" imageanchor="1" style="margin-left: auto; margin-right: auto;"&gt;&lt;img border="0" height="212" src="http://1.bp.blogspot.com/-c-xu3vKyXxc/UrwK2KtZTRI/AAAAAAAAAHY/IbJkJ7Tbf7E/s400/projectstructure.PNG" width="400" /&gt;&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class="tr-caption" style="text-align: center;"&gt;Project structure&lt;/td&gt;&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+&lt;h3&gt;
+    3 Write the code for the program&lt;/h3&gt;
+Now let's create the code. Create a class in HelloWorld\src and call it "Main". Make it look like the following:&lt;br /&gt;
+&lt;br /&gt;
+&lt;pre class="brush: java"&gt;import lejos.hardware.Button;
+import lejos.hardware.lcd.LCD;
+
+public class Main {
+&amp;nbsp;&amp;nbsp;&amp;nbsp; public static void main(String[] args) {
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; LCD.clear();
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; LCD.drawString("First EV3 Program", 0, 5);
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Button.waitForAnyPress();
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; LCD.clear();
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; LCD.refresh();
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; }
+}
+&amp;nbsp;&lt;/pre&gt;
+If the imports fail, something went wrong with the configuration of the project structure.&lt;br /&gt;
+&lt;br /&gt;
+As you can see the class implements the Main-method. It will show "First EV3 Program" on the display of your EV3-Brick until you press any button on the brick.&lt;br /&gt;
+&lt;br /&gt;
+That's it. Now we are ready to create a runnable JAR of our program.&lt;br /&gt;
+&lt;br /&gt;
+&lt;h3&gt;
+    4 Create a runnable JAR-File of the program&lt;/h3&gt;
+Open the project settings again ("File" --&amp;gt; "Project Structure..."). Click on "Artifacts".Click on the green "+" and choose "Jar" --&amp;gt; "From modules with dependencies...". Leave everything as it is in the new window but enter "Main" into the field "Main Class" like in the following picture:&lt;br /&gt;
+&lt;br /&gt;
+&lt;div class="separator" style="clear: both; text-align: center;"&gt;
+&lt;/div&gt;
+&lt;table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td style="text-align: center;"&gt;&lt;a href="http://2.bp.blogspot.com/-I0Omt2-yKsI/UrwNnAooY0I/AAAAAAAAAHg/oQ7iQyEsoWU/s1600/jarfile.PNG" imageanchor="1" style="margin-left: auto; margin-right: auto;"&gt;&lt;img border="0" height="247" src="http://2.bp.blogspot.com/-I0Omt2-yKsI/UrwNnAooY0I/AAAAAAAAAHg/oQ7iQyEsoWU/s400/jarfile.PNG" width="400" /&gt;&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class="tr-caption" style="text-align: center;"&gt;Creating jar-file&lt;/td&gt;&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+Then click on "OK". Click on "Apply" and close the Project Structure-Window. Now we need to do one last thing before creating our ready-to-execute Jar. There is a new folder in your HelloWorld-src folder called "META-INF". It contains a MANIFEST.MF-File. It contains two lines as you can see in the following picture:&lt;br /&gt;
+&lt;br /&gt;
+&lt;table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td style="text-align: center;"&gt;&lt;a href="http://2.bp.blogspot.com/-ukWYeYU4foE/UrwOmGfqikI/AAAAAAAAAHo/_BZLPRqXOdM/s1600/manifest.PNG" imageanchor="1" style="margin-left: auto; margin-right: auto;"&gt;&lt;img border="0" height="206" src="http://2.bp.blogspot.com/-ukWYeYU4foE/UrwOmGfqikI/AAAAAAAAAHo/_BZLPRqXOdM/s400/manifest.PNG" width="400" /&gt;&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class="tr-caption" style="text-align: center;"&gt;MANIFEST-file&lt;/td&gt;&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+Now you need to add the following line:&lt;br /&gt;
+Class-Path: /home/root/lejos/lib/ev3classes.jar /home/root/lejos/libjna/usr/share/java/jna.jar&lt;br /&gt;
+&lt;br /&gt;
+You can copy/paste that line because the paths are absolute paths on the MicroSD-card.&lt;br /&gt;
+&lt;br /&gt;
+That's it. Save everything and choose "Build"--&amp;gt;"Build artifacts..."--&amp;gt;HelloWorld.jar--&amp;gt;"build". If you get some warnings that's okay. If you get errors anything went wrong (let us know). Now we have created a Jar-File (in HELLOWORLD\out\artifacts\HelloWorld_jar) which we can transfer via WiFi to the EV3-Brick.&lt;br /&gt;
+&lt;br /&gt;
+&lt;h3&gt;
+    5 Transfer the JAR-File onto the brick via WiFi / SSH&lt;/h3&gt;
+To transfer the jar-file from our workstation to the EV3-Brick we need a connection to it. So start your EV3 with the lejos-MicroSD-card and the WiFi-Stick inserted. Make sure that your robot has an IP-Adress in your network. A description on how this is done via the menu can be found &lt;a href="http://sourceforge.net/p/lejos/wiki/Configuring%20Wifi/"&gt;here&lt;/a&gt; (that didn't work for us, so we had to edit the file /etc/wpa_supplicant.conf on the microSD-card by hand).&lt;br /&gt;
+&lt;br /&gt;
+Now that our EV3 is online and connected to the WiFi we will transfer the jar-file onto the robot. Therefore we need to download pscp.exe from &lt;a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html"&gt;http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html&lt;/a&gt;. We downloaded it to "C:\Users\Marco\Downloads".&lt;br /&gt;
+Open up a cmd-box (Windows-Button --&amp;gt; enter "cmd", then choose cmd.exe) and navigate to the folder which contains the downloaded pscp.exe. Then enter the following command:&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;blockquote class="tr_bq"&gt;
+    pscp -scp HELLOWORLD\out\artifacts\HelloWorld_jar\HelloWorld.jar root@IP_OF_EV3:/home/lejos/programs&lt;/blockquote&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+If you are asked for the root password just hit enter. The root user on the linux-system on the microSD card has no password. In my case that looked like the following:&lt;br /&gt;
+&lt;br /&gt;
+&lt;table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td style="text-align: center;"&gt;&lt;a href="http://4.bp.blogspot.com/-lKKQjALHNK4/Urwavl4KbVI/AAAAAAAAAIA/pegIRZIfZaU/s1600/cmd.PNG" imageanchor="1" style="margin-left: auto; margin-right: auto;"&gt;&lt;img border="0" height="171" src="http://4.bp.blogspot.com/-lKKQjALHNK4/Urwavl4KbVI/AAAAAAAAAIA/pegIRZIfZaU/s640/cmd.PNG" width="640" /&gt;&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class="tr-caption" style="text-align: center;"&gt;transfering the jar-file onto the brick&lt;/td&gt;&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+That's it! The file now was copied onto the EV3-brick (in /home/lejos/programs). Time to execute our program.&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;h3&gt;
+    6 Execute the program via the new display menu&lt;/h3&gt;
+On the display menu move to "Files" (by pressing the right button). Press "Enter" (the middle button). Now you will see "HelloWorld.jar" on the display. Press "Enter" again. Now you will see "Execute Program" on the display. Press "Enter" once more and enjoy the magic :). It will need some seconds where you will only see a blank display. But then the "First EV3 Program" will be displayed as expected. When you press any button the program will end as expected and you will be back at the menu. Congratulations for running your lejos program developed with IntelliJ on Windows!&lt;br /&gt;
+&lt;br /&gt;
+&lt;h3&gt;
+    7 Alternative way of executing the program: Execute the program via WiFi / SSH (the old-fashioned pre-0.5.0-way)&lt;/h3&gt;
+Sometimes you might want to run your programs which you uploaded onto the brick remotely instead of pressing buttons on the brick. One solution for this is to use a ssh connection via putty. So&amp;nbsp; download it from &lt;a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html"&gt;http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html&lt;/a&gt; (putty.exe). After downloading, execute the putty.exe. Enter the IP of your EV3 into the field "Host Name (or IP address)" and click on "Open". This will open a remote console. Enter "root" as user name and just press enter when asked for password. Now you could run your program. But we have to do one more thing before executing the program: We have to disable the menu. If we wouldn't do this, both (the String "First EV3 Program" of our program AND the display menu) would be displayed in the display. So in the menu navigate to "System" and select "Suspend Menu". The menu will now be suspended and the display will be blank. Now back to our remote console. Enter the following command to execute the program (which we transfered to /home/lejos/programs on the brick earlier):&lt;br /&gt;
+&lt;blockquote class="tr_bq"&gt;
+    jrun -cp /home/lejos/programs/HelloWorld.jar Main&lt;/blockquote&gt;
+&lt;table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td style="text-align: center;"&gt;&lt;a href="http://2.bp.blogspot.com/-sWC0iXMwb5o/UrwivUtCWCI/AAAAAAAAAIQ/F0zXl1NNfyc/s1600/putty.PNG" imageanchor="1" style="margin-left: auto; margin-right: auto;"&gt;&lt;img border="0" height="402" src="http://2.bp.blogspot.com/-sWC0iXMwb5o/UrwivUtCWCI/AAAAAAAAAIQ/F0zXl1NNfyc/s640/putty.PNG" width="640" /&gt;&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class="tr-caption" style="text-align: center;"&gt;remote console in putty&lt;/td&gt;&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+&lt;br /&gt;
+Look at the display and enjoy the magic again ;). It will again need some seconds until you will see the string on the display. Hit any button on the brick to end the program. If you want the menu back after executing the program press the middle button and the lower button on the brick. The display menu will be back instantly.&lt;br /&gt;
+&lt;br /&gt;
+If you have any questions or problems during the process feel free to leave a comment.&lt;/div&gt;
+							&lt;/div&gt;
+							&lt;footer class="article-footer clearfix"&gt;
+								&lt;span class="post-author"&gt;&lt;a href="/team/sven-ruppert" rel="author"&gt;Sven Ruppert&lt;/a&gt;&amp;nbsp;&amp;nbsp;|&amp;nbsp;&amp;nbsp;&lt;/span&gt;
+								&lt;span class="post-date"&gt;&lt;a href="#" rel="date"&gt;2013-12-27&lt;/a&gt;&amp;nbsp;&amp;nbsp;|&amp;nbsp;&amp;nbsp;&lt;/span&gt;
+							&lt;/footer&gt;
+						&lt;/article&gt;</content>
+        <summary>Das ist der Inhalt der in Kurzform angezeigt werden soll</summary>
+    </entry>
+    <entry>
+        <title>Lego Mindstorms EV3 Components: Motors - Part 1</title>
+        <category label="0.5.0"/>
+        <category label="components"/>
+        <category label="EV3"/>
+        <category label="Lego"/>
+        <category label="lejos"/>
+        <category label="Mindstorms"/>
+        <category label="motors"/>
+        <published>2014-01-11T00:00:00+01:00</published>
+        <author>
+            <name>Sven Ruppert</name>
+        </author>
+        <content type="html">&lt;article class="article clearfix"&gt;
+							&lt;header class="article-header"&gt;
+								&lt;h2 class="article-title"&gt;&lt;a href="/2014/01/11/lego-mindstorms-ev3-components--motors.html" rel="tag"&gt;Lego Mindstorms EV3 Components: Motors - Part 1&lt;/a&gt;&lt;/h2&gt;
+								&lt;p&gt;&lt;time datetime="2014-01-11"&gt;2014-01-11&lt;/time&gt; &lt;a href="/team/sven-ruppert" rel="author"&gt;from Sven Ruppert&lt;/a&gt;&lt;/p&gt;
+							&lt;/header&gt;
+							&lt;div class="article-content clearfix"&gt;
+								&lt;div class="post-thumb"&gt;
+									&lt;img src="./site/content/post_thumb.jpg" width="" height="" alt="" /&gt;
+								&lt;/div&gt;
+								&lt;div class="post-excerpt"&gt;&lt;br /&gt;
+With this posting I will start a series of articles where I explain which components/sensors are contained in the Lego Mindstorms EV3-set an how to work with them.&lt;br /&gt;
+&lt;br /&gt;
+In this posting I will start with one of the most basic components - the motors. The Mindstorms-set includes three motors: two of the same size and a smaller one.&lt;br /&gt;
+&lt;br /&gt;
+Both types work the same way and so they have the same api-methods.&lt;br /&gt;
+&lt;br /&gt;
+I will build a simple program were I let the robot perform some movements to different directions.&lt;br /&gt;
+&lt;br /&gt;
+Before we can start developing, we first need a robot which we will control with the program. I built a simple robot for that. It consists of only one single component connected to the brick: One of the bigger motors. There are two wheels plugged into the motor and two more wheels which aren't connected to the motor and just work as stabilization. Here are some pics:&lt;br /&gt;
+&lt;br /&gt;
+&lt;a href="http://4.bp.blogspot.com/-gJ0BPfi2Pb0/Us6us3v_eeI/AAAAAAAAAIk/EenQtF2MY7M/s1600/DSCN0594.JPG" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" src="http://4.bp.blogspot.com/-gJ0BPfi2Pb0/Us6us3v_eeI/AAAAAAAAAIk/EenQtF2MY7M/s1600/DSCN0594.JPG" height="240" width="320" /&gt;&lt;/a&gt;
+&lt;a href="http://1.bp.blogspot.com/-lGWCS5TqS3s/Us6uusRK-GI/AAAAAAAAAIs/mEk-cZr8jKg/s1600/DSCN0596.JPG" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" src="http://1.bp.blogspot.com/-lGWCS5TqS3s/Us6uusRK-GI/AAAAAAAAAIs/mEk-cZr8jKg/s1600/DSCN0596.JPG" height="240" width="320" /&gt;&lt;/a&gt;
+&lt;a href="http://1.bp.blogspot.com/-Lp-Hs7-z_nw/Us6uzYNSw6I/AAAAAAAAAI8/eLNfIbfRkEg/s1600/DSCN0597.JPG" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" src="http://1.bp.blogspot.com/-Lp-Hs7-z_nw/Us6uzYNSw6I/AAAAAAAAAI8/eLNfIbfRkEg/s1600/DSCN0597.JPG" height="320" width="240" /&gt;&lt;/a&gt;
+&lt;a href="http://1.bp.blogspot.com/-4mXFS9dCiYg/Us6u4bC5xlI/AAAAAAAAAJM/XT-HV-eSpSg/s1600/DSCN0599.JPG" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" src="http://1.bp.blogspot.com/-4mXFS9dCiYg/Us6u4bC5xlI/AAAAAAAAAJM/XT-HV-eSpSg/s1600/DSCN0599.JPG" height="240" width="320" /&gt;&lt;/a&gt;&lt;br /&gt;
+( There are different ways at different abstract levels to control the motors, but I will use the most basic method by using the Motor-class directly in this first part. We couldn't use a more abstract method which enable features like driving turns or following paths because we only have a single motor connected to our robot here. So the robot can just move forwards and backwards. )&lt;br /&gt;
+&lt;br /&gt;
+I plugged the motor into plug connection B on the brick.&lt;br /&gt;
+&lt;br /&gt;
+So, now we are ready to develop the program for our new robot. I set up an IntelliJ-project as described in our posting about &lt;a href="http://www.rapidpm.org/2013/12/developing-lejos-programs-with-intellij.html"&gt;developing leJOS programs with IntelliJ on Windows&lt;/a&gt;.&lt;br /&gt;
+&lt;br /&gt;
+First, here is the plain code which is quite easy to understand:&lt;br /&gt;
+&lt;br /&gt;
+&lt;pre class="brush: java"&gt;import lejos.hardware.motor.Motor;
+import lejos.utility.Delay;
+
+public class Main {
+    public static void main(String[] args) {
+
+        Motor.B.setAcceleration(200);
+        Motor.B.setSpeed(90);
+        Motor.B.rotate(360);
+        Motor.B.setSpeed(180);
+        Motor.B.rotate(360);
+        Motor.B.setSpeed(360);
+        Motor.B.rotate(360);
+        Motor.B.backward();
+        Delay.msDelay(3000);
+        Motor.B.stop();
+
+    }
+}
+&lt;/pre&gt;
+What does that code do?&lt;br /&gt;
+We address the motor in plug connection B via Motor.B. Then we set its acceleration to 200. The standard value is 6000 which means that the motor will accelerate by 6000 degrees per second per second. This is quite fast and so we lowered the value to 200 to get a smoother acceleration.&lt;br /&gt;
+Then we set the speed of the motor to 90 degrees per second. After we "configured" the motor, we let it start rotating by 360 degrees. This operation is a blocking operation which means that the program will stop here until the motor rotated 360 degrees (which will be done after 4 seconds at the configured speed of 90 degrees per second).&lt;br /&gt;
+After the motor rotated 360 degrees we double the speed to 180 degrees per second and let the motor rotate 360 degrees again. This time the motor will need half the time (2 seconds), of course.&lt;br /&gt;
+After that the same happens again with a speed of 360 degrees per second.&lt;br /&gt;
+Then, as the last part of the program, we call the backward-method. In contrast to the rotate-method, this method is non-blocking. That means, that the program will continue directly after calling that method, it won't wait till the backwards-movement is done (otherwise the motor wouldn't stop rotating anymore, there is no parameter for defining how long the motor should rotate). Recognize that there is also a rotate()-method with a second, boolean parameter. If you use that one with the boolean parameter = true the method becomes non-blocking like backward(). &lt;br /&gt;
+In the next line we tell the program to do nothing for 3 seconds, the motor will of course continue rotating (at the speed which was set as last = 360 degrees per second) during that time. &lt;br /&gt;
+Then after these 3 seconds we let the motor stop und the program is at its end.&lt;br /&gt;
+&lt;br /&gt;
+To get some feedback on what the robot is exactly doing through the program execution, we added some printlns to the console.&lt;br /&gt;
+&lt;br /&gt;
+&lt;pre class="brush: java"&gt;import lejos.hardware.motor.Motor;
+import lejos.utility.Delay;
+
+public class Main {
+    public static void main(String[] args) {
+        /*
+        The standard value for acceleration is (6000 degrees per second) per second
+        which results in a very jerky start when the motor starts rotating.
+        To make the start smoother, the acceleration is set to a lower level.
+         */
+        Motor.B.setAcceleration(200);
+        
+        Motor.B.setSpeed(90);
+        System.out.println("Set speed to 90 degrees per second.");
+        System.out.print("Rotating 360 degrees...");
+        Motor.B.rotate(360);
+        System.out.println("done!");
+        
+        Motor.B.setSpeed(180);
+        System.out.println("Set speed to 180 degrees per second.");
+        System.out.print("Rotating 360 degrees...");
+        Motor.B.rotate(360);
+        System.out.println("done!");
+        
+        Motor.B.setSpeed(360);
+        System.out.println("Set speed to 360 degrees per second...");
+        System.out.print("Rotating 360 degrees...");
+        Motor.B.rotate(360);
+        System.out.println("done!");
+        
+        Motor.B.backward();
+        System.out.print("Now rotating backwards for 3s");
+        Delay.msDelay(3000);
+        System.out.print("...3s are over...");
+        Motor.B.stop();
+        System.out.println("and stopped!");
+
+    }
+}
+&lt;/pre&gt;
+That code looks better now, but there's tons of duplicate code. So we put the code for setting different speeds and letting the motor rotate in a function.&lt;br /&gt;
+&lt;br /&gt;
+&lt;pre class="brush: java"&gt;import lejos.hardware.motor.Motor;
+import lejos.utility.Delay;
+
+public class Main {
+    public static void main(String[] args) {
+        /*
+        The standard value for acceleration is (6000 degrees per second) per second
+        which results in a very jerky start when the motor starts rotating.
+        To make the start smoother, the acceleration is set to a lower level.
+         */
+        Motor.B.setAcceleration(200);
+
+        rotateDegreesAtSpeed(360, 90);
+        rotateDegreesAtSpeed(360, 180);
+        rotateDegreesAtSpeed(360, 360);
+
+        Motor.B.backward();
+        System.out.print("Now rotating backwards for 3s");
+        Delay.msDelay(3000);
+        System.out.print("...3s are over...");
+        Motor.B.stop();
+        System.out.println("and stopped!");
+
+    }
+
+    private static void rotateDegreesAtSpeed(final int degreesToRotate, final int degreesPerSecond) {
+        Motor.B.setSpeed(degreesPerSecond);
+        System.out.println("Set speed to "+degreesPerSecond+ "degrees per second.");
+        System.out.print("Rotating "+ degreesToRotate + "degrees...");
+        Motor.B.rotate(degreesToRotate);
+        System.out.println("done!");
+    }
+}&lt;/pre&gt;
+&lt;br /&gt;
+That was it. After transfering the program onto the brick (via WiFi) we executed the program. Here's a video of how the result looks like (console output readable in higher qualities).&lt;br /&gt;
+&lt;br /&gt;
+&lt;div class="separator" style="clear: both; text-align: center;"&gt;
+    &lt;object class="BLOGGER-youtube-video" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0" data-thumbnail-src="https://ytimg.googleusercontent.com/vi/qr14DFO60Tk/0.jpg" height="266" width="320"&gt;&lt;param name="movie" value="https://www.youtube.com/v/qr14DFO60Tk?version=3&amp;f=user_uploads&amp;c=google-webdrive-0&amp;app=youtube_gdata" /&gt;&lt;param name="bgcolor" value="#FFFFFF" /&gt;&lt;param name="allowFullScreen" value="true" /&gt;&lt;embed width="320" height="266"  src="https://www.youtube.com/v/qr14DFO60Tk?version=3&amp;f=user_uploads&amp;c=google-webdrive-0&amp;app=youtube_gdata" type="application/x-shockwave-flash" allowfullscreen="true"&gt;&lt;/embed&gt;&lt;/object&gt;&lt;/div&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+Perfect. The next thing we did was extending the robot by a second motor - the smaller one. The result looked like the following:&lt;br /&gt;
+&lt;br /&gt;
+&lt;a href="http://1.bp.blogspot.com/-eNXOOaEsic0/Us6u60ZBzHI/AAAAAAAAAJY/q4p4IaTrQIM/s1600/DSCN0600.JPG" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" src="http://1.bp.blogspot.com/-eNXOOaEsic0/Us6u60ZBzHI/AAAAAAAAAJY/q4p4IaTrQIM/s1600/DSCN0600.JPG" height="240" width="320" /&gt;&lt;/a&gt;
+&lt;a href="http://3.bp.blogspot.com/-SIUBBBpNqBk/Us6u9ehJ2VI/AAAAAAAAAJg/GP55djU9xZk/s1600/DSCN0601.JPG" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" src="http://3.bp.blogspot.com/-SIUBBBpNqBk/Us6u9ehJ2VI/AAAAAAAAAJg/GP55djU9xZk/s1600/DSCN0601.JPG" height="240" width="320" /&gt;&lt;/a&gt;
+&lt;a href="http://1.bp.blogspot.com/-tEuoOrBUdaY/Us6u_wRN4EI/AAAAAAAAAJo/Bp31UBL3OtY/s1600/DSCN0602.JPG" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" src="http://1.bp.blogspot.com/-tEuoOrBUdaY/Us6u_wRN4EI/AAAAAAAAAJo/Bp31UBL3OtY/s1600/DSCN0602.JPG" height="240" width="320" /&gt;&lt;/a&gt;&lt;br /&gt;
+So the second motor will make the three "razorblades" rotate ( some eyecandy :) ).&lt;br /&gt;
+We put the second motor in plug connection A of the brick.&lt;br /&gt;
+&lt;br /&gt;
+The aim for that second motor should be: The razorblades should always rotate the same speed, the first motor has.&lt;br /&gt;
+&lt;br /&gt;
+So we extended our program. Here's the finished code:&lt;br /&gt;
+&lt;pre class="brush: java"&gt;import lejos.hardware.motor.Motor;
+import lejos.utility.Delay;
+
+public class Main {
+    public static void main(String[] args) {
+
+        final int ACCELERATION = 200;
+        final int ONE_ROTATION = 360;
+        /*
+        The standard value for acceleration is (6000 degrees per second) per second
+        which results in a very jerky start when the motor starts rotating.
+        To make the start smoother, the acceleration is set to a lower level.
+         */
+        Motor.B.setAcceleration(ACCELERATION);
+        Motor.A.setAcceleration(ACCELERATION);
+
+        Motor.A.forward();
+        rotateDegreesAtSpeed(ONE_ROTATION, 90);
+        rotateDegreesAtSpeed(ONE_ROTATION, 180);
+        rotateDegreesAtSpeed(ONE_ROTATION, 360);
+
+        Motor.A.backward();
+        System.out.println("Switched Motor A from forward to backward. Waiting for the direction change.");
+        Delay.msDelay(2000);
+        Motor.B.backward();
+
+        System.out.print("Now rotating backwards for 3s");
+        Delay.msDelay(3000);
+        System.out.print("...3s are over...");
+        Motor.B.stop();
+        Motor.A.stop();
+        System.out.println("and stopped!");
+
+    }
+
+    private static void rotateDegreesAtSpeed(final int degreesToRotate, final int degreesPerSecond) {
+        Motor.A.setSpeed(degreesPerSecond);
+        Motor.B.setSpeed(degreesPerSecond);
+        System.out.println("Set speed of motors to "+degreesPerSecond+ " degrees per second.");
+        System.out.print("Rotating "+ degreesToRotate + " degrees...");
+        Motor.B.rotate(degreesToRotate);
+        System.out.println("done!");
+    }
+}&lt;/pre&gt;
+At the beginning of the program we set the acceleration of motor A to 200, too. Then we call Motor.A.forward(), which is a non-blocking operation like the backward()-method. We added one line in the created function to set the speed for motor A which is the same as for motor B, of course. After the three function calls we first call bachwards() on motor A. This will make the motor stop as the first step, and then start rotating backwards in a second step. Recognize, that Motor.A.backward() will be called when motor B stopped rotating. To let the robot wait until motor A also stopped, we added a delay of two seconds. After these two seconds the robot will start turning backwards (motor B will rotate into the other direction). At the same time, motor A will start rotating in the other direction, too.&lt;br /&gt;
+We will let the robot move backwards for three seconds and then stop both motors.&lt;br /&gt;
+&lt;br /&gt;
+So, here is the final result:&lt;br /&gt;
+&lt;br /&gt;
+&lt;div class="separator" style="clear: both; text-align: center;"&gt;
+    &lt;object class="BLOGGER-youtube-video" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0" data-thumbnail-src="https://ytimg.googleusercontent.com/vi/F_TNtE2B6Lg/0.jpg" height="266" width="320"&gt;&lt;param name="movie" value="https://www.youtube.com/v/F_TNtE2B6Lg?version=3&amp;f=user_uploads&amp;c=google-webdrive-0&amp;app=youtube_gdata" /&gt;&lt;param name="bgcolor" value="#FFFFFF" /&gt;&lt;param name="allowFullScreen" value="true" /&gt;&lt;embed width="320" height="266"  src="https://www.youtube.com/v/F_TNtE2B6Lg?version=3&amp;f=user_uploads&amp;c=google-webdrive-0&amp;app=youtube_gdata" type="application/x-shockwave-flash" allowfullscreen="true"&gt;&lt;/embed&gt;&lt;/object&gt;&lt;/div&gt;
+&lt;br /&gt;
+In the next article I will use the DifferentialPilot-class, which is the superior level of abstraction for controlling the motors, to move a two-wheeled robot which can drive turns for example.&lt;/div&gt;
+							&lt;/div&gt;
+							&lt;footer class="article-footer clearfix"&gt;
+								&lt;span class="post-author"&gt;&lt;a href="/team/sven-ruppert" rel="author"&gt;Sven Ruppert&lt;/a&gt;&amp;nbsp;&amp;nbsp;|&amp;nbsp;&amp;nbsp;&lt;/span&gt;
+								&lt;span class="post-date"&gt;&lt;a href="#" rel="date"&gt;2014-01-11&lt;/a&gt;&amp;nbsp;&amp;nbsp;|&amp;nbsp;&amp;nbsp;&lt;/span&gt;
+							&lt;/footer&gt;
+						&lt;/article&gt;</content>
+        <summary>Das ist der Inhalt der in Kurzform angezeigt werden soll</summary>
+    </entry>
+    <entry>
+        <title>Lego Mindstorms EV3 Components: Motors - Part 2</title>
+        <category label="0.5.0"/>
+        <category label="EV3"/>
+        <category label="Lego"/>
+        <category label="lejos"/>
+        <category label="Mindstorms"/>
+        <category label="motors"/>
+        <published>2014-01-15T00:00:00+01:00</published>
+        <author>
+            <name>Sven Ruppert</name>
+        </author>
+        <content type="html">&lt;article class="article clearfix"&gt;
+							&lt;header class="article-header"&gt;
+								&lt;h2 class="article-title"&gt;&lt;a href="/2014/01/15/lego-mindstorms-ev3-components--motors.html" rel="tag"&gt;Lego Mindstorms EV3 Components: Motors - Part 2&lt;/a&gt;&lt;/h2&gt;
+								&lt;p&gt;&lt;time datetime="2014-01-15"&gt;2014-01-15&lt;/time&gt; &lt;a href="/team/sven-ruppert" rel="author"&gt;from Sven Ruppert&lt;/a&gt;&lt;/p&gt;
+							&lt;/header&gt;
+							&lt;div class="article-content clearfix"&gt;
+								&lt;div class="post-thumb"&gt;
+									&lt;img src="./site/content/post_thumb.jpg" width="" height="" alt="" /&gt;
+								&lt;/div&gt;
+								&lt;div class="post-excerpt"&gt;In the first article of the Mindstorms component series I showed the most basic way to control motors which are connected to the EV3-brick. We had a robot with 1 motor connected which made the robot move forwards and backwards and one smaller motor which let three razorblades rotate (for fun).&lt;br /&gt;
+In this second part I will explain how to use the superior level of abstraction to control a robot with two motors (each motor moves one wheel). The lejos-crew calls these robots&amp;nbsp; "wheeled vehicles".&lt;br /&gt;
+&lt;br /&gt;
+So, first I built such a vehicle as shown in these pictures:&lt;br /&gt;
+&lt;br /&gt;
+&lt;a href="http://2.bp.blogspot.com/-CLVVItozSsA/UtAEx0-SEeI/AAAAAAAAAJ0/UyaH9_YisiE/s1600/DSCN0607.JPG" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" height="240" src="http://2.bp.blogspot.com/-CLVVItozSsA/UtAEx0-SEeI/AAAAAAAAAJ0/UyaH9_YisiE/s1600/DSCN0607.JPG" width="320" /&gt;&lt;/a&gt;
+&lt;a href="http://2.bp.blogspot.com/-ZJrqRdjMP58/UtAE12wAQGI/AAAAAAAAAKE/RTdYKtIUBXI/s1600/DSCN0608.JPG" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" height="240" src="http://2.bp.blogspot.com/-ZJrqRdjMP58/UtAE12wAQGI/AAAAAAAAAKE/RTdYKtIUBXI/s1600/DSCN0608.JPG" width="320" /&gt;&lt;/a&gt;
+&lt;a href="http://4.bp.blogspot.com/-ov-9G8prnC8/UtAEznnul6I/AAAAAAAAAJ8/zkag-CyIaZs/s1600/DSCN0609.JPG" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" height="240" src="http://4.bp.blogspot.com/-ov-9G8prnC8/UtAEznnul6I/AAAAAAAAAJ8/zkag-CyIaZs/s1600/DSCN0609.JPG" width="320" /&gt;&lt;/a&gt; &lt;a href="http://3.bp.blogspot.com/-6ubRga2G6lI/UtAE4SelCWI/AAAAAAAAAKM/yWMoaJ8Dfmc/s1600/DSCN0610.JPG" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" height="240" src="http://3.bp.blogspot.com/-6ubRga2G6lI/UtAE4SelCWI/AAAAAAAAAKM/yWMoaJ8Dfmc/s1600/DSCN0610.JPG" width="320" /&gt;&lt;/a&gt;&lt;br /&gt;
+(For the wheels I used the construction manual of the GRIPP3R-robot)&lt;br /&gt;
+&lt;br /&gt;
+&lt;h3&gt;
+    DifferentialPilot-class &lt;/h3&gt;
+As said before, the DifferentialPilot class from the lejos api represents the superior level of abstraction when communicating with the motors. You can use it when you have a robot with two motors connected to the brick where each motor controls an own wheel.&lt;br /&gt;
+&lt;br /&gt;
+It offers different methods like travel(), steer() or arc() which will be used in the program for the robot.&lt;br /&gt;
+&lt;br /&gt;
+&lt;h3&gt;
+    The parcours&lt;/h3&gt;
+First, I thought of a little demonstration parcours for the new robot. It should contain simple movements for- and backwards, rotations and turns / circles. As a result the parcours consists of 3 parts:&lt;br /&gt;
+&lt;br /&gt;
+&lt;div class="separator" style="clear: both; text-align: center;"&gt;
+    &lt;a href="http://4.bp.blogspot.com/-5bk-C7htHhI/UtFh5xIWyDI/AAAAAAAAAKc/zIWe21XVy2g/s1600/parcours1.JPG" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" height="173" src="http://4.bp.blogspot.com/-5bk-C7htHhI/UtFh5xIWyDI/AAAAAAAAAKc/zIWe21XVy2g/s1600/parcours1.JPG" width="320" /&gt;&lt;/a&gt;&lt;/div&gt;
+&lt;br /&gt;
+So, the first part of the parcours is pretty simple, the robot will move in a rectangular shape until it is back in its initial position.&lt;br /&gt;
+&lt;br /&gt;
+&lt;div class="separator" style="clear: both; text-align: center;"&gt;
+    &lt;a href="http://1.bp.blogspot.com/-QTsrtvTwbEg/UtFh9A3Z-xI/AAAAAAAAAKk/3UmL59wUwLw/s1600/parcours2.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" height="186" src="http://1.bp.blogspot.com/-QTsrtvTwbEg/UtFh9A3Z-xI/AAAAAAAAAKk/3UmL59wUwLw/s1600/parcours2.png" width="320" /&gt;&lt;/a&gt;&lt;/div&gt;
+&lt;br /&gt;
+In the second part, the robot then will move 90° in a turn. After the turn it will then drive a 90° turn backwards after which the robot will be in the position indicated transparent in the picture.&lt;br /&gt;
+&lt;br /&gt;
+&lt;div class="separator" style="clear: both; text-align: center;"&gt;
+    &lt;a href="http://4.bp.blogspot.com/-iaGSsTV-7XM/UtFh-Gkp3xI/AAAAAAAAAKo/8YEX_hwL4yw/s1600/parcours3.JPG" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" height="197" src="http://4.bp.blogspot.com/-iaGSsTV-7XM/UtFh-Gkp3xI/AAAAAAAAAKo/8YEX_hwL4yw/s1600/parcours3.JPG" width="320" /&gt;&lt;/a&gt;&lt;/div&gt;
+&lt;br /&gt;
+At the end of the second part the robot will first move forwards a bit. Then it will move in a circle. After the circle has finished, the robot will rotate by 180° (and then look like transparent indication in the picture). Then the robot will move backwards until it is back in the initial position from the beginning of the parcours. &lt;br /&gt;
+&lt;br /&gt;
+&lt;h3&gt;
+    The code &lt;/h3&gt;
+Let's have a look at the plain code of the finished program first.&lt;br /&gt;
+&lt;br /&gt;
+&lt;pre class="brush: java"&gt;import lejos.hardware.motor.Motor;
+import lejos.robotics.navigation.DifferentialPilot;
+
+public class Main {
+    public static void main(String[] args) {
+
+        final DifferentialPilot pilot = new DifferentialPilot(30.0, 185.0, Motor.C, Motor.B);
+        pilot.setAcceleration(200);
+        pilot.setRotateSpeed(50.0);
+        pilot.setTravelSpeed(50.0);
+
+        pilot.travel(350.0);
+        pilot.rotate(90.0);
+        pilot.travel(190.0);
+        pilot.rotate(90.0);
+        pilot.travel(350.0);
+        pilot.rotate(90.0);
+        pilot.travel(190.0);
+        pilot.rotate(90.0);
+
+        pilot.steer(65.0, 90.0);
+        pilot.steer(-65.0, 90.0);
+
+        pilot.travel(175.0);
+        pilot.arc(-100.0,-360.0);
+        pilot.steer(200.0,180.0);
+        pilot.travel(-175.0);
+
+    }
+}
+
+&lt;/pre&gt;
+&lt;br /&gt;
+At the beginning we instantiate a new instance of a DifferentialPilot and configure the wanted movement speeds. The used constructor takes four parameters:&lt;br /&gt;
+&lt;ul&gt;
+    &lt;li&gt;wheel-diameter: The diameter of the wheel connected to the motor. The used wheel has a 30mm diameter.&lt;/li&gt;
+    &lt;li&gt;track width: The distance between the centres of both wheels. In my case ~185mm.&lt;/li&gt;
+    &lt;li&gt;left motor: The plug connection where the left motor is plugged in.&lt;/li&gt;
+    &lt;li&gt;right motor: The plug connection where the right motor is plugged in.&lt;/li&gt;
+&lt;/ul&gt;
+The diameter of the wheels and the track width are needed by the api to know how long the motors must rotate to perform correct rotations etc.&lt;br /&gt;
+&lt;br /&gt;
+In the next block we perform the first part of the parcours which is pretty trivial. The travel-method makes the robot move forwards for the given distance (350mm). Recognize, that the distance unit must be the same as used for wheel diameter and track width in the constructor. That method is a blocking operation, so the program will wait here until the movement has finished. After that, the robot will rotate (in place) by 90° to the left (-90° would be&amp;nbsp; 90° right). This happens four times until the rectangular movement has finished and the robot is back in its initial position.&lt;br /&gt;
+&lt;br /&gt;
+In the next block there are to steer-method calls.&lt;br /&gt;
+The steer()-method takes two parameters:&lt;br /&gt;
+&lt;ul&gt;
+    &lt;li&gt;turnRate: The ratio of the two wheels' speeds (Integer between -200 and +200)&lt;/li&gt;
+    &lt;li&gt;angle: When the robot turned by this degrees, the steering will stop.&lt;/li&gt;
+&lt;/ul&gt;
+This needs some more explainations:&lt;br /&gt;
+turnRate: If the value is positive you are configuring the left wheel, if it's negative you are configuring the right wheel. Let's look at some positive values:&lt;br /&gt;
+0 - means, that both wheels will rotate at the same speed, which causes the robot to move forwards (no steering!)&lt;br /&gt;
+100 - means, that the left wheel won't move.&lt;br /&gt;
+200 - means, that the left wheel will do the exact opposite of the right wheel. &lt;br /&gt;
+&lt;br /&gt;
+angle: you can enter a value between 0 und 360°, positive and negative. Positive values will rotate the brick to the left, negative values cause right rotations.&lt;br /&gt;
+&lt;br /&gt;
+So, back to our two method-calls. The first call says: Make the left wheel move 0.65 * the speed of the right wheel. This will cause the robot to turn leftwards while moving. The robot will then move until it has turned by 90° to the left.&lt;br /&gt;
+The second method call: The first parameter is negative, so we tell the RIGHT wheel to move at 0.65 * the speed of the LEFT wheel. The robot will move until the robot turned 90° to the left. Recognize, that the robot can only turn to the left by moving "backwards" because the right wheel rotates slower than the left wheel.&lt;br /&gt;
+&lt;br /&gt;
+In the last block the motor travels some centimeters fowards. Then there is a new method called arc. This methods tells the robot to move in a circle. The two parameters are:&lt;br /&gt;
+&lt;ul&gt;
+    &lt;li&gt;radius of the circle&lt;/li&gt;
+    &lt;li&gt;angle: When the robot turned by this degrees, the steering will stop.&lt;/li&gt;
+&lt;/ul&gt;
+Both parameters may be positive or negative.&lt;br /&gt;
+A positive radius means, that the circle centre should be on the left of the brick. A negative respectively means that the circle centre is on the right side of the brick.&lt;br /&gt;
+A positive angle means that the robot will rotate to the left, a negative angle respectively right.&lt;br /&gt;
+&lt;br /&gt;
+So, the arc-method-call says: Drive a circle. The circle center is on the right side of the brick and has a radius of 10cm. Drive that circle by rotating rightwards. The only possibility to do that, is by driving the circle forwards. A positive angle of 360° would have caused the robot to drive the circle by rotating to the left, which could only have been realized by moving backwards.&lt;br /&gt;
+The next steer-method-call is easy: It says: The left wheel should do the opposite of the right wheel. The robot should move until it has turned by 180°. Maybe you recognized it: It's a simple 180° in-place rotation. So we could have used pilot.rotate(180) here, too. &lt;br /&gt;
+The last travel()-call makes the robot move backwards the last centimeters until it is back in it's initial position.&lt;br /&gt;
+&lt;br /&gt;
+That's it, at last I just refactored and added some Console-ouput to the program for comfort:&lt;br /&gt;
+&lt;br /&gt;
+&lt;pre class="brush: java"&gt;import lejos.hardware.motor.Motor;
+import lejos.robotics.navigation.DifferentialPilot;
+
+public class Main {
+
+    final static double NINETY_DEGREES = 90.0;
+
+    public static void main(String[] args) {
+
+        final DifferentialPilot pilot = new DifferentialPilot(30.0, 185.0, Motor.C, Motor.B);
+        pilot.setAcceleration(200);
+        pilot.setRotateSpeed(50.0);
+        pilot.setTravelSpeed(50.0);
+
+        System.out.println("Configured speeds and starting the first part of the parcours.");
+        travelRectangle(pilot, 350.0, 190.0);
+
+        System.out.println("Starting the second part of the parcours.");
+        driveTurns(pilot);
+
+        System.out.println("Starting the third part of the parcours.");
+        driveCircleAndBackToInitialPosition(pilot);
+
+    }
+
+    private static void driveCircleAndBackToInitialPosition(final DifferentialPilot pilot) {
+        System.out.print("    Driving half the way...");
+        pilot.travel(175.0);
+        System.out.println("done!");
+        System.out.print("    Driving the circle...");
+        pilot.arc(-100.0,-360.0);
+        System.out.println("done!");
+        System.out.print("    Turning 180 degrees...");
+        pilot.steer(200.0,180.0);
+        System.out.println("done!");
+        System.out.print("    Driving backwards to initial position...");
+        pilot.travel(-175.0);
+        System.out.println("done!");
+    }
+
+    private static void driveTurns(final DifferentialPilot pilot) {
+        System.out.print("    Driving turn forwards...");
+        pilot.steer(65.0, NINETY_DEGREES);
+        System.out.println("done!");
+        System.out.print("    Driving turn backwards...");
+        pilot.steer(-65.0, NINETY_DEGREES);
+        System.out.println("done!");
+    }
+
+    private static void travelRectangle(final DifferentialPilot pilot, final double rectLength, final double rectWidth) {
+        travelRectangleEdgeAndRotate(pilot, rectLength);
+        travelRectangleEdgeAndRotate(pilot, rectWidth);
+        travelRectangleEdgeAndRotate(pilot, rectLength);
+        travelRectangleEdgeAndRotate(pilot, rectWidth);
+    }
+
+    private static void travelRectangleEdgeAndRotate(final DifferentialPilot pilot, final double distance) {
+        System.out.print("    Driving " + distance + " mm...");
+        pilot.travel(distance);
+        System.out.println("done!");
+        System.out.print("    Rotating 90 degrees...");
+        pilot.rotate(NINETY_DEGREES);
+        System.out.println("done!");
+    }
+}
+&lt;/pre&gt;
+and here is the result:&lt;br /&gt;
+&lt;br /&gt;
+&lt;div class="separator" style="clear: both; text-align: center;"&gt;
+    &lt;object class="BLOGGER-youtube-video" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0" data-thumbnail-src="http://i1.ytimg.com/vi/E-lcFrSva78/0.jpg" height="266" width="320"&gt;&lt;param name="movie" value="http://www.youtube.com/v/E-lcFrSva78?version=3&amp;f=user_uploads&amp;c=google-webdrive-0&amp;app=youtube_gdata" /&gt;&lt;param name="bgcolor" value="#FFFFFF" /&gt;&lt;param name="allowFullScreen" value="true" /&gt;&lt;embed width="320" height="266"  src="http://www.youtube.com/v/E-lcFrSva78?version=3&amp;f=user_uploads&amp;c=google-webdrive-0&amp;app=youtube_gdata" type="application/x-shockwave-flash" allowfullscreen="true"&gt;&lt;/embed&gt;&lt;/object&gt;&lt;/div&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+It isn't 100% exact, but still quite satisfying. I think this is because the wheel diameter and the track width I gave the constructor aren't perfectly correct.&lt;/div&gt;
+							&lt;/div&gt;
+							&lt;footer class="article-footer clearfix"&gt;
+								&lt;span class="post-author"&gt;&lt;a href="/team/sven-ruppert" rel="author"&gt;Sven Ruppert&lt;/a&gt;&amp;nbsp;&amp;nbsp;|&amp;nbsp;&amp;nbsp;&lt;/span&gt;
+								&lt;span class="post-date"&gt;&lt;a href="#" rel="date"&gt;2014-01-15&lt;/a&gt;&amp;nbsp;&amp;nbsp;|&amp;nbsp;&amp;nbsp;&lt;/span&gt;
+							&lt;/footer&gt;
+						&lt;/article&gt;</content>
+        <summary>Das ist der Inhalt der in Kurzform angezeigt werden soll</summary>
+    </entry>
+    <entry>
+        <title>Lego Mindstorms EV3 Components: Infrared Sensor - Part 1</title>
+        <category label="0.5.0"/>
+        <category label="components"/>
+        <category label="EV3"/>
+        <category label="infrared"/>
+        <category label="Lego"/>
+        <category label="lejos"/>
+        <category label="Mindstorms"/>
+        <category label="sensor"/>
+        <published>2014-01-27T00:00:00+01:00</published>
+        <author>
+            <name>Sven Ruppert</name>
+        </author>
+        <content type="html">&lt;article class="article clearfix"&gt;
+							&lt;header class="article-header"&gt;
+								&lt;h2 class="article-title"&gt;&lt;a href="/2014/01/27/lego-mindstorms-ev3-components--infrar.html" rel="tag"&gt;Lego Mindstorms EV3 Components: Infrared Sensor - Part 1&lt;/a&gt;&lt;/h2&gt;
+								&lt;p&gt;&lt;time datetime="2014-01-27"&gt;2014-01-27&lt;/time&gt; &lt;a href="/team/sven-ruppert" rel="author"&gt;from Sven Ruppert&lt;/a&gt;&lt;/p&gt;
+							&lt;/header&gt;
+							&lt;div class="article-content clearfix"&gt;
+								&lt;div class="post-thumb"&gt;
+									&lt;img src="./site/content/post_thumb.jpg" width="" height="" alt="" /&gt;
+								&lt;/div&gt;
+								&lt;div class="post-excerpt"&gt;Now that we have demonstrated how to work with motors, the next component we will focus on is a sensor - the infrared sensor.&lt;br /&gt;
+&lt;br /&gt;
+In this first part we will show how to use the ability of the sensor to find objects and recognize the distance between that object and the sensor. There are other functionalities like receiving commands from the infrared remote control, which we will focus on in later posts.&lt;br /&gt;
+&lt;br /&gt;
+The used lejos version is 0.5.0-alpha like in our last postings as it is still the most current version (01/27/2014).&lt;br /&gt;
+&lt;br /&gt;
+&lt;h2&gt;
+    The robot&lt;/h2&gt;
+First, as always, we needed a new robot which uses the infrared sensor. Therefore I just enhanced the robot from the last episode a bit (so if you want to understand the source code in this posting it will help if you already have checked the two postings about &lt;a href="http://www.rapidpm.org/2014/01/lego-mindstorms-ev3-components-motors.html"&gt;using&lt;/a&gt; &lt;a href="http://www.rapidpm.org/2014/01/lego-mindstorms-ev3-components-motors_15.html"&gt;motors&lt;/a&gt;). I strengthened the basement between the two wheels, so that it wouldn't break because of the weight of the brick and other components. The brick is now no longer located directly between the wheels, but a bit more above. Additionally, I mounted the infrared sensor centered above / in front of the brick and plugged it into the sensor plug 2. The result looks like the following. &lt;br /&gt;
+&lt;br /&gt;
+&lt;a href="http://2.bp.blogspot.com/-opuibjzU9_I/UuJxa2QG1vI/AAAAAAAAALE/yMY5H4v2YBU/s1600/DSCN0625e.jpg" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" src="http://2.bp.blogspot.com/-opuibjzU9_I/UuJxa2QG1vI/AAAAAAAAALE/yMY5H4v2YBU/s1600/DSCN0625e.jpg" height="320" width="292" /&gt;&lt;/a&gt;
+&lt;a href="http://4.bp.blogspot.com/-RwYTQq7b_X0/UuJxZF2dN3I/AAAAAAAAAK8/G40LOi26B-U/s1600/DSCN0628e.jpg" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" src="http://4.bp.blogspot.com/-RwYTQq7b_X0/UuJxZF2dN3I/AAAAAAAAAK8/G40LOi26B-U/s1600/DSCN0628e.jpg" height="320" width="279" /&gt;&lt;/a&gt;
+&lt;a href="http://1.bp.blogspot.com/-bMjGO2zIqPI/UuJxcCzoZvI/AAAAAAAAALM/ruR6MexJmBw/s1600/DSCN0629.JPG" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" src="http://1.bp.blogspot.com/-bMjGO2zIqPI/UuJxcCzoZvI/AAAAAAAAALM/ruR6MexJmBw/s1600/DSCN0629.JPG" height="240" width="320" /&gt;&lt;/a&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+( could be a relative of disney's wall-e )&lt;br /&gt;
+&lt;h2&gt;
+    The parcours&lt;/h2&gt;
+As said, in this tutorial we will focus on the ability of the infrared sensor to locate objects and return the objects' distance.&lt;br /&gt;
+&lt;br /&gt;
+The scenario I created for that purpose:&lt;br /&gt;
+We have a walled zone (cage). The robot is placed anywhere in that cage and the robot will always move forwards until he is directly in front of a wall. He then will turn left (90°) and will again move forwards until he reaches the next wall.&lt;br /&gt;
+&lt;br /&gt;
+&lt;div class="separator" style="clear: both; text-align: center;"&gt;
+    &lt;a href="http://4.bp.blogspot.com/--kzkAggDFmw/UuJzfiCnFJI/AAAAAAAAALU/DnGSbJe2vxY/s1600/DSCN0632.JPG" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" src="http://4.bp.blogspot.com/--kzkAggDFmw/UuJzfiCnFJI/AAAAAAAAALU/DnGSbJe2vxY/s1600/DSCN0632.JPG" height="249" width="320" /&gt;&lt;/a&gt;&lt;/div&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;h2&gt;
+    The infrared sensor API&lt;/h2&gt;
+So, before looking at the code let's talk a bit about what classes and methods the api offers for the infrared sensor.&lt;br /&gt;
+&lt;br /&gt;
+It's quite easy to use an infrared sensor. You can simply instantiate an object of the EV3InfraredSensor-class. The (slightly) harder part is to tell the program to use the functionality of the sensor to detect objects and return their distances - and react on the returned values of course. Therefore you need: RangeFinderAdaptor, RangeFeatureDetector and FeatureListener.&lt;br /&gt;
+&lt;br /&gt;
+But it's not as hard as it might seem now.&lt;br /&gt;
+The aim is to have a listener on the sensor, so that the it returns the distance of a recognized object in regular time intervals (let's say: return the object's distance every second).&lt;br /&gt;
+We need a class, which implements the FeatureListener, to do that. In my opinion the name FeatureListener is a bit confusing.. "Feature" means the object that has been detected by the sensor. The class which implements it has to implement the method&lt;br /&gt;
+public void featureDetected(final Feature feature, final FeatureDetector detector);&lt;br /&gt;
+And this method is called in the given interval, so we react to the distance of the detected object here (we will see how that works in the code for the parcours).&lt;br /&gt;
+But that implementing class is the last thing we will do.&lt;br /&gt;
+The regular order for realizing our aim with the instantiated Sensor-object is:&lt;br /&gt;
+&lt;ol&gt;
+    &lt;li&gt;Instantiate a RangeFinderAdaptor-object and tell it in which mode the sensor is used&lt;/li&gt;
+    &lt;li&gt;Instantiate a RangeFeatureDetector-object and tell it: the interval of checking the object's distance and the maximum distance of objects. It also needs the (prior to this step) created RangeFinderAdaptor-object.&lt;/li&gt;
+    &lt;li&gt;Instantiate an object of the class which implements the FeatureListener&lt;/li&gt;
+    &lt;li&gt;Add the instantiated listener from step 3 to the RangeFeatureDetector-object from step 2.&lt;/li&gt;
+&lt;/ol&gt;
+That's it. So after the theory let's have a look at the finished plain code.&lt;br /&gt;
+&lt;br /&gt;
+&lt;h2&gt;
+    The code &lt;/h2&gt;
+We have two classes this time. The Main-Class (as always) and the class which implements the needed FeatureListener.&lt;br /&gt;
+&lt;br /&gt;
+Let's start with the Main-Class:&lt;br /&gt;
+&lt;br /&gt;
+&lt;pre class="brush: java"&gt;import lejos.hardware.Button;
+import lejos.hardware.motor.Motor;
+import lejos.hardware.port.SensorPort;
+import lejos.hardware.sensor.EV3IRSensor;
+import lejos.robotics.RangeFinderAdaptor;
+import lejos.robotics.navigation.DifferentialPilot;
+import lejos.robotics.objectdetection.FeatureListener;
+import lejos.robotics.objectdetection.RangeFeatureDetector;
+import lejos.utility.Delay;
+
+public class Main {
+
+    protected final static double NINETY_DEGREES = 90.0;
+    protected final static double PILOT_SPEED = 50.0;
+    protected final static int PILOT_ACCELERATION = 25;
+    protected final static float MAX_DISTANCE = 100.0f;
+    protected final static int INTERVAL = 500;
+    protected final static double WHEEL_DIAMETER = 30.0f;
+    protected final static double DISTANCE_BETWEEN_WHEELS = 170.0;
+
+    public static void main(String[] args) {
+
+        final DifferentialPilot pilot = new DifferentialPilot(WHEEL_DIAMETER, DISTANCE_BETWEEN_WHEELS, Motor.C, Motor.B);
+        final EV3IRSensor infraredSensor = new EV3IRSensor(SensorPort.S2);
+
+        configurePilot(pilot);
+        configureInfraredSensor(infraredSensor, pilot);
+
+        //wait for the sensor to be completely initialized and start the robot
+        Delay.msDelay(5000);
+        System.out.println("    Starting!");
+        pilot.forward();
+        Button.waitForAnyPress();
+    }
+
+    private static void configureInfraredSensor(final EV3IRSensor infraredSensor, final DifferentialPilot pilot) {
+        final RangeFinderAdaptor rangeFinderAdaptor = new RangeFinderAdaptor(infraredSensor.getDistanceMode());
+        final RangeFeatureDetector rangeFeatureDetector = new RangeFeatureDetector(rangeFinderAdaptor, MAX_DISTANCE, INTERVAL);
+        final FeatureListener detectedObjectListener = new DetectedObjectListener(pilot);
+        rangeFeatureDetector.addListener(detectedObjectListener);
+    }
+
+    private static void configurePilot(final DifferentialPilot pilot) {
+        pilot.setAcceleration(PILOT_ACCELERATION);
+        pilot.setRotateSpeed(PILOT_SPEED);
+        pilot.setTravelSpeed(PILOT_SPEED);
+    }
+}
+&lt;/pre&gt;
+&lt;br /&gt;
+The main-method is quite short and simple. In the first part we instantiate the pilot to control the wheels/motors and the infrared sensor. For more information on the pilot check the corresponding postings about using motors with the lejos api if you haven't done yet).&lt;br /&gt;
+The EV3InfraredSensor-class only needs to know which plug it is plugged into to create a corresponding object.&lt;br /&gt;
+&lt;br /&gt;
+After creating our needed pilot and sensor we need to configure them. Have a look at the configureInfraredSensor-method. That's were we realize the things described in the last paragraph.&lt;br /&gt;
+&lt;ol&gt;
+    &lt;li&gt;We create a RangeFinderAdaptor-object by telling the constructor in which mode the sensor should work.&lt;/li&gt;
+    &lt;li&gt;We create a RangeFeatureDetector and assign the RangeFinderAdaptor-object plus the maximum distance of objects and the interval where the sensor should check for objects.&lt;/li&gt;
+    &lt;li&gt;We create a FeatureListener-object which needs the pilot because we will control the pilot in it. We will see the implementation of the listener next.&lt;/li&gt;
+    &lt;li&gt;We assign the created listener to the RangeFeatureDetector so the featureDetected-method of the listener is called in the configured interval.&lt;/li&gt;
+&lt;/ol&gt;
+After configuring the sensor I set a delay of five seconds because the configuration needs some time. When I tried starting the pilot without a delay it came to weird reactions like the robot moving forwards and backwards some millimeters jerkily.&lt;br /&gt;
+After the delay the robot will start moving forwards and the rest of the code is done in the listener, so let's have a look at it next. (Button.waitForAnyPress() is just used to let the program continue. Without that line the program would just end before the robot even started moving.)&lt;br /&gt;
+&lt;br /&gt;
+The Listener-class:&lt;br /&gt;
+&lt;br /&gt;
+&lt;pre class="brush: java"&gt;import lejos.robotics.navigation.DifferentialPilot;
+import lejos.robotics.objectdetection.Feature;
+import lejos.robotics.objectdetection.FeatureDetector;
+import lejos.robotics.objectdetection.FeatureListener;
+import static org.rapidpm.ev3.infrared.Main.*;
+
+public class DetectedObjectListener implements FeatureListener {
+
+    private DifferentialPilot pilot;
+
+    public DetectedObjectListener(final DifferentialPilot pilot) {
+        this.pilot = pilot;
+    }
+
+    @Override
+    public void featureDetected(final Feature feature, final FeatureDetector detector) {
+        int range = (int)feature.getRangeReading().getRange();
+        if(range &amp;lt;= 10){
+            if(range &amp;lt;=2){
+                System.exit(0);
+            }
+            pilot.stop();
+            pilot.rotate(NINETY_DEGREES);
+            pilot.forward();
+        }
+    }
+}
+&lt;/pre&gt;
+&lt;br /&gt;
+We have a field for the pilot from the constructor which we will use in the featureDetected()-method which is called in the configured interval.&lt;br /&gt;
+In that method we get the distance/range of a recognized object from the Feature-object (which represents the detected object).&lt;br /&gt;
+If the range is greater than 10 (centimeters), nothing will happen. The robot will of course continue moving forward (remember that in the main-method we called pilot.forward() and told the program to wait for a button press to exit the program).&lt;br /&gt;
+If the range is lower than 10, we know that the robot has reached a wall. So we tell the pilot to stop. After that we let the robot rotate by 90°. At last we tell the pilot to move forwards again. An exception to that behavior is the special case if the range is lower or equals 2 cm. If that is the case the program will exit. Why is that? Without that backdoor, the program would run until any button of the brick is pressed (remember the main-method). But instead of having to grab the robot and press a button we now can just hold any object directly in front of the infrared sensor and the program will exit.&lt;br /&gt;
+&lt;h2&gt;
+    The result&lt;/h2&gt;
+At the end I added some console output to the featureDetected-method to have some feedback during the execution of the program.&lt;br /&gt;
+&lt;br /&gt;
+&lt;pre class="brush: java"&gt;    @Override
+    public void featureDetected(final Feature feature, final FeatureDetector detector) {
+        int range = (int)feature.getRangeReading().getRange();
+        if(range &amp;lt;= 10){
+            if(range &amp;lt;=3){
+                System.out.println("Recognized signal directly on front of me: exiting!");
+                System.exit(0);
+            }
+            System.out.print("Reached wall! Stopping...");
+            pilot.stop();
+            System.out.println("done!");
+            System.out.print("Rotating 90 degrees...");
+            pilot.rotate(NINETY_DEGREES);
+            System.out.println("done!");
+            pilot.forward();
+        } else {
+            System.out.println("range: "+range);
+        }
+    }
+&lt;/pre&gt;
+&lt;br /&gt;
+And here is the result (watch on youtube for better quality):&lt;br /&gt;
+&lt;br /&gt;
+&lt;div class="separator" style="clear: both; text-align: center;"&gt;
+    &lt;object class="BLOGGER-youtube-video" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0" data-thumbnail-src="https://ytimg.googleusercontent.com/vi/OzLn8FzbEto/0.jpg" height="266" width="320"&gt;&lt;param name="movie" value="https://www.youtube.com/v/OzLn8FzbEto?version=3&amp;f=user_uploads&amp;c=google-webdrive-0&amp;app=youtube_gdata" /&gt;&lt;param name="bgcolor" value="#FFFFFF" /&gt;&lt;param name="allowFullScreen" value="true" /&gt;&lt;embed width="320" height="266"  src="https://www.youtube.com/v/OzLn8FzbEto?version=3&amp;f=user_uploads&amp;c=google-webdrive-0&amp;app=youtube_gdata" type="application/x-shockwave-flash" allowfullscreen="true"&gt;&lt;/embed&gt;&lt;/object&gt;&lt;/div&gt;
+&lt;br /&gt;&lt;/div&gt;
+							&lt;/div&gt;
+							&lt;footer class="article-footer clearfix"&gt;
+								&lt;span class="post-author"&gt;&lt;a href="/team/sven-ruppert" rel="author"&gt;Sven Ruppert&lt;/a&gt;&amp;nbsp;&amp;nbsp;|&amp;nbsp;&amp;nbsp;&lt;/span&gt;
+								&lt;span class="post-date"&gt;&lt;a href="#" rel="date"&gt;2014-01-27&lt;/a&gt;&amp;nbsp;&amp;nbsp;|&amp;nbsp;&amp;nbsp;&lt;/span&gt;
+							&lt;/footer&gt;
+						&lt;/article&gt;</content>
+        <summary>Das ist der Inhalt der in Kurzform angezeigt werden soll</summary>
+    </entry>
+    <entry>
+        <title>Lego Mindstorms EV3 Components: Infrared Sensor - Part 2</title>
+        <category label="0.5.0"/>
+        <category label="components"/>
+        <category label="EV3"/>
+        <category label="infrared"/>
+        <category label="Lego"/>
+        <category label="lejos"/>
+        <category label="Mindstorms"/>
+        <category label="Mindsuite"/>
+        <category label="remote control"/>
+        <category label="sensor"/>
+        <published>2014-02-10T00:00:00+01:00</published>
+        <author>
+            <name>Sven Ruppert</name>
+        </author>
+        <content type="html">&lt;article class="article clearfix"&gt;
+							&lt;header class="article-header"&gt;
+								&lt;h2 class="article-title"&gt;&lt;a href="/2014/02/10/lego-mindstorms-ev3-components--infrar.html" rel="tag"&gt;Lego Mindstorms EV3 Components: Infrared Sensor - Part 2&lt;/a&gt;&lt;/h2&gt;
+								&lt;p&gt;&lt;time datetime="2014-02-10"&gt;2014-02-10&lt;/time&gt; &lt;a href="/team/sven-ruppert" rel="author"&gt;from Sven Ruppert&lt;/a&gt;&lt;/p&gt;
+							&lt;/header&gt;
+							&lt;div class="article-content clearfix"&gt;
+								&lt;div class="post-thumb"&gt;
+									&lt;img src="./site/content/post_thumb.jpg" width="" height="" alt="" /&gt;
+								&lt;/div&gt;
+								&lt;div class="post-excerpt"&gt;In this second part on the mindstorm's infrared sensor we will focus on the remote control and the ability of the remote sensor to recognize commands from that remote control respectively. There are multiple buttons on that remote control and we will control the robot by pressing different buttons.&lt;br /&gt;
+&lt;br /&gt;
+&lt;h2&gt;
+    The robot&lt;/h2&gt;
+We will use the robot from the first part as it already uses the infrared sensor. The mindstorm's remote control looks like the following:&lt;br /&gt;
+&lt;br /&gt;
+&lt;div class="separator" style="clear: both; text-align: center;"&gt;
+    &lt;a href="http://4.bp.blogspot.com/--ykPdzdmwGY/Uvd2Sls9PTI/AAAAAAAAAL8/l5i7epxq6rA/s1600/DSCN06462.jpg" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" src="http://4.bp.blogspot.com/--ykPdzdmwGY/Uvd2Sls9PTI/AAAAAAAAAL8/l5i7epxq6rA/s1600/DSCN06462.jpg" height="320" width="240" /&gt;&lt;/a&gt;&lt;/div&gt;
+&lt;br /&gt;
+There are two buttons on the left (red) and two buttons on the right (blue). There is a fifth button at the top center which is (in contrast to all other buttons) a toggling button. So if you press it one time, the remote control sends a signal continuously until the button is pressed a second time. Before taking the photo I pressed that button one time to activate the green signal led. We will use that toggle button on the next part of the infrared sensor articles.&lt;br /&gt;
+The red slider at the bottom center is for selecting a frequency channel. You can select four channels and the current channel is shown in the red circle under the toggling button.&lt;br /&gt;
+&lt;h2&gt;
+    The parcours&lt;/h2&gt;
+There is the robot and there is the remote control. The aim is to press different buttons on the remote control to control and move the robot. We will use the two buttons on the left to let the robot rotate left/right, respectively the two buttons on the right to let the robot move forwards/backwards. When more than one button is pressed, the program should exit.&lt;br /&gt;
+&lt;br /&gt;
+&lt;div class="separator" style="clear: both; text-align: center;"&gt;
+    &lt;a href="http://3.bp.blogspot.com/-2hiF0vwZ5s0/Uvd2J57BhCI/AAAAAAAAAL0/nvAubN0xv3c/s1600/parcours.jpg" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" src="http://3.bp.blogspot.com/-2hiF0vwZ5s0/Uvd2J57BhCI/AAAAAAAAAL0/nvAubN0xv3c/s1600/parcours.jpg" height="240" width="320" /&gt;&lt;/a&gt;&lt;/div&gt;
+&lt;br /&gt;
+&lt;h2&gt;
+    The infrared sensor API&lt;/h2&gt;
+There are two relevant modes for the infrared sensor. The distance mode and the seek mode. We used the former implicitly in the last article and we will use it in this one because it offers the possibility to receive commands from the infrared remote control. The latter can be used to receive the position and the distance of the remote control to the robot (the next tutorial will use the seek mode).&lt;br /&gt;
+&lt;br /&gt;
+It's very easy to receive a command from the remote control. The only method we will use is infraredSensor.getRemoteCommand(0);&lt;br /&gt;
+This will return an integer value which represents the pressed button on the remote control (e.g. the left upper button on the remote control will return 1). The parameter of the method is also an integer value which represents the frequency channel which we use on the remote control. You can select one of four different channels (via the red slider on the remote control). In this case we use channel 0 (which is called channel 1 on the remote control).&lt;br /&gt;
+&lt;br /&gt;
+That's it. We don't need RangeFinderAdaptors, RangeFeatureDetectors or anything like that this time. So let's directly jump to the finished code and see how it works.&lt;br /&gt;
+&lt;h2&gt;
+    The code &lt;/h2&gt;
+There are two classes. The Main-class and an InfraredSignalCheckerThread, which extends Thread and contains the logic for received commands from the remote control.&lt;br /&gt;
+&lt;br /&gt;
+Let's start with the Main-Class:&lt;br /&gt;
+&lt;br /&gt;
+&lt;pre class="brush: java"&gt;import lejos.hardware.Button;
+import lejos.hardware.motor.Motor;
+import lejos.hardware.port.SensorPort;
+import lejos.hardware.sensor.EV3IRSensor;
+import lejos.robotics.navigation.DifferentialPilot;
+
+public class Main {
+
+    protected final static double NINETY_DEGREES = 90.0;
+    protected final static double PILOT_SPEED = 100.0;
+    protected final static int PILOT_ACCELERATION = 500;
+    protected final static double WHEEL_DIAMETER = 30.0f;
+    protected final static double DISTANCE_BETWEEN_WHEELS = 170.0;
+
+    public static void main(String[] args) throws InterruptedException {
+
+        final DifferentialPilot pilot = new DifferentialPilot(WHEEL_DIAMETER, DISTANCE_BETWEEN_WHEELS, Motor.C, Motor.B);
+        final EV3IRSensor infraredSensor = new EV3IRSensor(SensorPort.S2);
+        final InfraredSignalCheckerThread checkerThread = new InfraredSignalCheckerThread(infraredSensor, pilot);
+
+        configurePilot(pilot);
+        checkerThread.start();
+        Button.waitForAnyPress();
+    }
+
+    private static void configurePilot(final DifferentialPilot pilot) {
+        pilot.setAcceleration(PILOT_ACCELERATION);
+        pilot.setRotateSpeed(PILOT_SPEED);
+        pilot.setTravelSpeed(PILOT_SPEED);
+    }
+}
+&lt;/pre&gt;
+&lt;br /&gt;
+If you've (hopefully) read our &lt;a href="http://www.rapidpm.org/2014/01/lego-mindstorms-ev3-components-infrared.html"&gt;last article&lt;/a&gt; on the infrared sensor, you will recognize that the Main-class became a bit smaller this time. We don't have to configure anything on the infrared sensor.&lt;br /&gt;
+First we create instances for the pilot and the infrared sensor again. The new thing is the InfraredSignalCheckerThread which extends Thread. This class contains all the logic for received commands. The logic is implemented in a Thread-extending class because we want to listen continuously for any received commands. The created instance of the InfraredSignalCheckerThread needs the infraredSensor-object of course and it needs the pilot (because we will control/move the robot corresponding to the pressed button on the remote control).&lt;br /&gt;
+&lt;br /&gt;
+After we created the instances we configure the pilot and start the checkerThread. That's it. Let's have a look at the InfraredSignalCheckerThread-class now.&lt;br /&gt;
+&lt;br /&gt;
+The InfraredSignalCheckerThread-class:&lt;br /&gt;
+&lt;br /&gt;
+&lt;pre class="brush: java"&gt;import lejos.hardware.sensor.EV3IRSensor;
+import lejos.robotics.navigation.DifferentialPilot;
+
+public class InfraredSignalCheckerThread extends Thread {
+
+    private EV3IRSensor infraredSensor;
+    private DifferentialPilot pilot;
+
+    public InfraredSignalCheckerThread(final EV3IRSensor infraredSensor, final DifferentialPilot pilot){
+        this.infraredSensor = infraredSensor;
+        this.pilot = pilot;
+    }
+
+    @Override
+    public void run() {
+        while(true){
+            final int remoteCommand = infraredSensor.getRemoteCommand(0);
+            switch (remoteCommand){
+                case 0:
+                    pilot.quickStop();
+                    break;
+                case 1:
+                    pilot.rotateLeft();
+                    break;
+                case 2:
+                    pilot.rotateRight();
+                    break;
+                case 3:
+                    pilot.forward();
+                    break;
+                case 4:
+                    pilot.backward();
+                    break;
+                default:
+                    System.out.println("button combination pressed..exiting...");
+                    System.exit(0);
+            }
+        }
+    }
+}
+&lt;/pre&gt;
+&lt;br /&gt;
+Let's have a look at the run-method. As you can see we have an infinite loop. In that loop we get an integer command from the method infraredSensor.getRemoteCommand(0). The given parameter (0) means that the infrared sensor should listen at frequency channel 0 (remember the red slider on the remote control for selecting a channel).&lt;br /&gt;
+So now the thread is checking for any commands on channel 0 continuously. As next we check which command was sent. The different buttons send different integer values. Here is the documentation from within the EV3IRSensor-class:&lt;br /&gt;
+&lt;br /&gt;
+&lt;pre class="brush: java"&gt;/** The button values are:
+* 1 TOP-LEFT
+* 2 BOTTOM-LEFT
+* 3 TOP-RIGHT
+* 4 BOTTOM-RIGHT
+* 5 TOP-LEFT + TOP-RIGHT
+* 6 TOP-LEFT + BOTTOM-RIGHT
+* 7 BOTTOM-LEFT + TOP-RIGHT
+* 8 BOTTOM-LEFT + BOTTOM-RIGHT
+* 9 CENTRE/BEACON
+* 10 BOTTOM-LEFT + TOP-LEFT
+* 11 TOP-RIGHT + BOTTOM-RIGHT
+* (0 means no buttons pressed)
+*/&lt;/pre&gt;
+&lt;br /&gt;
+So, as you can see if no button is pressed on the remote control the method will return 0. The four buttons we want to use return 1, 2, 3 and 4.&lt;br /&gt;
+Knowing these return values the switch statement becomes very easy to understand. If no button is pressed the robot shouldn't move. If the top left button is pressed the robot should rotate to the left and so on, we just call the corresponding methods of the DifferentialPilot-class to control the motors. If more than one button is pressed at a time the program should exit.&lt;br /&gt;
+&lt;h2&gt;
+    The result&lt;/h2&gt;
+And here is the result (watch on youtube for better quality):&lt;br /&gt;
+&lt;br /&gt;
+&lt;div class="separator" style="clear: both; text-align: center;"&gt;
+    &lt;object class="BLOGGER-youtube-video" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0" data-thumbnail-src="https://i1.ytimg.com/vi/Bco7R93tYv0/0.jpg" height="266" width="320"&gt;&lt;param name="movie" value="https://www.youtube.com/v/Bco7R93tYv0?version=3&amp;f=user_uploads&amp;c=google-webdrive-0&amp;app=youtube_gdata" /&gt;&lt;param name="bgcolor" value="#FFFFFF" /&gt;&lt;param name="allowFullScreen" value="true" /&gt;&lt;embed width="320" height="266"  src="https://www.youtube.com/v/Bco7R93tYv0?version=3&amp;f=user_uploads&amp;c=google-webdrive-0&amp;app=youtube_gdata" type="application/x-shockwave-flash" allowfullscreen="true"&gt;&lt;/embed&gt;&lt;/object&gt;&lt;/div&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+Some words on complications that I had while writing the program: After starting the CheckerThread I had to wait around 30 seconds before pressing a button on the remote control. I have no explaination for that but when I pressed any button earlier the robot moved very jerkily. I tried different workarounds like Thread.sleep() and Delay.ms() in the main-method and the checker-thread. I also tried a timer in the CheckerThread which printed a message on the console to tell the user that the program isn't yet ready if he tried to press any button during those first 30 seconds. But none of these attempts worked. &lt;/div&gt;
+							&lt;/div&gt;
+							&lt;footer class="article-footer clearfix"&gt;
+								&lt;span class="post-author"&gt;&lt;a href="/team/sven-ruppert" rel="author"&gt;Sven Ruppert&lt;/a&gt;&amp;nbsp;&amp;nbsp;|&amp;nbsp;&amp;nbsp;&lt;/span&gt;
+								&lt;span class="post-date"&gt;&lt;a href="#" rel="date"&gt;2014-02-10&lt;/a&gt;&amp;nbsp;&amp;nbsp;|&amp;nbsp;&amp;nbsp;&lt;/span&gt;
+							&lt;/footer&gt;
+						&lt;/article&gt;</content>
+        <summary>Das ist der Inhalt der in Kurzform angezeigt werden soll</summary>
+    </entry>
+    <entry>
+        <title>Lego Mindstorms EV3 Components: Color Sensor - Part 1</title>
+        <category label="0.6.0"/>
+        <category label="Color"/>
+        <category label="EV3"/>
+        <category label="Lego"/>
+        <category label="lejos"/>
+        <category label="Mindstorms"/>
+        <category label="sensor"/>
+        <published>2014-03-17T00:00:00+01:00</published>
+        <author>
+            <name>Sven Ruppert</name>
+        </author>
+        <content type="html">&lt;article class="article clearfix"&gt;
+							&lt;header class="article-header"&gt;
+								&lt;h2 class="article-title"&gt;&lt;a href="/2014/03/17/lego-mindstorms-ev3-components--color-.html" rel="tag"&gt;Lego Mindstorms EV3 Components: Color Sensor - Part 1&lt;/a&gt;&lt;/h2&gt;
+								&lt;p&gt;&lt;time datetime="2014-03-17"&gt;2014-03-17&lt;/time&gt; &lt;a href="/team/sven-ruppert" rel="author"&gt;from Sven Ruppert&lt;/a&gt;&lt;/p&gt;
+							&lt;/header&gt;
+							&lt;div class="article-content clearfix"&gt;
+								&lt;div class="post-thumb"&gt;
+									&lt;img src="./site/content/post_thumb.jpg" width="" height="" alt="" /&gt;
+								&lt;/div&gt;
+								&lt;div class="post-excerpt"&gt;In this and in our next postings on our Lego Mindstorms series we will have a closer look at the EV3 color sensor. Today we will use the sensor's ability of detecting and distinguishing different colors.&lt;br /&gt;
+&lt;br /&gt;
+Meanwhile version 0.7.0 of the lejos api was released. But in this tutorial we will still use the 0.6.0-release as 0.7.0s changes weren't dramatic. So you should be able to run the same program with 0.7.0, too.&lt;br /&gt;
+&lt;br /&gt;
+&lt;h2&gt;
+    The robot&lt;/h2&gt;
+The only task the robot will do in this tutorial is: Detecting colors and tell us which color was detected. So in fact we only need the sensor. No motors or something like that is needed. But as we already have a robot from our last articles on the infrared sensor we will take that one and only switch the infrared sensor with the new color sensor.&lt;br /&gt;
+&lt;br /&gt;
+&lt;div class="separator" style="clear: both; text-align: center;"&gt;
+    &lt;a href="http://1.bp.blogspot.com/-4ymIE9suwYE/UyW4_gA8p9I/AAAAAAAAAMM/ei3h5K1LB6w/s1600/DSCN0665.JPG" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" src="http://1.bp.blogspot.com/-4ymIE9suwYE/UyW4_gA8p9I/AAAAAAAAAMM/ei3h5K1LB6w/s1600/DSCN0665.JPG" height="320" width="240" /&gt;&lt;/a&gt;&lt;/div&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;h2&gt;
+    The parcours&lt;/h2&gt;
+We built a stick with different colors: red, green, yellow and blue. We will hold the different colors in front of the robot's sensor and the robot should give feedback on the detected color by letting the background-LED of the brick's buttons illuminate in the same color. One exception: If blue is detected the program should exit.&lt;br /&gt;
+&lt;br /&gt;
+&lt;div class="separator" style="clear: both; text-align: center;"&gt;
+    &lt;a href="http://4.bp.blogspot.com/-r5IwUOLzJ0Q/UyW8RDwVa_I/AAAAAAAAAMY/mODactZInrw/s1600/DSCN0667.JPG" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" src="http://4.bp.blogspot.com/-r5IwUOLzJ0Q/UyW8RDwVa_I/AAAAAAAAAMY/mODactZInrw/s1600/DSCN0667.JPG" height="96" width="320" /&gt;&lt;/a&gt;&lt;/div&gt;
+&lt;br /&gt;
+&lt;h2&gt;
+    The color sensor API&lt;/h2&gt;
+Like the infrared sensor the color sensor has different modes for different tasks. The infrared sensor for example had modes to detect signals of an infrared source or to detect objects and their distance to the robot.&lt;br /&gt;
+There is a mode for every task a sensor can execute. To detect different colors we need the color sensor's colorIDMode. Once the sensor is in the right mode we only need to call&amp;nbsp;colorSensor.getColorID to get the detected color.&lt;br /&gt;
+&lt;br /&gt;
+Sounds easy, IS easy. Here comes the code.&lt;br /&gt;
+&lt;br /&gt;
+&lt;h2&gt;
+    The code&lt;/h2&gt;
+We have two classes this time: The Main-class and the ColorRecognizerThread-class. First, let's look at the (really small) main-class:&lt;br /&gt;
+&lt;br /&gt;
+&lt;pre class="brush: java"&gt;public class Main {
+
+
+    public static void main(String[] args) throws InterruptedException {
+        final EV3ColorSensor colorSensor = new EV3ColorSensor(SensorPort.S2);
+        final SensorMode mode = colorSensor.getColorIDMode();
+        final ColorRecognizerThread colorRecognizerThread = new ColorRecognizerThread(colorSensor);
+
+        colorRecognizerThread.start();
+
+        Button.waitForAnyPress();
+    }
+
+}&lt;/pre&gt;
+&lt;br /&gt;
+In contrast to our earlier postings we don't need a DifferentialPilot this time because the robot doesn't have to move. So the only things we do is instantiating a new ColorSensor-Instance and set it to the colorIDMode. Then we instantiate a ColorRecognizerThread (which extends Thread) and give it the color sensor object as a constructor parameter. In that thread we will implement the logic to detect colors and let the LED illuminate in the same color.&lt;br /&gt;
+After starting the thread we wait for any button press as always so that our program won't just exit after starting the thread.&lt;br /&gt;
+&lt;br /&gt;
+The ColorRecognizerThread looks like the following:&lt;br /&gt;
+&lt;br /&gt;
+&lt;pre class="brush: java"&gt;public class ColorRecognizerThread extends Thread {
+
+    private EV3ColorSensor colorSensor;
+
+    public ColorRecognizerThread(final EV3ColorSensor colorSensor) {
+        this.colorSensor = colorSensor;
+    }
+
+    @Override
+    public void run() {
+        while(true){
+            final int colorId = colorSensor.getColorID();
+            switch (colorId){
+                //RED
+                case 0:
+                    Button.LEDPattern(2);
+                    break;
+                //GREEN
+                case 1:
+                    Button.LEDPattern(1);
+                    break;
+                //BLUE
+                case 2:
+                    Button.LEDPattern(4);
+                    threadSleep(2000);
+                    Button.LEDPattern(0);
+                    System.exit(0);
+                //YELLOW
+                case 3:
+                    Button.LEDPattern(3);
+                    break;
+                default:
+                    Button.LEDPattern(0);
+            }
+        }
+    }
+
+    private void threadSleep(final int ms) {
+        try {
+            Thread.sleep(ms);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+}&lt;/pre&gt;
+&lt;br /&gt;
+The constructor is easy as it only saves the color sensor object into a private variable so that we can use it in the run-method.&lt;br /&gt;
+The really interesting part is the run-method of course, which is called when starting the thread in the main class. We have a deadloop as we want the robot to detect colors continuously. In that loop we get the color found by the color sensor by calling the getColorID()-Method. As you can see it returns an integer. By having a look at the sources (Color.java) we find out which integer value stands for which color:&lt;br /&gt;
+&lt;br /&gt;
+&lt;pre class="brush: java"&gt;    public static final int RED = 0;
+    public static final int GREEN = 1;
+    public static final int BLUE = 2;
+    public static final int YELLOW = 3;
+    public static final int MAGENTA = 4;
+    public static final int ORANGE = 5;
+    public static final int WHITE = 6;
+    public static final int BLACK = 7;
+    public static final int PINK = 8;
+    public static final int GRAY = 9;
+    public static final int LIGHT_GRAY = 10;
+    public static final int DARK_GRAY = 11;
+    public static final int CYAN = 12;
+    public static final int BROWN = 13;
+    public static final int NONE = -1;&lt;/pre&gt;
+&lt;br /&gt;
+So, after getting the id we have a "switch case"-statement for that id. If the found color is red, green or yellow we just want the background-LED of the brick to illuminate in the same color (case 0, 1 and 3). Maybe you are curious why the integer parameter for the Button.LEDPattern-method doesn't match with the integer values from the Color-class. Well, the LED doesn't have a pattern for all of the colors. It has 9 different patterns in total (thanks to &lt;a href="http://www.lejos.org/forum/viewtopic.php?p=22564#p22564" target="_blank"&gt;tigger from the forum&lt;/a&gt; for that information!)&lt;br /&gt;
+&lt;br /&gt;
+&lt;blockquote class="tr_bq"&gt;
+    0: turn off button lights&lt;br /&gt;
+    1/2/3: static light green/red/yellow&lt;br /&gt;
+    4/5/6: normal blinking light green/red/yellow&lt;br /&gt;
+    7/8/9: fast blinking light green/red/yellow&lt;br /&gt;
+    &amp;gt;9: same as 9.&lt;/blockquote&gt;
+&amp;nbsp;If the color blue is found (case 2) I wanted the program to do the following: Turn the light of the color sensor of and exit the program. The api says that we can use the setFloodlight(int color)-method for that by calling it with Color.NONE:&lt;br /&gt;
+&lt;br /&gt;
+&lt;pre class="brush: java"&gt;/**
+* Used to turn on or off the floodlight by color. If the sensor has multiple light colors,
+* you can control which color is turned on or off. If the color does not exist, it does
+* nothing and returns false. You can turn the floodlight off by using Color.NONE.&lt;/pre&gt;
+But this throws an exception if you look at the sources of EV3ColorSensor (the default case of the switch-statement):&lt;br /&gt;
+&lt;br /&gt;
+&lt;pre class="brush: java"&gt;public boolean setFloodlight(int color)
+    {
+        int mode;
+        switch (color)
+        {
+        case Color.BLUE:
+            mode = COL_AMBIENT;
+            break;
+        case Color.WHITE:
+            mode = COL_COLOR;
+            break;
+        case Color.RED:
+            mode = COL_REFLECT;
+            break;
+        default:
+            // TODO: Should we ignore a wrong color or throw an exception?
+            throw new IllegalArgumentException("Invalid color specified");
+        }
+        switchMode(mode, SWITCH_DELAY);
+        // TODO Auto-generated method stub
+        return true;
+    }&lt;/pre&gt;
+&lt;br /&gt;
+But I never the less wanted to give some optic signal to show that the program is exiting. Turning off the LED wasn't enough because we already turn it of in our default case of our switch statement in the ColorRecognizerThread. In the end I decided to let the LED display the pattern 4 (blinking green) for two seconds before exiting the program. The threadSleep-method was just created to have the try-catch out of our run-method (because it looks stupid).&lt;br /&gt;
+&lt;br /&gt;
+That's all.&lt;br /&gt;
+&lt;br /&gt;
+&lt;h2&gt;
+    The result&lt;/h2&gt;
+And here is the tiny result (watch on youtube for better quality):&lt;br /&gt;
+&lt;br /&gt;
+&lt;div class="separator" style="clear: both; text-align: center;"&gt;
+    &lt;br /&gt;&lt;/div&gt;
+&lt;center&gt;
+    &lt;object class="BLOGGER-youtube-video" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0" data-thumbnail-src="https://i1.ytimg.com/vi/mhQgVQueluk/0.jpg" height="266" width="320"&gt;&lt;param name="movie" value="https://www.youtube.com/v/mhQgVQueluk?version=3&amp;f=user_uploads&amp;c=google-webdrive-0&amp;app=youtube_gdata" /&gt;&lt;param name="bgcolor" value="#FFFFFF" /&gt;&lt;param name="allowFullScreen" value="true" /&gt;&lt;embed width="320" height="266"  src="https://www.youtube.com/v/mhQgVQueluk?version=3&amp;f=user_uploads&amp;c=google-webdrive-0&amp;app=youtube_gdata" type="application/x-shockwave-flash" allowfullscreen="true"&gt;&lt;/embed&gt;&lt;/object&gt;&lt;/center&gt;
+&lt;br /&gt;
+&lt;div class="separator" style="clear: both; text-align: center;"&gt;
+&lt;/div&gt;
+&lt;br /&gt;
+&lt;br /&gt;&lt;/div&gt;
+							&lt;/div&gt;
+							&lt;footer class="article-footer clearfix"&gt;
+								&lt;span class="post-author"&gt;&lt;a href="/team/sven-ruppert" rel="author"&gt;Sven Ruppert&lt;/a&gt;&amp;nbsp;&amp;nbsp;|&amp;nbsp;&amp;nbsp;&lt;/span&gt;
+								&lt;span class="post-date"&gt;&lt;a href="#" rel="date"&gt;2014-03-17&lt;/a&gt;&amp;nbsp;&amp;nbsp;|&amp;nbsp;&amp;nbsp;&lt;/span&gt;
+							&lt;/footer&gt;
+						&lt;/article&gt;</content>
+        <summary>Das ist der Inhalt der in Kurzform angezeigt werden soll</summary>
+    </entry>
+</feed>

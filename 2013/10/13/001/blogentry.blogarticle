@@ -1,0 +1,133 @@
+This is a short tutorial on how to use JavaScript libraries with Vaadin.<br />
+<br />
+The library that shall be used is <a href="http://d3js.org/">D3</a>, which is a powerful library for creating data-driven diagrams using JavaScript.<br />
+<br />
+To keep it simple the final UI will look like this (see the screenshot at the end of the posting): We have a coordinate system in which we have a circle which can be moved inside that coordinate system. The coordinates can be entered in textfields and applied by clicking a button. Maybe there will be another post with some more meaningful use of D3 inside a Vaadin-Application in the future. But this tutorial aims on how to use JavaScript libraries inside Vaadin applications in general.. so let's start!<br />
+<br />
+We have to create two Java classes: <b>Diagram</b>, <b>DiagramState</b><br />
+And we have to create one JavaScript file: <b>diagram_connector.js</b><br />
+<br />
+First, let's have a look at the Java classes "Diagram" and "DiagramState". The former extends "AbstractJavaScriptComponent". It is the component that is added to the UI in the end (like a Button or a TextField). The latter extends JavaScriptComponentState and is just needed for the communication between Vaadin and JavaScript (or server and client). Here is the code:<br />
+<br />
+<b>Diagram</b><br />
+<pre class="brush: java">@JavaScript({"d3.v3.min.js",
+        "diagram_connector.js"})
+public class Diagram extends AbstractJavaScriptComponent {
+
+    public void setCoords(final List&lt;Integer&gt; coords) {
+        getState().setCoords(coords);
+    }
+
+    @Override
+    public DiagramState getState() {
+        return (DiagramState) super.getState();
+    }
+}</pre>
+The @JavaScript annotation lists all JavaScrip files that have to be used. The first one is the D3 Library and the second one is the file that we have to create later. In my case both files are in the same folder in which the Vaadin UI-extending class is (AND I had to copy the files into my war manually, but that's a configuration issue of IntelliJ..).<br />
+<br />
+The setCoords method is used to give the Diagram component a list with the x- and y-coordinates of the position the circle should be moved to. The list is delegated to a corresponding attribute of the DiagramState.<br />
+<br />
+The overriden method getState looks always the same (with exception of the name of the State class, of course). <br />
+<br />
+<b>DiagramState</b><br />
+<pre class="brush: java">public class DiagramState extends JavaScriptComponentState {
+
+    private List&lt;Integer&gt; coords;
+
+    public List&lt;Integer&gt; getCoords() {
+        return coords;
+    }
+
+    public void setCoords(final List&lt;Integer&gt; coords) {
+        this.coords = coords;
+    }
+}</pre>
+The DiagramState class has an attribute which is a list of integers. It contains the x- and y-coordinates of the position the circle should be moved to (inside the coordinate system) as explained above. The rest is simple getters and setters for that attribute.<br />
+<br />
+Now let's have a look at the JavaScript file we have to create.<br />
+<b><br /></b>
+<b>diagram_connector.js</b><br />
+<br />
+<pre class="brush: javascript">window.org_rapidpm_vaadinwithjs_Diagram = function() {
+    var diagramElement = this.getElement();
+    var diagramFrame = d3.select(diagramElement).append("svg:svg").attr("width", 500).attr("height", 500);
+    diagramFrame.append("svg:circle").attr("cx", 250).attr("cy", 250).attr("r", 20).attr("fill", "red");
+
+    this.onStateChange = function() {
+        var coords = this.getState().coords;
+        d3.selectAll("circle").transition().attr("cx", parseInt(coords[0]));
+        d3.selectAll("circle").transition().delay(500).attr("cy", parseInt(coords[1]));
+    }
+}
+</pre>
+The first function assigment must always be done that way. Recognize that you assign a function to window.&lt;fully qualified name of the class which extends AbstractJavaScriptComponent with underscores replacing the dots&gt;.<br />
+<br />
+this.getElement() returns the corresponding DOM element for our diagram. (Think of document.getElementById(&lt;the ID of the Diagram element&gt;)).<br />
+<br />
+The following two lines are D3 related. We "select" our element and append a coordinate system to it with a width and height of 500. Then we insert a circle into that coordinate system at coordinates 250,250 (which is the center), a radius of 20 and a red fill color. For more information on how to use the D3 library in detail have a look at their website. There are some nice tutorials.<br />
+<br />
+The assignment of a function to this.onStateChange is always called when the state of the Diagram changes. This happens if we call the setCoords()-method of our Diagram class. If that is the case we get the coords from the Diagram's state. Recognize that coords (which is an Integer-List in the corresponding Java class) is a number array for JavaScript now. As next we select all circles (right, we only have one in our case). Then we move the circle to the new x- and y-coordinate (x = coords[0], y=coords[1]) via a transition (which simply looks cooler).<br />
+<br />
+That's all the magic. Now at last let's have a look at the main class with the init-method of our UI. We have to TextFields for x and y coordinate, a Button to apply the new coordinates and, of course, our Diagram which we can use as any other component as said above:<br />
+<br />
+<b>VaadinWithJavaScriptComponentsUI </b><br />
+<br />
+<pre class="brush: java">public class VaadinWithJavaScriptComponentsUI extends UI {
+    final VerticalLayout layout = new VerticalLayout();   
+    final TextField xCoordField = new TextField("X");
+    final TextField yCoordField = new TextField("Y");
+    final Button button = new Button("move circle");
+    final Diagram diagram = new Diagram();
+    final List&lt;Integer&gt; coords = new ArrayList&lt;&gt;();
+
+    @Override
+    protected void init(VaadinRequest request) {
+
+        configureIntegerField(xCoordField);     //not interesting, just adding converter/validator to the textFields
+        configureIntegerField(yCoordField);
+
+        button.addClickListener(new Button.ClickListener() {   //ATTENTION! Here we get the coordinates from the textfields and apply them to our Diagram via calling diagram.setCoords()
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                if(xCoordField.isValid() &amp;&amp; yCoordField.isValid()){
+                    coords.clear();
+                    coords.add(Integer.parseInt(xCoordField.getValue()));
+                    coords.add(Integer.parseInt(yCoordField.getValue()));
+                    diagram.setCoords(coords);
+                }
+            }
+        })
+        //now we build the layout.
+        layout.setSpacing(true);
+        layout.addComponent(xCoordField);
+        layout.addComponent(yCoordField);
+        layout.addComponent(button);
+        layout.addComponent(diagram);     //add the diagram like any other vaadin component, cool!
+        setContent(layout);
+    }
+
+    private void configureIntegerField(final TextField integerField) {
+        integerField.setConverter(Integer.class);
+        integerField.addValidator(new IntegerRangeValidator("only integer, 0-500", 0, 500));
+        integerField.setRequired(true);
+        integerField.setImmediate(true);
+    }
+}</pre>
+<br />
+That's it.
+Here is a screenshot of the result and some (kind of unspectacular) animated pictures.<br />
+<br />
+<div class="separator" style="clear: both; text-align: center;">
+</div>
+<div class="separator" style="clear: both; text-align: center;">
+    <a href="http://2.bp.blogspot.com/-zuRvFBOm6jc/UlrtpHvmEfI/AAAAAAAAACU/hmEGqLwie7k/s1600/vaadinjs_First_Frame.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="179" src="http://2.bp.blogspot.com/-zuRvFBOm6jc/UlrtpHvmEfI/AAAAAAAAACU/hmEGqLwie7k/s320/vaadinjs_First_Frame.png" width="320" /></a></div>
+<br />
+<center>
+</center>
+<center>
+    <iframe allowfullscreen="" frameborder="0" height="315" src="//www.youtube.com/embed/Tm5SFhBHtaY" width="420"></iframe></center>
+<br />
+sources: <br />
+<ul>
+    <li><a href="https://vaadin.com/blog/-/blogs/vaadin-7-loves-javascript-components">https://vaadin.com/blog/-/blogs/vaadin-7-loves-javascript-components</a></li>
+</ul>

@@ -62,9 +62,7 @@ public class Generator {
         }
 
         String index_main = readFile("data/index_main.part", StandardCharsets.UTF_8);
-//    String index1 = readFile("data/index1.part", StandardCharsets.UTF_8);
         String index2 = readFile("data/index2.part", StandardCharsets.UTF_8);
-        String index3 = readFile("data/index3.part", StandardCharsets.UTF_8);
 
         //lese alle BlogArtikel
         if (years != null) {
@@ -143,11 +141,29 @@ public class Generator {
                                                             String blogDate = year.getName() + "-" + month.getName() + "-" + day.getName();
                                                             String authorLink = "/team/" + author.toLowerCase().replace(" ", "-");
 
-                                                            String header = "<div class=\"blog-post\">" + "\n"
-                                                                    + "<h2 class=\"blog-post-title\"><a href=" + blogLink + ">" + titel + "</a></h2>" + "\n"
-                                                                    + "<p class=\"blog-post-meta\">" + blogDate + " from <a href=\"" + authorLink + "/\">" + author + "</a></p>" + "\n";
+                                                            String articleHeader = "<article class=\"article clearfix\">\n" +
+                                                                    "\t\t\t\t\t\t\t<header class=\"article-header\">\n" +
+                                                                    "\t\t\t\t\t\t\t\t<h2 class=\"article-title\"><a href=\"" + blogLink + "\" rel=\"tag\">" + titel + "</a></h2>\n" +
+                                                                    "\t\t\t\t\t\t\t\t<p><time datetime=\"" + blogDate + "\">" + blogDate + "</time> <a href=\"" + authorLink +
+                                                                    "\" rel=\"author\">from " + author + "</a></p>\n" +
+                                                                    "\t\t\t\t\t\t\t</header>\n" +
+                                                                    "\t\t\t\t\t\t\t<div class=\"article-content clearfix\">\n" +
+                                                                    "\t\t\t\t\t\t\t\t<div class=\"post-thumb\">\n" +
+                                                                    "\t\t\t\t\t\t\t\t\t<img src=\"./site/content/post_thumb.jpg\" width=\"\" height=\"\" alt=\"\" />\n" +
+                                                                    "\t\t\t\t\t\t\t\t</div>\n" +
+                                                                    "\t\t\t\t\t\t\t\t<div class=\"post-excerpt\">";
 
-                                                            String blogarticleStr = header + readFile(blogarticle.getPath(), StandardCharsets.UTF_8) + "\n" + "</div>";
+                                                            String articleFooter = "</div>\n" +
+                                                                    "\t\t\t\t\t\t\t</div>\n" +
+                                                                    "\t\t\t\t\t\t\t<footer class=\"article-footer clearfix\">\n" +
+                                                                    "\t\t\t\t\t\t\t\t<span class=\"post-author\"><a href=\"" + authorLink + "\" rel=\"author\">" + author + "</a>&nbsp;&nbsp;|&nbsp;&nbsp;</span>\n" +
+                                                                    "\t\t\t\t\t\t\t\t<span class=\"post-date\"><a href=\"#\" rel=\"date\">" + blogDate + "</a>&nbsp;&nbsp;|&nbsp;&nbsp;</span>\n" +
+                                                                    //  "\t\t\t\t\t\t\t\t<span class=\"post-comments-count\"><a href=\"#\">6 Comments</a></span>\n" +
+                                                                    "\t\t\t\t\t\t\t</footer>\n" +
+                                                                    "\t\t\t\t\t\t</article>";
+
+                                                            String blogarticleStr = articleHeader + readFile(blogarticle.getPath(), StandardCharsets.UTF_8) + articleFooter;
+
 
                                                             //Creates RSS-Item
                                                             LocalDate blogLocalDate = LocalDate.of(
@@ -159,54 +175,20 @@ public class Generator {
                                                             blogarticlesPerMonth.add(blogarticleStr); // ab ins archiv
                                                             lastNBlogArticles.add(blogarticleStr); //ab in Queue f FrontSeite
 
-                                                            FileWriter fw = new FileWriter(new File(day, htmlFileName));
-
-//                              fw.write(index1);
-                                                            fw.write(index_main);
-                                                            fw.write(blogarticleStr);
-                                                            fw.write(index2);
-                                                            fw.write(archiveStr);
-                                                            fw.write(index3);
-
-                                                            fw.flush();
-                                                            fw.close();
+                                                            writeContentToHtml(index_main, index2, new File(day, htmlFileName), blogarticleStr);
                                                         }
                                                     }
                                                 }
                                             }
+
                                             //schreibe day blog File
-                                            FileWriter fw = new FileWriter(new File(day, "index.html"));
-
-//                      fw.write(index1);
-                                            fw.write(index_main);
-                                            for (final String blogarticleStr : blogarticlesPerDay) {
-                                                fw.write(blogarticleStr + "\n");
-                                            }
-                                            fw.write(index2);
-                                            fw.write(archiveStr);
-                                            fw.write(index3);
-
-                                            fw.flush();
-                                            fw.close();
-
+                                            writeContentToHtml(index_main, index2, new File(day, "index.html"), String.join("\n", blogarticlesPerDay));
                                         }
                                     }
                                 }  //days bearbeitet
+
                                 //Archiv Seite aufbauen
-                                FileWriter fw = new FileWriter(new File(month, "index.html"));
-
-//                fw.write(index1);
-                                fw.write(index_main);
-                                for (final String blogarticleStr : blogarticlesPerMonth) {
-                                    fw.write(blogarticleStr + "\n");
-                                }
-                                fw.write(index2);
-                                fw.write(archiveStr);
-                                fw.write(index3);
-
-                                fw.flush();
-                                fw.close();
-
+                                writeContentToHtml(index_main, index2, new File(month, "index.html"), String.join("\n", blogarticlesPerMonth));
                             }
                         }
                     }
@@ -214,102 +196,49 @@ public class Generator {
             }
         }
 
-        FileWriter fw = new FileWriter(new File("index.html"));
-
         Collections.reverse(lastNBlogArticles);
 
-        fw.write(index_main);
-        for (final String blogarticleStr : lastNBlogArticles) {
-            fw.write(blogarticleStr + "\n");
-        }
-        fw.write(index2);
-        for (final String archiveElement : archiveElements) {
-            fw.write("<li><a href=\"/" + archiveElement.replace("-", "/") + "\">" + archiveElement + "</a></li>");
-        }
-        fw.write(index3);
-
-        fw.flush();
-        fw.close();
+        //Write main index.html
+        writeContentToHtml(index_main, index2, new File("index.html"), String.join("\n", lastNBlogArticles));
 
         //conferences / talks
-//        fw = new FileWriter(new File("conferences", "index.html"));
-//        fw.write(index_main);
-//        fw.write(readFile("conferences/blogentry.blogarticle", StandardCharsets.UTF_8));
-//        fw.write(index2);
-//        for (final String archiveElement : archiveElements) {
-//            fw.write("<li><a href=\"/" + archiveElement.replace("-", "/") + "\">" + archiveElement + "</a></li>");
-//        }
-//        fw.write(index3);
-//        fw.flush();
-//        fw.close();
-
+        writeContentToHtml(index_main, index2, new File("conferences", "index.html"), readFile("conferences/blogentry.blogarticle", StandardCharsets.UTF_8));
 
         //publications
-//        fw = new FileWriter(new File("publications", "index.html"));
-//        fw.write(index_main);
-//        fw.write(readFile("publications/blogentry.blogarticle", StandardCharsets.UTF_8));
-//        fw.write(index2);
-//        for (final String archiveElement : archiveElements) {
-//            fw.write("<li><a href=\"/" + archiveElement.replace("-", "/") + "\">" + archiveElement + "</a></li>");
-//        }
-//        fw.write(index3);
-//        fw.flush();
-//        fw.close();
+        writeContentToHtml(index_main, index2, new File("publications", "index.html"), readFile("publications/blogentry.blogarticle", StandardCharsets.UTF_8));
 
-        //license
-//      fw = new FileWriter(new File("releases", "index.html"));
-//      fw.write(index_main);
-//      fw.write(readFile("releases/blogentry.blogarticle", StandardCharsets.UTF_8));
-//      fw.write(index2);
-//      for (final String archiveElement : archiveElements) {
-//        fw.write("<li><a href=\"/" + archiveElement.replace("-", "/") + "\">" + archiveElement + "</a></li>");
-//      }
-//      fw.write(index3);
-//      fw.flush();
-//      fw.close();
-//
-//        release
-      fw = new FileWriter(new File("license", "index.html"));
-      fw.write(index_main);
-      fw.write(readFile("license/blogentry.blogarticle", StandardCharsets.UTF_8));
-      fw.write(index2);
-      for (final String archiveElement : archiveElements) {
-        fw.write("<li><a href=\"/" + archiveElement.replace("-", "/") + "\">" + archiveElement + "</a></li>");
-      }
-      fw.write(index3);
-      fw.flush();
-      fw.close();
+        //releases
+        writeContentToHtml(index_main, index2, new File("releases", "index.html"), readFile("releases/blogentry.blogarticle", StandardCharsets.UTF_8));
 
+//        license
+        writeContentToHtml(index_main, index2, new File("license", "index.html"), readFile("license/blogentry.blogarticle", StandardCharsets.UTF_8));
 
         //contacts
-      fw = new FileWriter(new File("contact", "index.html"));
-      fw.write(index_main);
-      fw.write(readFile("contact/blogentry.blogarticle", StandardCharsets.UTF_8));
-      fw.write(index2);
-      for (final String archiveElement : archiveElements) {
-        fw.write("<li><a href=\"/" + archiveElement.replace("-", "/") + "\">" + archiveElement + "</a></li>");
-      }
-      fw.write(index3);
-      fw.flush();
-      fw.close();
-
+        writeContentToHtml(index_main, index2, new File("contact", "index.html"), readFile("contact/blogentry.blogarticle", StandardCharsets.UTF_8));
 
         //impressum
-      fw = new FileWriter(new File("impressum", "index.html"));
-      fw.write(index_main);
-      fw.write(readFile("impressum/blogentry.blogarticle", StandardCharsets.UTF_8));
-      fw.write(index2);
-      for (final String archiveElement : archiveElements) {
-        fw.write("<li><a href=\"/" + archiveElement.replace("-", "/") + "\">" + archiveElement + "</a></li>");
-      }
-      fw.write(index3);
-      fw.flush();
-      fw.close();
+        writeContentToHtml(index_main, index2, new File("impressum", "index.html"), readFile("impressum/blogentry.blogarticle", StandardCharsets.UTF_8));
+
+
+
+        //Team seite
+        //
+
 
 
         //generiere rss feeds auf tag-basis und schreibe Dateien
         buildGlobalFeed(feedGenerator);
         buildTagFeeds(feedGenerator);
+    }
+
+    private static void writeContentToHtml(String header, String footer, File file, String content) throws IOException {
+        FileWriter fw = new FileWriter(file);
+        fw.write(header);
+        fw.write(content);
+        fw.write(footer);
+
+        fw.flush();
+        fw.close();
     }
 
     private static void buildTagFeeds(FeedGenerator feedGenerator) {

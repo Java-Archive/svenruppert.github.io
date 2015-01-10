@@ -1,31 +1,128 @@
-            <!--
-            <ul class="pager">
-                <li><a href="#">Vorherige</a></li>
-                <li><a href="#">Nächste</a></li>
-            </ul>
-            -->
-        </div><!-- /.blog-main -->
+</section>
 
-        <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+					<aside id="sidebar" class="col-md-3 col-md-offset-1">
+						<div class="widget">
+							<h3 class="widget-title">About <span>Us</span></h3>
+							<div class="widget-content">We are a group of developers, speaking Java and proud to be nerds ;-)</div>
+						</div>
 
-            <div class="sidebar-module sidebar-module-inset">
-                <h4>About Me</h4>
-                <p>Sven Ruppert has been speaking Java since 1996.
-                He is a Principal IT Consultant for codecentric in Munich.
-                In his free time he regularly contributes to German IT periodicals,
-                including Java Magazin, Eclipse Magazin, and Entwickler Magazin,
-                as well as tech portals such as JAXenter.de <br/>(http://jaxenter.de/Sven-Ruppert-168244).
+						<div class="widget">
+							<h3 class="widget-title">Sponsoring</h3>
+							<div class="widget-content">
+								<ul>
+									<li><a href="http://www.codecentric.de">codecentric AG</a></li>
+									<li><a href="http://www.intellij.com/">JetBrains</a></li>
+									<li><a href="http://zeroturnaround.com/">zeroturnaround</a></li>
+									<li><a href="https://www.atlassian.com/">Atlassian</a></li>
+								</ul>
+							</div>
+						</div>
 
-                </p>
-            </div>
-            <div class="sidebar-module">
-                <h4>find me at: </h4>
-                    <ol class="list-unstyled">
-                        <li><a href="https://github.com/svenruppert">GitHub - Sven Ruppert</a></li>
-                        <li><a href="https://twitter.com/SvenRuppert">Twitter - Sven Ruppert</a></li>
-                        <li><a href="https://plus.google.com/u/0/+SvenRuppert/">GooglePlus - Sven Ruppert</a></li>
-                    </ol>
-            </div>
-            <div class="sidebar-module">
-                <h4>Archives</h4>
-                <ol class="list-unstyled">
+						<div class="widget">
+							<h3 class="widget-title"><span>We</span> are at</h3>
+							<div class="widget-content">
+								<ul>
+									<li><a href="https://github.com/RapidPM">GitHub</a></li>
+									<li><a href="https://twitter.com/SvenRuppert">Twitter - Sven Ruppert</a></li>
+									<li><a href="https://plus.google.com/u/0/+SvenRuppert/">GooglePlus - Sven Ruppert</a></li>
+									<li><a href="https://twitter.com/A_Bischof">Twitter - Alexander Bischof</a></li>
+									<li><a href="https://plus.google.com/u/0/100135686516251171415/">GooglePlus - Alexander Bischof</a></li>
+								</ul>
+							</div>
+						</div>
+
+						<div class="widget blog-posts">
+							<h3 class="widget-title"><span>Latest</span> Blog</h3>
+							<div class="widget-content">
+								<ul>
+									<li class="clearfix">
+										<div class="thumb">
+											<a href="#"><img src="./site/content/fx.jpg" width="99" height="100" /></a>
+										</div>
+										<div>
+											<h4>What is MapDB?</h4>
+											<p>Original designed as a storage engine for</p>
+										</div>
+									</li>
+									<li class="clearfix">
+										<div class="thumb">
+											<a href="#"><img src="./site/content/developer_cafe.jpg" width="99" height="100" /></a>
+										</div>
+										<div>
+											<h4>What is MapDB?</h4>
+											<p>Original designed as a storage engine for an</p>
+										</div>
+									</li>
+									<li class="clearfix">
+										<div class="thumb">
+											<a href="#"><img src="./site/content/java_8_streams.jpg" width="99" height="100" /></a>
+										</div>
+										<div>
+											<h4>What is MapDB?</h4>
+											<p>Original designed as a storage engine for</p>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+
+						<div class="widget event-schedules">
+							<h3 class="widget-title"><span>conferences</span>  / JUG meetings</h3>
+							<div class="widget-content">
+								<ul>
+									<li>
+										<p class="date">2014.12.18-18</p>
+										<p class="event-name">JUG Augsburg</p>
+										<p class="event-theme">Java 8 Streams</p>
+									</li>
+									<li>
+										<p class="date">2014.11.17-17</p>
+										<p class="event-name">JUG Berlin</p>
+										<p class="event-theme">IoT mit TinkerForge und Java 8 - LiveHacking</p>
+									</li>
+									<li>
+										<p class="date">2014.11.03-07</p>
+										<p class="event-name">w-jax 2014</p>
+										<p class="event-theme">Test driven development with JavaFX</p>
+									</li>
+									<li>
+										<p class="date">2014.10.23-23</p>
+										<p class="event-name">UG Ostfalen</p>
+										<p class="event-theme">CDI Pattern</p>
+									</li>
+									<li>
+										<p class="date">2014.10.22-22</p>
+										<p class="event-name">JUG Berlin</p>
+										<p class="event-theme">IoT mit TinkerForge und Java 8</p>
+									</li>
+								</ul>
+							</div>
+						</div>
+
+						<div class="widget banner">
+							<h3 class="widget-title hidden">Banner</h3>
+							<div class="widget-content">
+								<a href="#"><img src="./site/content/banner.jpg" width="100%" /></a>
+							</div>
+						</div>
+
+						<div class="widget arhives">
+							<h3 class="widget-title">Archives</h3>
+							<div class="widget-content">
+								<ul>
+									<li><a href="#">2014-07</a></li>
+									<li><a href="#">2014-06</a></li>
+									<li><a href="#">2014-05</a></li>
+									<li><a href="#">2014-04</a></li>
+									<li><a href="#">2014-03</a></li>
+									<li><a href="#">2014-02</a></li>
+									<li><a href="#">...more</a></li>
+								</ul>
+							</div>
+						</div>
+
+					</aside><!-- /sidebar -->
+				</div><!-- /.wrapper -->
+			</section><!-- /.main-content -->
+	</body>
+</html>

@@ -1,0 +1,277 @@
+How to get rid of 90% boiler plate code from NPE-save model - surfing?
+<br/>
+What I am meaning with modell surfing?
+For example you have a class DemoClassA.<br/>
+Inside DemoClassA you have an instance of DemoClassB.<br/>
+Inside DemoClassB you have an instance of DemoClassC. And so on..<br/>
+<br/>
+You need something like the following.<br/>
+<br/>
+<pre class="brush: java">
+String value = demoClassA.getDemoClassB().getDemoClassC().getValue();
+    </class></pre>
+The bad thing is if your valid model could have ClassB or ClassC with null.
+You only have to show the value inside your GUI if the complete getter - cascade will be valid.
+The first would be something like this.<br/>
+<br/>
+<pre class="brush: java">  
+ DemoClassB valueB = demoClassA.getDemoClassB();
+ if(demoB != null){
+    DemoClassC demoC = demoB.getDemoClassC();
+    if(demoC != null){
+     String value = demoC.getValue();
+    }
+ }
+    </class></pre>
+A lot of booooring code. Project Coin had something with Wildcards.
+<br/>
+<pre class="brush: java"> 
+ String value = demoClassA?.getDemoClassB()?.getDemoClassC()?.getValue();
+    </class></pre>
+This is really nice, but it was not accepted. So I had do something like this for myself.
+<br/>
+One main point will be that the objects are ready initialized and I could not change the source code from this part.
+Other languages as plain Java are not allowed.
+No other frameworks, no AOP and something like this.
+Puuhh.. what else?
+<br/>
+I was thinking about the newsletter nr 180 (<a href="http://www.javaspecialists.eu/archive/Issue180.html">http://www.javaspecialists.eu/archive/Issue180.html</a>) from Heinz Kabutz.
+He explained how to generate static Proxy Classes. This was a good point to start from.
+<br/>
+The key concept is the generating of Proxy Classes on the fly if they are needed. Via Reflection the real Subject is analysed and the Proxy generated. He is instanciating the new proxy class and the real subject with the default constructor. For my project this was not helpfull, because the model was grown over the last 10 years. Nearly no default constructor is available and the project owner was building something like a RMI Lazy Loading inside the persistent model. This model itself is used directly inside Swing.. hmmmmm  nothing was I really want to use... <br/>
+Changing the old code is very time consuming. <br/>
+On the other side I was writing a lot of this if != null code. <br/>
+So I decided to write a Proxy that I can use on initialized objects. This must be recursive to get the NPE save getter cascades.
+Based on Heinz code, I started to write a <b>VirtualProxySourceGeneratorOnExistingObject </b>to stop the instance creation on the real Subject.
+<br/>
+<pre class="brush: java">
+public class VirtualProxySourceGeneratorOnExistingObject extends VirtualProxySourceGenerator {
+
+    public VirtualProxySourceGeneratorOnExistingObject(
+            Class subject, Class realSubject) {
+        super(subject, realSubject, Concurrency.OnExistingObject);
+    }
+    protected void addRealSubjectCreation(PrintWriter out,  String name, String realName) {
+        out.printf(" public %s realSubject;%n", name);
+        out.println();
+        out.printf(" private %s realSubject() {%n", name);
+        out.println(" return realSubject;");
+        out.println(" }");
+    }
+}
+    </class></pre>
+After this I changed the <b>VirtualProxySourceGenerator</b>to use this <b>VirtualProxySourceGeneratorOnExistingObject</b> and changed it in a way that a getter method will generate a new Proxy for the next realSubject.
+<br/>
+<pre class="brush: java">
+public abstract class VirtualProxySourceGenerator {
+
+    protected final Class subject;
+    protected final Class realSubject;
+    private final String proxy;
+    private CharSequence charSequence;
+    private Concurrency type;
+
+    public VirtualProxySourceGenerator(
+            Class subject, Class realSubject, Concurrency type) {
+        this.subject = subject;
+        this.realSubject = realSubject;
+        this.type = type;
+        this.proxy = makeProxyName(subject, type);
+
+    }
+
+    private static String makeProxyName(Class subject, Concurrency type) {
+        return "$$_" + subject.getName().replace('.', '_') +
+                "Proxy_" + Integer.toHexString(System.identityHashCode(
+                subject.getClassLoader())) + "_" + type;
+    }
+
+    public String getProxyName() {
+        return proxy;
+    }
+
+    public CharSequence getCharSequence() {
+        if (charSequence == null) {
+            StringWriter sw = new StringWriter();
+            generateProxyClass(new PrintWriter(sw));
+            charSequence = sw.getBuffer();
+        }
+        //System.out.println("charSequence = " + charSequence.toString());
+        return charSequence;
+    }
+
+    private void generateProxyClass(PrintWriter out) {
+        addClassDefinition(out);
+        addProxyBody(out);
+        out.close();
+    }
+
+    private void addProxyBody(PrintWriter out) {
+        addRealSubjectCreation(out, subject.getName(), realSubject.getName());
+        addProxiedMethods(out);
+        out.println("}");
+    }
+
+    protected abstract void addRealSubjectCreation(PrintWriter out, String name, String realName);
+
+
+    private void addClassDefinition(PrintWriter out) {
+        addImports(out);
+        out.printf("public class %s %s %s {%n",
+                proxy, getInheritanceType(subject), subject.getName());
+    }
+
+    private String getInheritanceType(Class subject) {
+        return subject.isInterface() ? "implements" : "extends";
+    }
+
+    protected void addImports(PrintWriter out) {
+
+    }
+
+    private void addToStringIfInterface(PrintWriter out) {
+        if (subject.isInterface()) {
+            out.println();
+            out.println(" public String toString() {");
+            out.println(" if(realSubject() == null ) return \"NullObjectHolder in \" + this.getClass() ;");
+            out.println(" return realSubject().toString();");
+            out.println(" }");
+        }
+    }
+
+    private void addProxiedMethods(PrintWriter out) {
+        for (Method m : subject.getMethods()) {
+            addProxiedMethod(out, m);
+        }
+        addToStringIfInterface(out);
+    }
+
+    private void addProxiedMethod(PrintWriter out, Method m) {
+        if (Modifier.isFinal(m.getModifiers())) return;
+        addMethodSignature(out, m);
+        addMethodBody(out, m);   //NPE da val ger getter gefuellt wird
+
+        final Class<?> returnType = m.getReturnType();
+        if (returnType == void.class) out.printf(");%n }%n");
+        else {
+            out.printf(");%n");  //end of orig method.. start proxy additional stuff
+            final boolean aFinal = Modifier.isFinal(returnType.getModifiers());
+            if (!returnType.isPrimitive() && !returnType.isArray() && ! aFinal ){
+                final String typeName = returnType.getTypeName();
+                final String proxyGenerator = "org.rapidpm.module.se.commons.proxy.ProxyGenerator";
+                final String concurrency = "org.rapidpm.module.se.commons.proxy.Concurrency";
+                out.printf(" if (val == null) { System.out.println(\" val == null for method  + " +m.getName()+ "\");} %n");
+                out.printf(typeName + " proxyObj = " + proxyGenerator+ ".make("+typeName+".class, "+typeName+".class, " +concurrency+"."+type.toString()+"); %n");
+
+                if (type.equals(Concurrency.OnExistingObject)){
+                    out.printf("try { %n");
+                    out.printf("    proxyObj.getClass().getDeclaredField(\"realSubject\").set(proxyObj, val);  %n");
+                    out.printf("} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {  %n");
+                    out.printf("    e.printStackTrace(); %n");
+                    out.printf("}  %n");
+                }
+                out.printf(" return proxyObj; %n");
+            } else {
+                out.printf(" return val; %n");
+            }
+                out.printf("%n}%n");
+        }
+    }
+
+    private void addMethodSignature(PrintWriter out, Method m) {
+        out.printf("%n public %s", Util.prettyPrint(m.getReturnType()));
+        out.printf(" %s(", m.getName());
+        addParameterList(out, m);
+        out.printf(") {%n ");
+    }
+
+    private void addParameterList(PrintWriter out, Method m) {
+        Class<?>[] types = m.getParameterTypes();
+        for (int i = 0; i < types.length; i++) {
+            String next = i == types.length - 1 ? "" : ", ";
+            out.printf("%s p%d%s", Util.prettyPrint(types[i]), i, next);
+        }
+    }
+
+    private void addMethodBody(PrintWriter out, Method m) {
+        addMethodBodyDelegatingToRealSubject(out, m);
+    }
+
+    private void addMethodBodyDelegatingToRealSubject(PrintWriter out, Method m) {
+        //hole result
+        final Class<?> returnType = m.getReturnType();
+        if (returnType == void.class) out.printf("realSubject().%s(", m.getName());
+        else if(m.getName().equals("toString")){
+            out.println("String val;");
+            out.println(" if(realSubject() == null ) val = \"NullObjectHolder in \" + this.getClass() ; ");
+            out.printf(" else val = realSubject().%s(", m.getName());
+        } else if(m.getName().startsWith("get") && ! returnType.isPrimitive()){
+            String name;
+            if (returnType.isArray()) name = returnType.getSimpleName();
+            else name = returnType.getName();
+            out.println(name + " val;");
+            out.println(" if(realSubject() == null ) val = null ; ");
+            out.printf(" else val = realSubject().%s(", m.getName());   
+        } else {
+            String name;
+            if (returnType.isArray()) name = returnType.getSimpleName();
+            else name = returnType.getName();
+            out.println(name + " val;");
+            out.printf("val = realSubject().%s(", m.getName());  
+
+        }
+        addMethodCall(out, m);
+    }
+
+    private void addMethodCall(PrintWriter out, Method m) {
+        Class<?>[] types = m.getParameterTypes();
+        for (int i = 0; i < types.length; i++) {
+            String next = i == types.length - 1 ? "" : ", ";
+            out.printf("p%d%s", i, next);
+        }
+    }
+}
+    </class></pre>
+The result is really cool. see the following code ;-)
+<br/>
+<pre class="brush: java">
+       DemoClassA demoClassA = new DemoClassA();
+        demoClassA.demoClassB = null;
+
+        final String value = proxy(demoClassA).getDemoClassB().getDemoClassC().getValue();
+        System.out.println("value = " + value);
+    </class></pre>
+<br/>
+
+You can navigate the full path. no NPE! No boiler plate code!
+
+<pre class="brush: java">
+@Test
+    public void testGenerator00X() throws  Exception {
+        DemoClassA demoClassA = new DemoClassA();
+        demoClassA.demoClassB = null;
+
+        final String value = proxy(demoClassA).getDemoClassB().getDemoClassC().getValue();
+        System.out.println("value = " + value);
+
+    }
+
+private DemoClassA proxy(DemoClassA demoClassA) {
+        final Class&lt;DemoClassA&gt; aClass = (Class&lt;DemoClassA&gt;) demoClassA.getClass();
+        final DemoClassA demo = ProxyGenerator.make(aClass, aClass, Concurrency.OnExistingObject);
+
+        final Class&lt;? extends DemoClassA&gt; aClassProxy = demo.getClass();
+        try {
+            aClassProxy.getDeclaredField(&quot;realSubject&quot;).set(demo,demoClassA );
+        } catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
+            e.printStackTrace();
+        }
+        return demo;
+    }
+    </class></pre>
+You can now use every getter.. not NPE. Only the result will be an null. This was exactly what I needed to get only the valid values from the model if they are available.
+This means, that you could proxy an object after you have initialized it.
+The full source code is available under : <a href="https://bitbucket.org/rapidpm/modules">https://bitbucket.org/rapidpm/modules</a> on the develop branch. I will merge it into the version 2.0 as generic pattern and CDI managed...
+
+
+

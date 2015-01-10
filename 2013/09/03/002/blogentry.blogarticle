@@ -1,0 +1,51 @@
+Let's talk about validation in Vaadin.<br />
+<br />
+<h3>
+    Context</h3>
+We want to have a textfield which is marked as a "required" field and which expects integer values from 0 - 99. The user should get feedback<b> right after</b> he entered something into the field.<br />
+<br />
+<h3>
+    Implementation</h3>
+Here's the <b>complete</b> code of the module:<br />
+<br />
+<pre class="brush: java">
+@SuppressWarnings("serial")
+public class MyVaadinUI extends UI
+{
+    @Override
+    protected void init(VaadinRequest request) {
+        final TextField textField = new TextField("Enter an Integer value (0-99)");
+        final FormLayout mainLayout = new FormLayout(textField);
+        textField.setConverter(Integer.class);
+        textField.addValidator(new IntegerRangeValidator("only integer, 0-99", 0, 99));
+        textField.setRequired(true);
+        textField.setImmediate(true);
+        setContent(mainLayout);
+    }
+}</pre>
+<pre>-----</pre>
+<b>1</b> Class<br />
+<b>7</b> Lines of active code<br />
+<b>4</b> <b>lines of code configuring the TextField (!)</b><br />
+<b><br /></b>
+
+
+<br />
+<h3>
+    Result</h3>
+A red asterisk marks the field as required. After the user entered something into the field and the focus on the field is lost there is immediate feedback for the user.<br />
+<br />
+<div class="separator" style="clear: both; text-align: center;">
+    <a href="http://3.bp.blogspot.com/-kaGZ1yDPL1w/UiWPpgSq8cI/AAAAAAAAAA4/JDAld5eiR3s/s1600/integererror.png" imageanchor="1" style="clear: left; float: left; margin-bottom: 1em; margin-right: 1em;"><img border="0" height="49" src="http://3.bp.blogspot.com/-kaGZ1yDPL1w/UiWPpgSq8cI/AAAAAAAAAA4/JDAld5eiR3s/s320/integererror.png" width="320" /></a></div>
+<br />
+<div class="separator" style="clear: both; text-align: center;">
+    <a href="http://3.bp.blogspot.com/-NRcIVBy4mok/UiWPrWwaSpI/AAAAAAAAABA/293Fvk1KC58/s1600/stringerror.png" imageanchor="1" style="clear: left; float: left; margin-bottom: 1em; margin-right: 1em;"><img border="0" height="43" src="http://3.bp.blogspot.com/-NRcIVBy4mok/UiWPrWwaSpI/AAAAAAAAABA/293Fvk1KC58/s320/stringerror.png" width="320" /></a></div>
+<br />
+<div class="separator" style="clear: both; text-align: center;">
+    <a href="http://1.bp.blogspot.com/-ErrK4ESPlyY/UiWPswcs6LI/AAAAAAAAABI/GVKcV_524Eo/s1600/noerror.png" imageanchor="1" style="clear: left; float: left; margin-bottom: 1em; margin-right: 1em;"><img border="0" height="45" src="http://1.bp.blogspot.com/-ErrK4ESPlyY/UiWPswcs6LI/AAAAAAAAABI/GVKcV_524Eo/s320/noerror.png" width="320" /></a></div>
+<br />
+<br />
+<br />
+<br />
+Does it look pretty? meh..<br />
+Does it work at a minimum of spent work and time? 4 lines of code?! Yea!

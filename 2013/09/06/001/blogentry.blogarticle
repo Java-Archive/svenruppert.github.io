@@ -1,0 +1,278 @@
+<div style="text-align: center;">
+    <i><span style="font-size: x-small;">The full code and demo jUnit you will find under :&nbsp;<a href="https://bitbucket.org/rapidpm/modules/src/aec4f95e0ae3130f62bc79170c0233cf49e43299/javafx-filtered-tableview?at=develop" target="_blank">BitBucket Repo - RapidPM - Modules - javafx-filtered-tableview</a>&nbsp;</span></i></div>
+<div style="text-align: center;">
+    <i><span style="font-size: x-small;">Please use the develop branch and a commit after&nbsp;<a href="https://bitbucket.org/rapidpm/modules/commits/265b5f577e8f9b5a875408a9659d58a02f72b1af?at=develop">aec4f95</a>&nbsp;</span></i></div>
+<br />
+<br />
+Today I had a TableView with the following function.<br />
+- In one column there was a ComboBoxCell.<br />
+- The values of this ComboBox was calculated / loaded at the moment the combobox was used.<br />
+- Each ComboBox will have different values based on the context of this row.<br />
+<br />
+The first version was something like this:<br />
+A ComboBoxCell:<br />
+<script class="brush: java" type="syntaxhighlighter"><![CDATA[
+public class LegacyBetragComboBoxCell extends ComboBoxTableCell<TransientDemoDataRow, Double> {
+
+    private @Inject @CDILogger Logger logger;
+    private boolean readOnlyView = false;
+
+    @Inject Instance<contextlogic> contextLogicInstance; //some injected business logic;
+
+    @Override
+    public void updateItem(Double o, boolean b) {
+        if (logger.isDebugEnabled()) {
+            logger.debug("ComboBoxTableCell->updateItem " + o);
+        }
+        super.updateItem(o, b);
+        if (o == null) {
+            //
+        } else {
+            final TableRow tableRow = getTableRow();
+            final TransientDemoDataRow row = (TransientDemoDataRow) tableRow.getItem();
+            getItems().clear();
+            if (row.getBetrag() == null || row.getBetrag().isInfinite() || row.getBetrag().isNaN()) {
+                this.setDisable(true);
+            } else if (readOnlyView) {
+                this.setDisable(true);
+            } else {
+                final ContextLogic contextLogic = contextLogicInstance.get();
+                final List<double> doubleList = contextLogic.workOnContext(row.getBetrag());
+
+                getItems().addAll(doubleList);
+
+                this.setDisable(false);
+            }
+            //application logic on row itself
+            //application logic external
+        }
+    }
+
+
+    public boolean isReadOnlyView() {
+        return readOnlyView;
+    }
+
+    public void setReadOnlyView(boolean readOnlyView) {
+        this.readOnlyView = readOnlyView;
+    }
+}
+]]></script>
+
+
+and the code called from the controller:<br />
+<script class="brush: java" type="syntaxhighlighter"><![CDATA[
+    @Inject Instance<legacybetragcomboboxcell> legacyBetragComboBoxCellInstance;
+
+    private void initTable() {
+        final ObservableList<TableColumn<TransientDemoDataRow, ?>> columns = tableView.getColumns();
+        for (final TableColumn<TransientDemoDataRow, ?> column : columns) {
+            if(column.getText().equals("betrag")){
+                final TableColumn<TransientDemoDataRow, Double> colTyped =(TableColumn<TransientDemoDataRow, Double>) column;
+                colTyped.setCellFactory(new Callback<TableColumn<TransientDemoDataRow, Double>, TableCell<TransientDemoDataRow, Double>>() {
+                    @Override public TableCell<TransientDemoDataRow, Double> call(TableColumn<TransientDemoDataRow, Double> transientDemoDataRowTableColumn) {
+                        final LegacyBetragComboBoxCell cell = legacyBetragComboBoxCellInstance.get();
+                        cell.setComboBoxEditable(false);  //true if you want bidirectional dataflow
+                        return  cell;
+                    }
+                });
+
+            } else{
+                //other col
+            }
+        }
+    }
+]]></script>
+
+<br />
+This is to much boilerplate code. So I started to reduce it.<br />
+<br />
+First step was reducing the generics..<br />
+<script class="brush: java" type="syntaxhighlighter"><![CDATA[
+    @Inject Instance<betragcomboboxcell> betragComboBoxCellInstance;
+
+    private void initTable() {
+        final ObservableList<TableColumn<TransientDemoDataRow, ?>> columns = tableView.getColumns();
+        for (final TableColumn column : columns) {
+            if (column.getText().equals("betrag")) {
+                column.setCellFactory(new Callback<TableColumn, TableCell>() {
+                    @Override public TableCell call(TableColumn tableColumn) {
+                        final BetragComboBoxCell cell = betragComboBoxCellInstance.get();
+                        cell.setComboBoxEditable(false);  //true if you want bidirectional dataflow
+                        return cell;
+                    }
+                });
+
+            } else {
+                //other col
+            }
+        }
+    }
+]]></script>
+This is shorter, but not better...&nbsp;
+<br />
+<br />
+The solution is the abstract GenericComboBoxCell. (part of the <a href="https://bitbucket.org/rapidpm/modules/src/cd6e925b21196fc3e3a5f7b26abe879ed6add129/javafx-filtered-tableview?at=develop" target="_blank">javafx-filtered-tableview module</a>)<br />
+<br />
+Iterating over the columns are now part of the GenericComboBoxCell, and here will be the typesave code.<br />
+<br />
+<script class="brush: java" type="syntaxhighlighter"><![CDATA[
+public abstract class GenericComboBoxCell<RT, VT> extends ComboBoxTableCell<RT, VT> {
+
+    private @Inject @CDILogger Logger logger;
+    private boolean readOnlyView = false;
+
+    @Override
+    public void updateItem(VT o, boolean b) {
+        if (logger.isDebugEnabled()) {
+            logger.debug("ComboBoxTableCell->updateItem " + o);
+        }
+        super.updateItem(o, b);
+        if (o == null) {
+            //
+        } else {
+            final TableRow tableRow = getTableRow();
+            final RT row = (RT) tableRow.getItem();
+            getItems().clear();
+            if (disableComboBox(row)) {
+                this.setDisable(true);
+            } else if (readOnlyView) {
+                this.setDisable(true);
+            } else {
+
+                final List<vt> comboBoxValues = createComboBoxValues(row);
+                getItems().addAll(comboBoxValues);
+
+                this.setDisable(false);
+            }
+            workOnRowItself(row);
+        }
+    }
+
+    public void associateWithCol(final TableView<rt> tableView, final String colName) {
+        final ObservableList<TableColumn<RT, ?>> columns = tableView.getColumns();
+        for (final TableColumn<RT, ?> column : columns) {
+            final String columnText = column.getText();
+            if (columnText.equals(colName)) {
+                if (logger.isDebugEnabled()) {
+                    logger.debug("associating to col " + columnText);
+                }
+                associate((TableColumn<RT, VT>) column);
+            } else {
+                if (logger.isDebugEnabled()) {
+                    logger.debug("not binding to this col : " + columnText);
+                }
+            }
+        }
+    }
+
+    private void associate(TableColumn<RT, VT> column) {
+        column.setCellFactory(new Callback<TableColumn<RT, VT>, TableCell<RT, VT>>() {
+            @Override
+            public TableCell<RT, VT> call(TableColumn<RT, VT> rtTableColumn) {
+                final GenericComboBoxCell<RT, VT> mySelf = getComboBoxCellRef();
+                mySelf.setComboBoxEditable(false);
+                mySelf.setReadOnlyView(readOnlyView);
+                return mySelf;
+            }
+        });
+    }
+
+    protected abstract GenericComboBoxCell<RT, VT> getComboBoxCellRef();
+
+    /**
+     * logic to disable the combobox, for example if the value ist null or ...
+     *
+     * @return
+     */
+    public abstract boolean disableComboBox(final RT row);
+
+    public abstract List<vt> createComboBoxValues(final RT row);
+
+    public abstract void workOnRowItself(final RT row);
+
+
+    public boolean isReadOnlyView() {
+        return readOnlyView;
+    }
+
+    public void setReadOnlyView(boolean readOnlyView) {
+        this.readOnlyView = readOnlyView;
+    }
+}
+]]></script>
+
+The developer must extend this class and has to implement the following methods only:<br />
+- protected abstract GenericComboBoxCell<rt vt=""> getComboBoxCellRef();&nbsp;</rt><br />
+<rt vt="">- public abstract boolean disableComboBox(final RT row); (optional)&nbsp;</rt><br />
+<rt vt="">- public abstract List<vt> createComboBoxValues(final RT row);&nbsp;</vt></rt><br />
+<rt vt=""><vt>- public abstract void workOnRowItself(final RT row); (optional)&nbsp;</vt></rt><br />
+<rt vt=""><vt><br /></vt></rt>
+<rt vt=""><vt>A demo implementation is shown here:&nbsp;</vt></rt><br />
+<script class="brush: java" type="syntaxhighlighter"><![CDATA[
+public class BetragComboBoxCell extends GenericComboBoxCell<TransientDemoDataRow, Double> {
+
+    @Inject Instance<contextlogic> contextLogicInstance; //business logic
+    @Inject Instance<betragcomboboxcell> betragComboBoxCellInstance; //the cell instance itself
+
+    @Override
+    protected GenericComboBoxCell<TransientDemoDataRow, Double> getComboBoxCellRef() {
+        return betragComboBoxCellInstance.get();
+    }
+
+    @Override public boolean disableComboBox(TransientDemoDataRow row) {
+        return row.getBetrag() == null || row.getBetrag().isInfinite() || row.getBetrag().isNaN();
+    }
+
+    @Override public List<double> createComboBoxValues(TransientDemoDataRow row) {
+        final ContextLogic contextLogic = contextLogicInstance.get();
+        final List<double> doubleList = contextLogic.workOnContext(row.getBetrag());
+        return doubleList;
+    }
+
+    @Override public void workOnRowItself(TransientDemoDataRow row) {
+        //nothing for this example
+    }
+}
+]]></script>
+
+
+<rt vt=""><vt><br /></vt></rt>
+<rt vt=""><vt>The controlle will need a piece of code like this:&nbsp;</vt></rt><br />
+<script class="brush: java" type="syntaxhighlighter"><![CDATA[
+    @Inject Instance<betragcomboboxcell> betragComboBoxCellInstance;
+
+    private void initTable() {
+        final BetragComboBoxCell cell = betragComboBoxCellInstance.get();
+        cell.associateWithCol(tableView, "betrag");
+    }
+]]></script>
+
+<rt vt=""><vt><br /></vt></rt>
+<rt vt=""><vt>With this you can test the context logic indepentend from the javafx stuff.&nbsp;</vt></rt><br />
+<rt vt=""><vt>All initializations inside a ComboBoxCell must be done in a PostConstruct - method.&nbsp;</vt></rt><br />
+<rt vt=""><vt><br /></vt></rt>
+<rt vt=""><vt>With the&nbsp;GenericComboBoxCell&nbsp;you can activate/deactivate the combobox, modify the row cell values, and create the combobox values.&nbsp;</vt></rt><br />
+<rt vt=""><vt><br /></vt></rt>
+<rt vt=""><vt>This implementation is based on the JavaFX/CDI bootstrap from cdi-commons-fx. (blog entry <a href="http://www.rapidpm.org/2013/08/cdicommonsfx-javafxcdi-bootstrap.html" target="_blank">JavaFX/CDI bootstrap</a> )</vt></rt><br />
+<rt vt=""><vt><br /></vt></rt>
+<br />
+<div class="separator" style="clear: both; text-align: center;">
+    <a href="http://2.bp.blogspot.com/-AQ7GFqVQD4U/Uin3Zyv-FxI/AAAAAAABTbs/Kp70aYegR3U/s1600/tableview001.jpg" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://2.bp.blogspot.com/-AQ7GFqVQD4U/Uin3Zyv-FxI/AAAAAAABTbs/Kp70aYegR3U/s1600/tableview001.jpg" height="216" width="320" /></a></div>
+<rt vt=""><vt><br /></vt></rt>
+<br />
+<div class="separator" style="clear: both; text-align: center;">
+    <a href="http://2.bp.blogspot.com/-8qDppXPeXes/Uin3Z_Su-pI/AAAAAAABTb4/BLIB0FT2cLI/s1600/tableview002.jpg" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://2.bp.blogspot.com/-8qDppXPeXes/Uin3Z_Su-pI/AAAAAAABTb4/BLIB0FT2cLI/s1600/tableview002.jpg" height="218" width="320" /></a></div>
+<rt vt=""><vt><br /></vt></rt>
+<rt vt=""><vt><br /></vt></rt>
+<rt vt=""><vt>UML of this demo:</vt></rt><br />
+<rt vt=""><vt><br /></vt></rt>
+<br />
+<div class="separator" style="clear: both; text-align: center;">
+    <a href="http://1.bp.blogspot.com/-ePJ6s1IzMKE/Uiny8-L--tI/AAAAAAABTbY/3hK_OgfHDPc/s1600/uml.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img alt="" border="0" src="http://1.bp.blogspot.com/-ePJ6s1IzMKE/Uiny8-L--tI/AAAAAAABTbY/3hK_OgfHDPc/s1600/uml.png" height="608" title="" width="640" /></a></div>
+<rt vt=""><vt><br /></vt></rt>
+<rt vt=""><vt>Full CDI dependicies</vt></rt><br />
+<div class="separator" style="clear: both; text-align: center;">
+    <a href="http://4.bp.blogspot.com/-1CreRx6oh_I/UinzViniCcI/AAAAAAABTbg/E6C0MdnnRTQ/s1600/cdi-deps.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://4.bp.blogspot.com/-1CreRx6oh_I/UinzViniCcI/AAAAAAABTbg/E6C0MdnnRTQ/s1600/cdi-deps.png" height="254" width="640" /></a></div>
+<rt vt=""><vt><br /></vt></rt>
+<rt vt=""><vt><br /></vt></rt>

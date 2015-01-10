@@ -1,0 +1,100 @@
+A few days ago I was writing about the JavaFX/CDI Bootstrap. <br />
+There are a few small changings until now. <br />
+<blockquote>
+<em>The final jUnit-Class (extends JavaFXBaseTest ) will implement the method –&gt; testImpl(final Stage stage). </em><br />
+<em>The jUnit-Test will be a manged instance itself.</em></blockquote>
+This is right.. but I forgot to Inject the a few things.<br />
+First the JavaFX component that is managed:<br />
+The jUnit example (<b>CDIJavaFXBaseApplication001Test</b>, you will find this at cdi-commons-fx) is using the LoginPane.<br />
+This is changed from an empty class to the following implementation<br />
+<script type="syntaxhighlighter" class="brush: js"><![CDATA[
+public class LoginPane extends GridPane {
+
+    private @Inject FXMLLoaderSingleton fxmlLoaderSingleton;
+    private @Inject LoginController controller;
+
+    public LoginPane() {
+    }
+
+    @PostConstruct
+    public void init(){
+        final FXMLLoader fxmlLoader = fxmlLoaderSingleton.getFXMLLoader(LoginPane.class);
+        fxmlLoader.setRoot(this);
+        try {
+            fxmlLoader.setController(controller);
+            fxmlLoader.load();
+        } catch (IOException exception) {
+            throw new RuntimeException(exception);
+        }
+    }
+
+    public LoginController getController() {
+        return controller;
+    }
+}
+]]></script>
+<br />
+Now you have to modify the fxml based on this first version.<br />
+<br />
+<script type="syntaxhighlighter" class="brush: js"><![CDATA[
+<fx:root type="javafx.scene.layout.GridPane" fx:controller="demo.LoginController"
+         alignment="CENTER" hgap="10.0" stylesheets="/demo/login.css" vgap="10.0"
+          xmlns:fx="http://javafx.com/fxml"
+          >
+
+   <!-- .... -->
+
+</fx:root>
+]]></script>
+<br />
+At this version you had to declare the controller itself. This can be done later by the init-phase. And the root – element was an pure GridPane.
+<br />
+The new version looks like this:<br />
+<script type="syntaxhighlighter" class="brush: js"><![CDATA[
+<fx:root type="demo.LoginPane"
+         alignment="CENTER" hgap="10.0" stylesheets="/demo/login.css" vgap="10.0"
+          xmlns:fx="http://javafx.com/fxml">
+
+<!-- .... -->
+
+</fx:root>
+]]></script>
+
+The root – element is now the self defined class LoginPane and the the controller definition is removed. So you can inject a controller at runtime depending on the ContextResolver.<br />
+<br />
+The jUnit-Test itself changed a little bit. At the first version we used the fxml-Loader to get the LoginPane.. This can now be done by an Inject. (@Inject LoginPane root; )<br />
+<br />
+<script type="syntaxhighlighter" class="brush: js"><![CDATA[
+        @Inject
+        @CDISimpleDateFormatter(value = "date.yyyyMMdd")
+        SimpleDateFormat sdf;
+        @Inject
+        @CDILogger
+        Logger logger;
+
+        @Inject LoginPane root;
+
+        @Override
+        public void testImpl(Stage stage) {
+            if (logger.isDebugEnabled()) {
+                logger.debug("testrunn at -> " + sdf.format(new Date()));
+            }
+            stage.setTitle("Login");  //i18n
+            stage.setScene(new Scene(root, 300, 275));
+            //stage.show();
+            final Scene scene = stage.getScene();
+
+            //TestCode
+            final TextField login = (TextField) scene.lookup("#loginField");
+            login.setText("LOGIN");
+            final PasswordField passwd = (PasswordField) scene.lookup("#passwordField");
+            passwd.setText("LOGIN");
+
+            final LoginController controller = root.getController();
+            controller.handleSubmitButtonAction(new ActionEvent());
+
+            final Text feedback = (Text) scene.lookup("#feedback");
+            Assert.assertEquals("LOGIN logged in successfully", feedback.getText());
+        }
+
+]]></script>

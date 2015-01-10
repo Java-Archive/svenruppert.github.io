@@ -1,0 +1,178 @@
+How to get a full managed JavaFX-element declared in the fxml-file?<br/>
+
+Let´s say we have something like the following:<br/>
+
+<script class="brush: javafx" type="syntaxhighlighter"><![CDATA[
+<TableView fx:id="tableView" editable="true" VBox.vgrow="ALWAYS" style="-fx-font-size: 80%"
+                   tableMenuButtonVisible="true">
+    <columns>
+        <FilterableStringTableColumn prefWidth="120.0" text="vorname">
+            <cellFactory>
+                <EditingAutoCompleteStringCellFactory/>
+            </cellFactory>
+            <cellValueFactory>
+                <PropertyValueFactory property="vorname"/>
+            </cellValueFactory>
+        </FilterableStringTableColumn>
+        <FilterableStringTableColumn prefWidth="120.0" text="nachname">
+            <cellFactory>
+                <EditingStringCellFactoryCallback/>
+            </cellFactory>
+            <cellValueFactory>
+                <PropertyValueFactory property="nachname"/>
+            </cellValueFactory>
+        </FilterableStringTableColumn>
+        <FilterableDateTableColumn prefWidth="120.0" text="datum">
+            <cellFactory>
+                <EditingDateCellFactoryCallback/>
+            </cellFactory>
+            <cellValueFactory>
+                <PropertyValueFactory property="datum"/>
+            </cellValueFactory>
+        </FilterableDateTableColumn>
+        <FilterableDoubleTableColumn prefWidth="120.0" text="betrag">
+            <cellValueFactory>
+                <PropertyValueFactory property="betrag"/>
+            </cellValueFactory>
+        </FilterableDoubleTableColumn>
+    </columns>
+</TableView>
+]]></script>
+
+This looks like a normal definition of a TableView with some cell-factories.
+The intressting part is the instantiating of the cellFactory elements. They are
+created from the JavaFX part. How to get them as full managed bean?<br/>
+
+Based on my blog entry about  (<a href="http://www.rapidpm.org/2013/08/cdicommonsfx-javafxcdi-bootstrap.html">CDI-JavaFX bootstrapping</a>) I wanted to have full cdi managed JavaFX elements but defined in my fxml-file.<br/>
+
+How to get this with a ComboBoxCell you can see here (<a href="http://www.rapidpm.org/2013/09/cdi-comboboxcell-how-to-reduce-80-of.html">cdi comboboxcell how to reduce 80 of code</a>)<br/>
+
+The aproach was to define an element that is able to associate itself as CellFactory.
+Only two line of code are used during the init - phase:<br/>
+<script class="brush: java" type="syntaxhighlighter"><![CDATA[
+@Inject Instance<BetragComboboxCell> betragComboBoxCellInstance;
+ 
+private void initTable() {
+    final BetragComboBoxCell cell = betragComboBoxCellInstance.get();
+    cell.associateWithCol(tableView, "betrag");
+}
+]]></script>
+
+
+BUT: the definition inside the fxml-file is <br/>
+<script class="brush: java" type="syntaxhighlighter"><![CDATA[
+        <FilterableDoubleTableColumn prefWidth="120.0" text="betrag">
+            <cellValueFactory>
+                <PropertyValueFactory property="betrag"/>
+            </cellValueFactory>
+        </FilterableDoubleTableColumn>
+]]></script>
+
+You only could (implicit)define a normal CellFactory, because the creation of this element would be done by JavaFX.<br/>
+
+Now I want to write a more precise fxml file.<br/>
+<script class="brush: java" type="syntaxhighlighter"><![CDATA[
+<FilterableStringTableColumn prefWidth="120.0" text="vorname">
+            <cellFactory>
+                <EditingAutoCompleteStringCellFactory/>
+            </cellFactory>
+            <cellValueFactory>
+                <PropertyValueFactory property="vorname"/>
+            </cellValueFactory>
+        </FilterableStringTableColumn>
+]]></script>
+
+Now you could see, the CellFactory is well defined. Here an EditingAutoCompleteStringCellFactory.
+This is an element with injected autocomplete functions/data.<br/>
+<script class="brush: java" type="syntaxhighlighter"><![CDATA[
+public class EditingAutoCompleteStringCellFactory 
+                implements Callback<TableColumn<FilteredTableDataRow, ?>,
+                                      TableCell<FilteredTableDataRow, ?>>
+]]></script>
+
+Inside this class you can use all cdi features.<br/>
+
+The missing part is: How to get this as managed instance?<br/>
+The short answer is.. make it managed by yourself ;-)<br/>
+
+Let´s say the controller is a managed instance, you can get the BeanManager with<br/>
+
+<script class="brush: java" type="syntaxhighlighter"><![CDATA[
+@Inject BeanManager beanManager;
+]]></script>
+
+Now I started to get during the init-phase the right column<br/>
+
+<script class="brush: java" type="syntaxhighlighter"><![CDATA[
+final ObservableList<TableColumn<TransientDemoDataRow, ?>> columns = tableView.getColumns();
+for (final TableColumn<TransientDemoDataRow, ?> column : columns) {
+ if(column.getText().equals("vorname")){ 
+   //do something on column
+ } else{
+  //nothing to do
+ }
+}
+]]></script>
+
+After you found the right column, start with the CDI-stuff
+<script class="brush: java" type="syntaxhighlighter"><![CDATA[
+final TableColumn<TransientDemoDataRow, String> columnString = (TableColumn<TransientDemoDataRow, String>) column;
+
+final Callback<? extends TableColumn<TransientDemoDataRow, String>, ? extends TableCell<TransientDemoDataRow,String>> cellFactory = columnString.getCellFactory();
+
+final AnnotatedType<EditingAutoCompleteStringCellFactory> annotationType = beanManager.createAnnotatedType(EditingAutoCompleteStringCellFactory.class);
+
+final InjectionTarget injectionTarget = beanManager.createInjectionTarget(annotationType);
+
+final CreationalContext<EditingAutoCompleteStringCellFactory> creationalContext = beanManager.createCreationalContext(null);
+
+                injectionTarget.inject(cellFactory, creationalContext);
+                injectionTarget.postConstruct(cellFactory);
+
+]]></script>
+
+Ready..   but this code is not nice...  and done for every column this is toooooo much code.<br/>
+
+So I started to reduce it.<br/>
+- reducing the generics..<br/>
+- getting the class from the instance itself<br/>
+
+<script class="brush: java" type="syntaxhighlighter"><![CDATA[
+final Callback cellFactory = column.getCellFactory();
+final AnnotatedType annotationType = beanManager.createAnnotatedType(cellFactory.getClass());
+final InjectionTarget injectionTarget = beanManager.createInjectionTarget(annotationType);
+final CreationalContext creationalContext = beanManager.createCreationalContext(null);
+injectionTarget.inject(cellFactory, creationalContext);
+injectionTarget.postConstruct(cellFactory);
+]]></script>
+
+Done..  OK, this is short and easy..  and you can do it for every column..<br/>
+
+<script class="brush: java" type="syntaxhighlighter"><![CDATA[
+final ObservableList<TableColumn<TransientDemoDataRow, ?>> columns = tableView.getColumns();
+for (final TableColumn<TransientDemoDataRow, ?> column : columns) {
+ final Callback cellFactory = column.getCellFactory();
+ final AnnotatedType annotationType = beanManager.createAnnotatedType(cellFactory.getClass());
+ final InjectionTarget injectionTarget = beanManager.createInjectionTarget(annotationType);
+ final CreationalContext creationalContext = beanManager.createCreationalContext(null);
+ injectionTarget.inject(cellFactory, creationalContext);
+ injectionTarget.postConstruct(cellFactory);
+}
+]]></script>
+
+or more generic...<br/>
+<script class="brush: java" type="syntaxhighlighter"><![CDATA[
+final ObservableList<TableColumn<?, ?>> columns = tableView.getColumns();
+for (final TableColumn<?, ?> column : columns) {
+ final Callback cellFactory = column.getCellFactory();
+ final AnnotatedType annotationType = beanManager.createAnnotatedType(cellFactory.getClass());
+ final InjectionTarget injectionTarget = beanManager.createInjectionTarget(annotationType);
+ final CreationalContext creationalContext = beanManager.createCreationalContext(null);
+ injectionTarget.inject(cellFactory, creationalContext);
+ injectionTarget.postConstruct(cellFactory);
+}
+]]></script>
+
+Now you can use CDI-managed elements as CellFactories and define them inside your fxml. <br/>
+
+Nice, Managed and TypeSave<br/>
