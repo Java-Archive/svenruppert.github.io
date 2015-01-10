@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title>0.6.0</title>
     <category label="0.6.0"/>
-    <updated>2015-01-10T01:39:11.549+01:00</updated>
+    <updated>2015-01-10T01:52:33.558+01:00</updated>
     <id>http://rapidpm.github.io</id>
     <author>
         <name>Sven Ruppert</name>

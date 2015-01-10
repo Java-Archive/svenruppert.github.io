@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title>Arquillian</title>
     <category label="Arquillian"/>
-    <updated>2015-01-10T01:39:11.560+01:00</updated>
+    <updated>2015-01-10T01:52:33.565+01:00</updated>
     <id>http://rapidpm.github.io</id>
     <author>
         <name>Sven Ruppert</name>
