@@ -1,43 +1,526 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <title>tinkerforge</title>
-    <category label="tinkerforge"/>
-    <updated>2014-11-19T05:33:00.844+01:00</updated>
+    <title>TinkerForge</title>
+    <category label="TinkerForge"/>
+    <updated>2015-01-10T02:18:05.223+01:00</updated>
     <id>http://rapidpm.github.io</id>
     <author>
         <name>Sven Ruppert</name>
     </author>
     <entry>
-        <title>Und wieder auf zu JUG´s</title>
-        <category label="java"/>
-        <category label="javafx"/>
-        <category label="iot"/>
-        <category label="tinkerforge"/>
-        <published>2014-11-16T00:00:00+01:00</published>
+        <title>IoT with Java8 and TinkerForge Part 1</title>
+        <category label="IoT"/>
+        <category label="Java"/>
+        <category label="JavaFX"/>
+        <category label="JDK8"/>
+        <category label="TinkerForge"/>
+        <published>2014-01-13T00:00:00+01:00</published>
         <author>
             <name>Sven Ruppert</name>
         </author>
-        <content type="html">&lt;div class="blog-post"&gt;
-&lt;h2 class="blog-post-title"&gt;&lt;a href=/2014/11/16/und-wieder-auf-zu-jugs.html&gt;Und wieder auf zu JUG´s&lt;/a&gt;&lt;/h2&gt;
-&lt;p class="blog-post-meta"&gt;2014-11-16 from &lt;a href="/team/sven-ruppert/"&gt;Sven Ruppert&lt;/a&gt;&lt;/p&gt;
+        <content type="html">&lt;article class="article clearfix"&gt;
+							&lt;header class="article-header"&gt;
+								&lt;h2 class="article-title"&gt;&lt;a href="/2014/01/13/iot-with-java8-and-tinkerforge-part-1.html" rel="tag"&gt;IoT with Java8 and TinkerForge Part 1&lt;/a&gt;&lt;/h2&gt;
+								&lt;p&gt;&lt;time datetime="2014-01-13"&gt;2014-01-13&lt;/time&gt; &lt;a href="/team/sven-ruppert" rel="author"&gt;from Sven Ruppert&lt;/a&gt;&lt;/p&gt;
+							&lt;/header&gt;
+							&lt;div class="article-content clearfix"&gt;
+								&lt;div class="post-thumb"&gt;
+									&lt;img src="./site/content/post_thumb.jpg" width="" height="" alt="" /&gt;
+								&lt;/div&gt;
+								&lt;div class="post-excerpt"&gt;IoT is something cool, but I think you know it already.&lt;br /&gt;
+Today I started with TinkerForge.
+TinkerForge is a german company that are building electronic elements. You can put them together like LEGO.
+This means, that you don´t need any special electronic stuff or knowledge.
+&lt;br /&gt;
+And the best, you can code plain Java to use them.&lt;br /&gt;
+&lt;br /&gt;
+&lt;b&gt;But how we can start?
+&lt;/b&gt;&lt;br /&gt;
+&lt;br /&gt;
+First of all, you need a MasterBrick and at minimumm one sensor. For my first experiment I am using
+the simple temperature sensor. After unpacking it I needed around 3 min to put all together.
+After this you can plug it into your USB port. Now the hardware part is ready.
+&lt;br /&gt;
+&lt;br /&gt;
+To speak with this components you have to install two things.&lt;br /&gt;
+First the usb-driver, that is used for the communication with the MasterBrick,&lt;br /&gt;
+second the BrickViewr. With this you can check the installation, update the firmware and so on.
+&lt;br /&gt;
+&lt;br /&gt;
+You will find the software for&lt;b&gt; linux/osx/windows&lt;/b&gt;.
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;b&gt;Hello IoT World:&amp;nbsp;&lt;/b&gt;&lt;br /&gt;
+&lt;br /&gt;
+We will start with the first HelloWorld. Here with the Hello IoTWorld.&lt;br /&gt;
+After you connected the MasterBrick with the USB-port you will see a blue light
+and the MasterBrick will be ready for communication.
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;div class="separator" style="clear: both; text-align: center;"&gt;
+    &lt;a href="http://1.bp.blogspot.com/-L4kMEQNQn7U/UtRZqJ_UlPI/AAAAAAABVGA/q_UgrGaqkdQ/s1600/SvenRuppert_IoT_TinkerForge_001_BrickV_001.jpg" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" src="http://1.bp.blogspot.com/-L4kMEQNQn7U/UtRZqJ_UlPI/AAAAAAABVGA/q_UgrGaqkdQ/s1600/SvenRuppert_IoT_TinkerForge_001_BrickV_001.jpg" height="140" width="320" /&gt;&lt;/a&gt;&lt;/div&gt;
+&lt;br /&gt;
+Now we could start the BrickViewer to check the installation.
+The importand part is the UID from the sensor. With this we can connect it later.
+After you pressed the connect button, you can see all the informations.
+&lt;br /&gt;
+&lt;br /&gt;
+At &lt;a href="https://bitbucket.org/rapidpm/jaxenter.de-0012-iot-tinkerforge"&gt;https://bitbucket.org/rapidpm/jaxenter.de-0012-iot-tinkerforge&lt;/a&gt; are all source codes you will need, including the TinkerForge API itself.&lt;br /&gt;
+I spoke with TinkerForge and we decided to put the API into maven.&lt;br /&gt;
+&lt;br /&gt;
+After we have done this, I will inform you.
+If you are interested, follow me on Twitter please ( &lt;b&gt;&lt;a href="https://twitter.com/SvenRuppert"&gt;@SvenRuppert&lt;/a&gt;&lt;/b&gt; )
+&lt;br /&gt;
+&lt;br /&gt;
+The basic steps are quite simple to use this sensor.&lt;br /&gt;
+&lt;br /&gt;
+&lt;ul&gt;
+    &lt;li&gt;create a IPConnection&amp;nbsp;&lt;/li&gt;
+    &lt;li&gt;create an instance of the class BrickletTemperature&amp;nbsp;&lt;/li&gt;
+    &lt;li&gt;configure the sensor&amp;nbsp;&lt;/li&gt;
+    &lt;li&gt;add an ActionListener.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;br /&gt;
+That is all.
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;pre class="brush: java"&gt;import com.tinkerforge.BrickletTemperature;
+import com.tinkerforge.IPConnection;
 
-&lt;p&gt;Und wieder bin auf dem Weg zu verschiedenen JUG´s.
-    In diesem Fall einmal zur JUG Berlin Brandenburg und dann am Di zu der JUG Hamburg.&lt;/p&gt;
+public class ExampleCallback {
+    private static final String host = "localhost";
+    private static final int port = 4223;
+    private static final String UID = "dXj"; 
+    public static void main(String args[]) throws Exception {
+        IPConnection ipcon = new IPConnection(); 
+        BrickletTemperature temp = new BrickletTemperature(UID, ipcon); 
+        ipcon.connect(host, port); 
+        temp.setTemperatureCallbackPeriod(1000);
+        temp.addTemperatureListener(new 
+          BrickletTemperature.TemperatureListener() {
+            public void temperature(short temperature) {
+                System.out.println("Temperature: " 
+                   + temperature/100.0 + " °C");
+            }
+        });
+        ipcon.disconnect();
+    }
+}
+&lt;/pre&gt;
+After this short example we could do our first javafx test.
+We want to check the temperature over some time and show this inside an LineChart.&lt;br /&gt;
+&lt;br /&gt;
+&lt;div class="separator" style="clear: both; text-align: center;"&gt;
+    &lt;a href="http://2.bp.blogspot.com/-q7AnTcjRQz4/UtRaLcWsJFI/AAAAAAABVGI/lUAYpFuc87g/s1600/SvenRuppert_IoT_TinkerForge_001_Temp_001.jpg" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" src="http://2.bp.blogspot.com/-q7AnTcjRQz4/UtRaLcWsJFI/AAAAAAABVGI/lUAYpFuc87g/s1600/SvenRuppert_IoT_TinkerForge_001_Temp_001.jpg" height="199" width="320" /&gt;&lt;/a&gt;&lt;/div&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+Here we are... and please note, the DateAxis is from&lt;a href="http://myjavafx.blogspot.de/2013/09/javafx-charts-display-date-values-on.html"&gt; http://myjavafx.blogspot.de/2013/09/javafx-charts-display-date-values-on.html&lt;/a&gt;&lt;br /&gt;
+&lt;pre class="brush: java"&gt; 
+ public class HelloTinkerForge extends Application {
 
-&lt;p&gt;Bei beiden Events wird es um IoT TinkerForge und Java8 gehen.&lt;/p&gt;
+    private static final String host = "localhost";
+    private static final int port = 4223;
+    private static final String UID = "dXj"; 
 
-&lt;blockquote&gt;
-    &lt;p&gt;JUG Berlin-Brandenburg - &lt;a href="http://www.jug-berlin-brandenburg.de/blog/2014/10/22/tinkerforge-workshop/"&gt;
-        TinkerForge - Industrial Prototyping in Action
-    &lt;/a&gt;&lt;strong&gt;17.11.2014&lt;/strong&gt;
-    &lt;/p&gt;
-    &lt;p&gt;JUG Hamburg - &lt;a href="http://www.meetup.com/jug-hamburg/events/214076512/"&gt;
-        TinkerForge and IoT (Wiederholung)
-    &lt;/a&gt;&lt;strong&gt;18.11.2014&lt;/strong&gt;
-    &lt;/p&gt;
-&lt;/blockquote&gt;
 
-&lt;/div&gt;</content>
+    public static void main(String args[]) throws Exception {
+        launch(args);
+    }
+
+    public static XYChart.Series series;
+
+    @Override
+    public void start(Stage stage) {
+        stage.setTitle("Line Chart TinkerForge Sample");
+        final DateAxis dateAxis = new DateAxis();
+        final NumberAxis yAxis = new NumberAxis();
+        dateAxis.setLabel("Time of Temp");
+        final LineChart&lt;date number=""&gt; lineChart
+    = new LineChart&amp;lt;&amp;gt;(dateAxis, yAxis);
+
+    lineChart.setTitle("Temp Monitoring");
+
+    series = new XYChart.Series();
+    series.setName("My temps");
+    final ObservableList seriesData = series.getData();
+
+    lineChart.getData().add(series);
+    Scene scene = new Scene(lineChart, 800, 600);
+    stage.setScene(scene);
+    stage.show();
+    new Worker(seriesData).start();
+
+    }
+
+    public static class Worker extends Thread {
+    final ObservableList seriesData;
+    public Worker(final ObservableList seriesData) {
+    setDaemon(true);
+    setName("Thread Temp");
+    this.seriesData = seriesData;
+    }
+
+    @Override
+    public void run() {
+    Platform.runLater(new Runnable() {
+    @Override
+    public void run() {
+    IPConnection ipcon = new IPConnection();
+    BrickletTemperature temp
+    = new BrickletTemperature(UID, ipcon);
+    try {
+    ipcon.connect(host, port);
+    temp.setTemperatureCallbackPeriod(1000);
+    temp.addTemperatureListener(
+    new BrickletTemperature.TemperatureListener() {
+    public void temperature(short temperature) {
+    Platform.runLater(new Runnable() {
+    @Override
+    public void run() {
+    final double temp
+    = temperature / 100.0;
+    final int counter
+    = seriesData.size() + 1;
+    final XYChart.Data data
+    = new XYChart.Data(
+    new Date(), temp);
+    seriesData.add(data);
+    }
+    });
+    }
+    });
+    } catch (IOException |
+    AlreadyConnectedException |
+    TimeoutException |
+    NotConnectedException e) {
+    e.printStackTrace();
+    }
+    }
+    });
+    }
+    }
+    }
+&lt;/date&gt;&lt;/pre&gt;
+&lt;pre class="brush: java"&gt;&lt;date number=""&gt;
+&lt;/date&gt;&lt;/pre&gt;
+Short and simple.. Well this is a simple example, but the next step will be with more sensor-elements...&lt;br /&gt;
+&amp;nbsp;stay tuned..  and happy coding.&lt;/div&gt;
+							&lt;/div&gt;
+							&lt;footer class="article-footer clearfix"&gt;
+								&lt;span class="post-author"&gt;&lt;a href="/team/sven-ruppert" rel="author"&gt;Sven Ruppert&lt;/a&gt;&amp;nbsp;&amp;nbsp;|&amp;nbsp;&amp;nbsp;&lt;/span&gt;
+								&lt;span class="post-date"&gt;&lt;a href="#" rel="date"&gt;2014-01-13&lt;/a&gt;&amp;nbsp;&amp;nbsp;|&amp;nbsp;&amp;nbsp;&lt;/span&gt;
+							&lt;/footer&gt;
+						&lt;/article&gt;</content>
+        <summary>Das ist der Inhalt der in Kurzform angezeigt werden soll</summary>
+    </entry>
+    <entry>
+        <title>IoT with Java8 and TinkerForge Part 2</title>
+        <category label="IoT"/>
+        <category label="Java"/>
+        <category label="JavaFX"/>
+        <category label="JDK8"/>
+        <category label="TinkerForge"/>
+        <published>2014-01-20T00:00:00+01:00</published>
+        <author>
+            <name>Sven Ruppert</name>
+        </author>
+        <content type="html">&lt;article class="article clearfix"&gt;
+							&lt;header class="article-header"&gt;
+								&lt;h2 class="article-title"&gt;&lt;a href="/2014/01/20/iot-with-java8-and-tinkerforge-part-2.html" rel="tag"&gt;IoT with Java8 and TinkerForge Part 2&lt;/a&gt;&lt;/h2&gt;
+								&lt;p&gt;&lt;time datetime="2014-01-20"&gt;2014-01-20&lt;/time&gt; &lt;a href="/team/sven-ruppert" rel="author"&gt;from Sven Ruppert&lt;/a&gt;&lt;/p&gt;
+							&lt;/header&gt;
+							&lt;div class="article-content clearfix"&gt;
+								&lt;div class="post-thumb"&gt;
+									&lt;img src="./site/content/post_thumb.jpg" width="" height="" alt="" /&gt;
+								&lt;/div&gt;
+								&lt;div class="post-excerpt"&gt;One of the interesting features of &lt;a href="http://www.tinkerforge.com/"&gt;TinkerForge&lt;/a&gt; is the possibility to
+put different elements like sensors, physical buttons, and more on a MasterBrick&lt;br /&gt;
+&lt;br /&gt;
+This is what we want to do today.
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;b&gt;The Barometer&lt;/b&gt;&lt;br /&gt;
+Today we are using the &lt;a href="http://www.tinkerforge.com/en/doc/Hardware/Bricklets/Barometer.html"&gt;Barometer-Bricklet&lt;/a&gt;.
+The Barometer Bricklet can be used to extend the features of Bricks
+by the capability to measure air pressure in range of 10 to 1200mbar
+with a resolution of 0.012mbar. The measurement is temperature
+compensated internally. The Bricklet is equipped with
+a MS5611-01BA01 sensor which is designed to be used as an altimeter, too.
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;i&gt;At &lt;a href="https://bitbucket.org/rapidpm/jaxenter.de-0012-iot-tinkerforge"&gt;https://bitbucket.org/rapidpm/jaxenter.de-0012-iot-tinkerforge&lt;/a&gt; are all source codes you will need, including the TinkerForge API itself.
+    I spoke with TinkerForge and we decided to put the API into maven. After we have done this, I will inform you.
+    If you are interested, follow me on Twitter please ( &lt;b&gt;@SvenRuppert&lt;/b&gt; )
+&lt;/i&gt;&lt;br /&gt;
+&lt;br /&gt;
+The most interesting part for us today will be the presents of two sensors inside of one Bricklet.&lt;br /&gt;
+How we can handle it and how we will get the data to the screen?&lt;br /&gt;
+&lt;br /&gt;
+&lt;b&gt;Connect to n - Sensor-units&lt;/b&gt;&lt;br /&gt;
+To remember... To connect to a sensor you need an instance of the representing class.
+To get the value from the sensor you have to implement an ActionListener.
+Here the short example from my last blog about TinkerForge. &lt;i&gt;(&lt;a href="http://www.rapidpm.org/2014/01/iot-with-java8-and-tinkerforge-part-1.html"&gt;engl&lt;/a&gt; /&lt;a href="http://jaxenter.de/artikel/Internet-of-Things-mit-Java-8-und-TinkerForge-Teil-1-170511"&gt; ger&lt;/a&gt;)&lt;/i&gt;&lt;br /&gt;
+&lt;br /&gt;
+&lt;pre class="brush: java"&gt;import com.tinkerforge.BrickletTemperature;
+import com.tinkerforge.IPConnection;
+public class ExampleCallback {
+  private static final String host = "localhost";
+  private static final int port = 4223;
+  private static final String UID = "dXj";
+  public static void main(String args[]) throws Exception {
+    IPConnection ipcon = new IPConnection();
+    BrickletTemperature temp = new BrickletTemperature(UID, ipcon);
+    ipcon.connect(host, port);
+    temp.setTemperatureCallbackPeriod(1000);
+    temp.addTemperatureListener(new
+    BrickletTemperature.TemperatureListener() {
+      public void temperature(short temperature) {
+        System.out.println("Temperature: "
+        + temperature/100.0 + " °C");
+      }
+    });
+    ipcon.disconnect();
+}
+}
+&lt;/pre&gt;
+The same will be with the two sensor-units inside the Barometer-Bricklet.
+The class name will be BrickletBarometer, and you have to implement two ActionListeners.
+One for the air-pressure called AirPressureListener and one for the altitude called AltitudeListener.
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;pre class="brush: java"&gt;public class ExampleCallback {
+    private static final String host = "localhost";
+    private static final int port = 4223;
+    private static final String UID = "jY4";
+
+    public static void main(String args[]) throws Exception {
+        IPConnection ipcon = new IPConnection();
+        BrickletBarometer b = new BrickletBarometer(UID, ipcon);
+        ipcon.connect(host, port);
+        b.setAirPressureCallbackPeriod(1000);
+        b.setAltitudeCallbackPeriod(1000);
+        b.addAirPressureListener(
+                new BrickletBarometer.AirPressureListener() {
+                    public void airPressure(int airPressure) {
+                        System.out.println("Air Pressure: "
+                                + airPressure / 1000.0 + " mbar");
+                    }
+                }
+        );
+        b.addAltitudeListener(new BrickletBarometer.AltitudeListener() {
+            public void altitude(int altitude) {
+                System.out.println("Altitude: " + altitude / 100.0 + " m");
+            }
+        });
+        ipcon.disconnect();
+    }
+}
+&lt;/pre&gt;
+&lt;b&gt;Connection to JavaFX&lt;/b&gt;&lt;br /&gt;
+The connection to JavaFX could be simple. The basic steps are always the same.
+You have to start an Thread outside our JavaFX GUI Thread. Inside this thread you have to configure the sensor
+and inside the run()- method you have to add the action listener.
+All steps that are manipulating the GUI, you have to start again inside a Platform.runLater()
+Now, we have to sensor-units. This means that we are doing this twice.
+To reuse the code later, we are extracting it into an separate class.
+If we would do it for the temperature sensor we used last time, it will look like the following.
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;pre class="brush: java"&gt;public class Temp implements Runnable {
+
+  private String UID;
+  private ObservableList seriesData;
+
+  public Temp(final String UID, final XYChart.Series series) {
+      this.UID = UID;
+      this.seriesData = series.getData();
+  }
+
+  @Override
+  public void run() {
+      IPConnection ipcon = new IPConnection();
+      BrickletTemperature temp = new BrickletTemperature(UID, ipcon);
+      try {
+          ipcon.connect(Barometer.host, Barometer.port);
+          temp.setTemperatureCallbackPeriod(1000);
+          temp.addTemperatureListener(new BrickletTemperature.TemperatureListener() {
+              public void temperature(short temperature) {
+                  Platform.runLater(new Runnable() {
+                      @Override
+                      public void run() {
+                          final double temp = temperature / 100.0;
+                          System.out.println("Temperature: " + temp + " °C");
+                          final XYChart.Data data = new XYChart.Data(new Date(), temp);
+                          seriesData.add(data);
+       }
+                  });
+              }
+          });
+      } catch (IOException 
+       | AlreadyConnectedException 
+    | TimeoutException 
+    | NotConnectedException e) {
+          e.printStackTrace();
+      }
+  }
+}
+&lt;/pre&gt;
+For the Barometer-Bricklet I was writing two classes. One for the airpressure and one for the altitude.
+Both are identically, with one difference. The implementation of the ActionListener.
+Every sensor will put his data to a separate LineChart.&lt;br /&gt;
+&amp;nbsp;This implementation is not perfect, because we are not disconnecting
+from the sensor in the end, and for one Bricklet we have two representing classes.
+Both instances are in a different thread.
+But this is still running over a longer period. (at least a few days with my laptop)
+How to encapsulate this in better way we will see in one of my next posts.
+
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;pre class="brush: java"&gt;public class Altitude implements Runnable {
+
+    private String UID;
+    private ObservableList seriesData;
+
+    public Altitude(final String UID, final XYChart.Series series) {
+        this.UID = UID;
+        this.seriesData = series.getData();
+    }
+
+    @Override
+    public void run() {
+        IPConnection ipcon = new IPConnection();
+        BrickletBarometer b = new BrickletBarometer(UID, ipcon);
+
+        try {
+            ipcon.connect(Barometer.host, Barometer.port);
+            b.setAirPressureCallbackPeriod(1000);
+            b.addAltitudeListener(new BrickletBarometer.AltitudeListener() {
+                public void altitude(int altitude) {
+                    System.out.println("Altitude: " + altitude / 100.0 + " m");
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            final double temp = altitude / 100.0;
+                            final XYChart.Data data = new XYChart.Data(new Date(), temp);
+                            seriesData.add(data);
+                        }
+                    });
+                }
+            });
+        } catch (IOException | AlreadyConnectedException | TimeoutException | NotConnectedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+&lt;/pre&gt;
+&lt;br /&gt;
+&lt;pre class="brush: java"&gt;public class Airpressure implements Runnable {
+
+    private String UID;
+    private ObservableList seriesData;
+
+    public Airpressure(final String UID, final XYChart.Series series) {
+        this.UID = UID;
+        this.seriesData = series.getData();
+    }
+
+    @Override
+    public void run() {
+        IPConnection ipcon = new IPConnection();
+        BrickletBarometer b = new BrickletBarometer(UID, ipcon);
+
+        try {
+            ipcon.connect(Barometer.host, Barometer.port);
+            b.setAirPressureCallbackPeriod(1000);
+            b.addAirPressureListener(new BrickletBarometer.AirPressureListener() {
+                public void airPressure(int airPressure) {
+                    System.out.println("Air Pressure: " + airPressure / 1000.0 + " mbar");
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            final double temp = airPressure / 1000.0 ;
+                            final XYChart.Data data = new XYChart.Data(new Date(), temp);
+                            seriesData.add(data);
+                        }
+                    });
+                }
+            });
+        } catch (IOException 
+     | AlreadyConnectedException 
+     | TimeoutException 
+     | NotConnectedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+&lt;/pre&gt;
+Putting all together we will get the following main.
+
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;pre class="brush: java"&gt;public class Barometer extends Application {
+    public static final String host = "localhost";
+    public static final int port = 4223;
+
+
+    public static void main(String args[]) throws Exception {
+        launch(args);
+    }
+
+    public static XYChart.Series seriesTemp = new XYChart.Series();
+    public static XYChart.Series seriesAirpressure = new XYChart.Series();
+    public static XYChart.Series seriesAltitude = new XYChart.Series();
+
+    @Override
+    public void start(Stage stage) {
+        stage.setTitle("Line Chart TinkerForge Sample");
+
+        final VBox box = new VBox();
+        seriesTemp.setName("Temp");
+        seriesAirpressure.setName("Airpressure");
+        seriesAltitude.setName("Altitude");
+
+        final ObservableList&lt;node&gt; boxChildren = box.getChildren();
+        boxChildren.add(createLineChart("Temp", seriesTemp));
+        boxChildren.add(createLineChart("Airpressure", seriesAirpressure));
+        boxChildren.add(createLineChart("Altitude", seriesAltitude));
+
+        Scene scene = new Scene(box, 2000, 1500);
+
+        stage.setScene(scene);
+        stage.show();
+        Platform.runLater(new Temp("dXj", seriesTemp));
+        Platform.runLater(new Airpressure("jY4", seriesAirpressure));
+        Platform.runLater(new Altitude("jY4", seriesAltitude));
+        }
+
+        private LineChart createLineChart(final String chartName,final XYChart.Series series ){
+        final DateAxis dateAxis = new DateAxis();
+        dateAxis.setLabel("Time");
+        final NumberAxis yAxis = new NumberAxis();
+
+        final LineChart&lt;date number=""&gt; lineChart = new LineChart&amp;lt;&amp;gt;(dateAxis, yAxis);
+            lineChart.setTitle(chartName);
+            lineChart.getData().add(series);
+
+            return lineChart;
+            }
+            }
+        &lt;/date&gt;&lt;/node&gt;&lt;/pre&gt;
+&lt;br /&gt;
+&lt;i&gt;At&amp;nbsp;&lt;a href="https://bitbucket.org/rapidpm/jaxenter.de-0012-iot-tinkerforge"&gt;https://bitbucket.org/rapidpm/jaxenter.de-0012-iot-tinkerforge&lt;/a&gt;&amp;nbsp;are all source codes you will need, including the TinkerForge API itself. I spoke with TinkerForge and we decided to put the API into maven. After we have done this, I will inform you. If you are interested, follow me on Twitter please (&amp;nbsp;&lt;b&gt;@SvenRuppert&lt;/b&gt;&amp;nbsp;)&lt;/i&gt;&lt;br /&gt;
+&lt;i&gt;&lt;br /&gt;&lt;/i&gt;
+Short and simple.. as always ..
+But if we are using more sensors in a way like this, we will get performance problems.
+To solve this we are connecting different &lt;b&gt;NoSQL&lt;/b&gt; systems soon. And we have to build the next version of JavaFX GUI-Elements...
+.... stay tuned..  and happy coding.
+&lt;/div&gt;
+							&lt;/div&gt;
+							&lt;footer class="article-footer clearfix"&gt;
+								&lt;span class="post-author"&gt;&lt;a href="/team/sven-ruppert" rel="author"&gt;Sven Ruppert&lt;/a&gt;&amp;nbsp;&amp;nbsp;|&amp;nbsp;&amp;nbsp;&lt;/span&gt;
+								&lt;span class="post-date"&gt;&lt;a href="#" rel="date"&gt;2014-01-20&lt;/a&gt;&amp;nbsp;&amp;nbsp;|&amp;nbsp;&amp;nbsp;&lt;/span&gt;
+							&lt;/footer&gt;
+						&lt;/article&gt;</content>
         <summary>Das ist der Inhalt der in Kurzform angezeigt werden soll</summary>
     </entry>
 </feed>
