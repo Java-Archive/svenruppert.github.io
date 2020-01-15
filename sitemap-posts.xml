@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"
+    xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>http://www.sven-ruppert.de/authors/sven-ruppert</loc>
+        <lastmod>2020-01-15</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>http://www.sven-ruppert.de/blog/kotlin/2020/1/14/say-hello-to-kotlin</loc>
+        <lastmod>2020-01-15</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>http://www.sven-ruppert.de/blog/java/2020/1/14/say-hello-to-java</loc>
+        <lastmod>2020-01-15</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>http://www.sven-ruppert.de/blog/vaadin/2020/1/14/say-hello-to-vaadin</loc>
+        <lastmod>2020-01-15</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>http://www.sven-ruppert.de/blog/devops/2020/1/14/say-hello-to-devops</loc>
+        <lastmod>2020-01-15</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    
+</urlset>

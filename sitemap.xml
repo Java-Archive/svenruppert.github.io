@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/siteindex.xsd"
+    xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <sitemap>
+        <loc>http://www.sven-ruppert.de/sitemap-assets.xml</loc>
+        <lastmod>2020-01-15</lastmod>
+    </sitemap>
+    <sitemap>
+        <loc>http://www.sven-ruppert.de/sitemap-home.xml</loc>
+        <lastmod>2020-01-15</lastmod>
+    </sitemap>
+    <sitemap>
+        <loc>http://www.sven-ruppert.de/sitemap-pages.xml</loc>
+        <lastmod>2020-01-15</lastmod>
+    </sitemap>
+    <sitemap>
+        <loc>http://www.sven-ruppert.de/sitemap-posts.xml</loc>
+        <lastmod>2020-01-15</lastmod>
+    </sitemap>
+    <sitemap>
+        <loc>http://www.sven-ruppert.de/sitemap-wiki.xml</loc>
+        <lastmod>2020-01-15</lastmod>
+    </sitemap>
+    <sitemap>
+        <loc>http://www.sven-ruppert.de/sitemap-changelog.xml</loc>
+        <lastmod>2020-01-15</lastmod>
+    </sitemap>
+    <sitemap>
+        <loc>http://www.sven-ruppert.de/sitemap-forms.xml</loc>
+        <lastmod>2020-01-15</lastmod>
+    </sitemap>
+    <sitemap>
+        <loc>http://www.sven-ruppert.de/sitemap-taxonomies.xml</loc>
+        <lastmod>2020-01-15</lastmod>
+    </sitemap>
+    <sitemap>
+        <loc>http://www.sven-ruppert.de/sitemap-external.xml</loc>
+        <lastmod>2020-01-15</lastmod>
+    </sitemap>
+    <sitemap>
+        <loc>http://www.sven-ruppert.de/sitemap-sitemap.xml</loc>
+        <lastmod>2020-01-15</lastmod>
+    </sitemap>
+    <sitemap>
+        <loc>http://www.sven-ruppert.de/sitemap-feeds.xml</loc>
+        <lastmod>2020-01-15</lastmod>
+    </sitemap>
+    
+</sitemapindex>

@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <id>http://www.sven-ruppert.de</id>
+        <title>Sven Ruppert</title>
+        <link>http://www.sven-ruppert.de</link>
+        <atom:link href="http://www.sven-ruppert.de/rss.xml" rel="self" type="application/rss+xml"/>
+        <description>Code, Coffee, and some other things</description>
+        <item>
+            <title>Say Hello to DevOps!</title>
+            <guid>http://www.sven-ruppert.de/blog/devops/2020/1/14/say-hello-to-devops</guid>
+            <link>http://www.sven-ruppert.de/blog/devops/2020/1/14/say-hello-to-devops</link>
+            <description>All about my ...</description>
+        </item>
+        <item>
+            <title>Say Hello to Vaadin!</title>
+            <guid>http://www.sven-ruppert.de/blog/vaadin/2020/1/14/say-hello-to-vaadin</guid>
+            <link>http://www.sven-ruppert.de/blog/vaadin/2020/1/14/say-hello-to-vaadin</link>
+            <description>All about my ...</description>
+        </item>
+        <item>
+            <title>Say Hello to Java!</title>
+            <guid>http://www.sven-ruppert.de/blog/java/2020/1/14/say-hello-to-java</guid>
+            <link>http://www.sven-ruppert.de/blog/java/2020/1/14/say-hello-to-java</link>
+            <description>All about my ...</description>
+        </item>
+        <item>
+            <title>Say Hello to Kotlin!</title>
+            <guid>http://www.sven-ruppert.de/blog/kotlin/2020/1/14/say-hello-to-kotlin</guid>
+            <link>http://www.sven-ruppert.de/blog/kotlin/2020/1/14/say-hello-to-kotlin</link>
+            <description>All about my ...</description>
+        </item>
+        <item>
+            <title>About Sven Ruppert</title>
+            <guid>http://www.sven-ruppert.de/authors/sven-ruppert</guid>
+            <link>http://www.sven-ruppert.de/authors/sven-ruppert</link>
+            <description></description>
+        </item>
+        
+    </channel>
+</rss>
